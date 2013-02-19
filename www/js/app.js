@@ -2,12 +2,12 @@
 require.config({
 	baseUrl: 'js/',
 	paths: {
-		jquery: '../assets/jquery.min',
+		jquery: 'lib/jquery.min',
 		ember: 'lib/ember-latest.min',
-		handlebars: '../assets/handlebars.min',
+		handlebars: 'lib/handlebars.min',
 		text: 'lib/require/text',
-		jasmine: '../assets/jasmine/jasmine',
-		jasmine_html: '../assets/jasmine/jasmine-html'
+		jasmine: 'lib/jasmine/jasmine',
+		jasmine_html: 'lib/jasmine/jasmine-html'
 	}
 });
 
