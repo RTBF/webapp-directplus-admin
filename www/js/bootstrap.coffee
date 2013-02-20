@@ -7,10 +7,11 @@ require.config
 
     
 define 'app', ['jquery','spine','handlebars'] , ($)->
-  class App extends Spine.controller
+  class App extends Spine.Controller
     constructor: () ->
-      super
+      console.log "bootstrap works"
 
+  myApp = new App();
 
 
 

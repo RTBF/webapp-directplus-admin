@@ -12,16 +12,17 @@ require.config({
 });
 
 define('app', ['jquery', 'spine', 'handlebars'], function($) {
-  var App;
-  return App = (function(_super) {
+  var App, myApp;
+  App = (function(_super) {
 
     __extends(App, _super);
 
     function App() {
-      App.__super__.constructor.apply(this, arguments);
+      console.log("bootstrap works");
     }
 
     return App;
 
-  })(Spine.controller);
+  })(Spine.Controller);
+  return myApp = new App();
 });

@@ -1,4 +1,7 @@
-Spine ?= require('spine')
+require.config
+    baseUrl: 'js/'
+
+Spine? = require('lib/spine/spine')
 
 Spine.Model.Local =
   extended: ->
