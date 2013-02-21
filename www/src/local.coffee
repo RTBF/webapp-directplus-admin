@@ -1,7 +1,7 @@
 require.config
     baseUrl: 'js/'
 
-Spine? = require('lib/spine/spine')
+Spine = require('lib/spine/spine') unless Spine?
 
 Spine.Model.Local =
   extended: ->
@@ -15,5 +15,7 @@ Spine.Model.Local =
   loadLocal: ->
     result = localStorage[@className]
     this.refresh(result or [], clear: true)
+
+  
     
 module?.exports = Spine.Model.Local

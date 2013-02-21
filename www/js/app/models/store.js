@@ -9,7 +9,7 @@ if (typeof Spine === "undefined" || Spine === null) {
   Spine = require('lib/spine/spine');
 }
 
-Spine.Model.Local = {
+Spine.Model.Store = {
   extended: function() {
     this.change(this.saveLocal);
     return this.fetch(this.loadLocal);
@@ -25,9 +25,12 @@ Spine.Model.Local = {
     return this.refresh(result || [], {
       clear: true
     });
+  },
+  this.find: function(id) {
+    return (this.records || (this.records = {}))[id];
   }
 };
 
 if (typeof module !== "undefined" && module !== null) {
-  module.exports = Spine.Model.Local;
+  module.exports = Spine.Model.Store;
 }
