@@ -2,17 +2,16 @@
 var __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-define(['jquery', 'backbone', 'application/views/loadingScreen'], function($, Backbone, LoadingScreen) {
+define(['jquery', 'backbone', 'application/views/mainScreen', 'application/views/aboutScreen'], function($, Backbone, MainScreen, AboutScreen) {
   var Router;
   return Router = (function(_super) {
 
     __extends(Router, _super);
 
     Router.prototype.routes = {
-      loading: 'loadingScreen',
       main: 'mainScreen',
       about: 'aboutScreen',
-      '*actions': 'loadingScreen'
+      '*actions': 'mainScreen'
     };
 
     function Router() {
@@ -20,23 +19,19 @@ define(['jquery', 'backbone', 'application/views/loadingScreen'], function($, Ba
     }
 
     Router.prototype.initialize = function() {
-      this.on('route:loadingScreen', function() {
-        var loadingScreen;
-        loadingScreen = new LoadingScreen({
-          el: $('#appcontainer')
-        });
-        loadingScreen.render();
-        return console.log("Route is loadingScreen");
-      });
       this.on('route:mainScreen', function() {
         var mainScreen;
-        mainScreen = new MainScreen();
+        mainScreen = new MainScreen({
+          el: $('#appcontainer')
+        });
         mainScreen.render();
         return console.log("Route is mainScreen");
       });
       this.on('route:aboutScreen', function() {
         var aboutScreen;
-        aboutScreen = new AboutScreen();
+        aboutScreen = new AboutScreen({
+          el: $('#appcontainer')
+        });
         aboutScreen.render();
         return console.log("Route is aboutScreen");
       });

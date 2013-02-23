@@ -1,32 +1,30 @@
 define [
   'jquery'
   'backbone'
-  'application/views/loadingScreen'
-  ],($,Backbone,LoadingScreen)->
+  'application/views/mainScreen'
+  'application/views/aboutScreen'
+  ],($,Backbone,MainScreen,AboutScreen)->
     class Router extends Backbone.Router
       routes:
-        loading:    'loadingScreen'
         main:       'mainScreen'
         about:      'aboutScreen'
         # default
-        '*actions': 'loadingScreen'
+        '*actions': 'mainScreen'
 
       constructor:() ->
         super @routes
 
       initialize:()->
-        @on 'route:loadingScreen',()->
-          loadingScreen = new LoadingScreen
+        @on 'route:mainScreen',()->
+          mainScreen = new MainScreen
             el: $('#appcontainer')
 
-          loadingScreen.render()
-          console.log "Route is loadingScreen"
-        @on 'route:mainScreen',()->
-          mainScreen = new MainScreen()
           mainScreen.render()
           console.log "Route is mainScreen"
         @on 'route:aboutScreen',()->
-          aboutScreen = new AboutScreen()
+          aboutScreen = new AboutScreen
+            el: $('#appcontainer')
+
           aboutScreen.render()
           console.log "Route is aboutScreen"
         # Tell backbone to take care of the url navigation and history
