@@ -15,8 +15,8 @@ define(['jquery', 'backbone', 'text!application/templates/main/main.html'], func
     mainScreen.prototype.render = function() {
       $(this.el).html(MainTemplate);
       console.log("mainScreen Render called");
-      $("#loading").hide();
-      return $("#wrap").show();
+      $("#loading").fadeOut();
+      return $("#wrap").fadeIn();
     };
 
     return mainScreen;

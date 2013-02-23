@@ -10,5 +10,5 @@ define [
       render:()->
         $(@el).html(MainTemplate)
         console.log "mainScreen Render called"
-        $("#loading").hide()
-        $("#wrap").show()
+        $("#loading").fadeOut()
+        $("#wrap").fadeIn()
