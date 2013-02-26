@@ -1,4 +1,4 @@
-define ['application/router'],(Router)->
+define ['application/routes/router'],(Router)->
   class Application
 
     constructor:() ->
