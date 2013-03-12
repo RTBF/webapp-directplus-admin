@@ -1,0 +1,12 @@
+body{
+  color:white;
+}
+
+.connected{
+  background-color: green;
+
+}
+
+.disconnected{
+  background-color: red;
+}
