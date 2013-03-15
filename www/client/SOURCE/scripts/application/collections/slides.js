@@ -18,57 +18,6 @@ define(['jquery', 'backbone', 'backbonels', 'application/views/slideScreen', 'ap
 
     slides.prototype.position = 0;
 
-    slides.prototype.restore = function() {
-      var _this = this;
-      $('#previous').on('click', function(e) {
-        return _this.previous();
-      });
-      $('#next').on('click', function(e) {
-        return _this.next();
-      });
-      return this.each(function(slide) {
-        var slideView;
-        slideView = new slideScreen({
-          model: slide
-        });
-        return $('#SlideList').append(slideView.render().el);
-      });
-    };
-
-    slides.prototype.showLast = function() {
-      var lastSlide;
-      this.each(function(slide) {
-        console.log(slide.id);
-        return $('#' + slide.id).hide();
-      });
-      lastSlide = this.at(this.length - 1);
-      this.position = this.length - 1;
-      return $('#' + lastSlide.id).show();
-    };
-
-    slides.prototype.previous = function() {
-      var current, previous;
-      console.log(this.position);
-      if (this.position > 0) {
-        current = this.at(this.position);
-        $('#' + current.id).hide();
-        this.position = this.position - 1;
-        previous = this.at(this.position);
-        return $('#' + previous.id).show();
-      }
-    };
-
-    slides.prototype.next = function() {
-      var current, next;
-      if (this.position < this.length - 1) {
-        current = this.at(this.position);
-        $('#' + current.id).hide();
-        this.position = this.position + 1;
-        next = this.at(this.position);
-        return $('#' + next.id).show();
-      }
-    };
-
     return slides;
 
   })(Backbone.Collection);

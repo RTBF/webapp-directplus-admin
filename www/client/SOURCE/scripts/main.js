@@ -24,7 +24,7 @@ requirejs.config({
   wait: '5s'
 });
 
-require(['backbone', 'backbonels', 'jquery', 'application/models/application', 'application/models/utils', 'bootstrap'], function(Backbone, Backbonels, $, App, Utils) {
+require(['backbone', 'backbonels', 'jquery', 'application/models/application', 'bootstrap'], function(Backbone, Backbonels, $, App) {
   return $(function() {
     App = new App();
     App.init();

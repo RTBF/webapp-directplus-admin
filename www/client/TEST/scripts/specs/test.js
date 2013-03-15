@@ -17,6 +17,7 @@ define(["jquery", "jasmine-html"], function($, jasmine) {
       };
       specs = [];
       specs.push('../../TEST/scripts/specs/seeConference');
+      specs.push('../../TEST/scripts/specs/nextPrevious');
       return $(function() {
         return require(specs, function() {
           return jasmineEnv.execute();

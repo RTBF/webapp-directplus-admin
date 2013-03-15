@@ -15,10 +15,8 @@ define [
 
       initialize:()->
         @on 'route:slideScreen',()->
-          slideScreen = new slideScreen
-            #el: $('#appcontainer')
-
-          slideScreen.initrender();
+          $("#loading").fadeOut()
+          $("#wrap").fadeIn()
                
         # Tell backbone to take care of the url navigation and history
         Backbone.history.start()

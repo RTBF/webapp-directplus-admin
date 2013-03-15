@@ -19,8 +19,8 @@ define(['jquery', 'backbone', 'application/views/slideScreen'], function($, Back
 
     Router.prototype.initialize = function() {
       this.on('route:slideScreen', function() {
-        slideScreen = new slideScreen;
-        return slideScreen.initrender();
+        $("#loading").fadeOut();
+        return $("#wrap").fadeIn();
       });
       Backbone.history.start();
       return console.log("Route Initialized");

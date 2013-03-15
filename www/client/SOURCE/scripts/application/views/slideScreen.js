@@ -17,6 +17,7 @@ define(['jquery', 'backbone'], function($, Backbone) {
     slideScreen.prototype.template = _.template($('#slide-template').html());
 
     slideScreen.prototype.initialize = function() {
+      this.listenTo(this.model, 'change', this.render());
       return console.log("slideScreen initilized");
     };
 
@@ -26,6 +27,7 @@ define(['jquery', 'backbone'], function($, Backbone) {
     };
 
     slideScreen.prototype.render = function() {
+      console.log(this.model.toJSON());
       this.$el.html(this.template(this.model.toJSON()));
       return this;
     };

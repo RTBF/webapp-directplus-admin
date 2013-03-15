@@ -13,6 +13,7 @@ define ["jquery","jasmine-html"], ($,jasmine)->
 
       specs = []
       specs.push('../../TEST/scripts/specs/seeConference')
+      specs.push('../../TEST/scripts/specs/nextPrevious')
 
       $(()->
         require specs,()->
