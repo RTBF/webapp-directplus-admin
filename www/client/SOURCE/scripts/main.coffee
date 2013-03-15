@@ -21,7 +21,7 @@ requirejs.config
   wait: '5s'
 
 # require 
-require ['backbone', 'backbonels', 'jquery','application/models/application','bootstrap'],(Backbone,Backbonels,$,App) ->
+require ['backbone', 'backbonels', 'jquery','application/models/application','application/models/utils','bootstrap',],(Backbone,Backbonels,$,App,Utils) ->
 #require ['backbone','jquery','application/models/application', 'bootstrap'],(Backbone,$,Application) ->
   $ ()->
     App = new App()
