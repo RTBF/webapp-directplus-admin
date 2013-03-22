@@ -12,7 +12,9 @@ define(['jquery', 'backbone'], function($, Backbone) {
       return slideScreen.__super__.constructor.apply(this, arguments);
     }
 
-    slideScreen.prototype.tagname = 'div';
+    slideScreen.prototype.tagName = 'li';
+
+    slideScreen.prototype.className = 'slide new';
 
     slideScreen.prototype.template = _.template($('#slide-template').html());
 
@@ -27,7 +29,6 @@ define(['jquery', 'backbone'], function($, Backbone) {
     };
 
     slideScreen.prototype.render = function() {
-      console.log(this.model.toJSON());
       this.$el.html(this.template(this.model.toJSON()));
       return this;
     };

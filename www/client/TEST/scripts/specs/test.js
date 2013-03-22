@@ -18,6 +18,7 @@ define(["jquery", "jasmine-html"], function($, jasmine) {
       specs = [];
       specs.push('../../TEST/scripts/specs/seeConference');
       specs.push('../../TEST/scripts/specs/nextPrevious');
+      specs.push('../../TEST/scripts/specs/NavReal');
       return $(function() {
         return require(specs, function() {
           return jasmineEnv.execute();

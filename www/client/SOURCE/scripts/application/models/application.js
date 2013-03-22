@@ -22,9 +22,9 @@ define(['application/routes/router', 'application/models/slide', 'application/co
         return _this.appView.trigger('newSlide', data);
       });
       this.socket.on('sreset', function(data) {
+        console.log("reseting");
         localStorage.clear();
-        $('#SlideList').empty();
-        return Application.slidesList.reset();
+        return $('#SlideList').empty();
       });
       this.socket.on('connect', function(data) {
         return _this.appView.trigger('ServerConnection', data);

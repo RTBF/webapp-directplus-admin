@@ -7,7 +7,9 @@ define [
 
       #el: '#appcontainer'
 
-      tagname : 'div'
+      tagName : 'li'
+      className : 'slide new'
+
 
       template : _.template($('#slide-template').html())
 
@@ -22,7 +24,6 @@ define [
         $("#wrap").fadeIn()
 
       render: ()-> 
-        console.log @model.toJSON()
         @$el.html @template(@model.toJSON())
         @
         

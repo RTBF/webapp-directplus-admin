@@ -9,7 +9,7 @@ define [
    
 
     class appView extends Backbone.View
-      @slides : new Slides()
+   
 
       el: '#header'
 
@@ -21,12 +21,13 @@ define [
 
 
       initialize : ()->
+        @slides = new Slides()
         @render()
         @on 'newSlide', (data) =>
           @newSlide data
         @on 'ServerConnection' , (data)=>
           @connectNotif data
-        appView.slides.fetch()
+        @slides.fetch()
         @restore()
 
       connectNotif : (data)->
@@ -37,53 +38,136 @@ define [
         @
 
       previous: ()->
-        if appView.slides.position>0
-          current=appView.slides.at(appView.slides.position)
-          $('#'+current.id).hide()
+        console.log @slides.position
+        if @slides.position>0
+          $('.far-future').remove()
+          $('.future').removeClass('future').addClass('far-future')
+          $('.current').removeClass('current').addClass('future')
+          $('.past').removeClass('past').addClass('current')
+          $('.far-past').removeClass('far-past').addClass('past')
+          @slides.position = @slides.position-1
+          previous = @slides.at(@slides.position)
+          @navigationMode = true;
+          
+          if @slides.position > 1
+            newPosSlide = @slides.position - 2 
+            slide = @slides.at newPosSlide
+            slideView = new SlideView 
+              model : slide
+            $('#SlideList').append(slideView.render().el)
+            $('.new').removeClass('new').addClass('far-past')
+        console.log @navigationMode 
 
-          appView.slides.position = appView.slides.position-1
-
-          previous = appView.slides.at(appView.slides.position)
-          $('#'+previous.id).show()
-          console.log 'previous man'
+         
 
       next: ()->
-        if appView.slides.position<(appView.slides.length-1)
-          current=appView.slides.at(appView.slides.position)
-          $('#'+current.id).hide()
+        if (@slides.position < (@slides.length-1))
+          console.log "I am in"
+          $('.far-past').remove()
+          $('.past').removeClass('past').addClass('far-past')
+          $('.current').removeClass('current').addClass('past')
+          $('.future').removeClass('future').addClass('current')
+          $('.far-future').removeClass('far-future').addClass('future')
+          
+          @slides.position = @slides.position+1
+          previous = @slides.at(@slides.position)
+          
+          if @slides.position is (@slides.length-1)
+            @navigationMode = false
+            # ...
 
-          appView.slides.position = appView.slides.position+1
+          if @slides.position < (@slides.length-2)
+            newPosSlide = @slides.position + 2 
+            slide = @slides.at newPosSlide
+            slideView = new SlideView 
+              model : slide
+            $('#SlideList').append(slideView.render().el)
+            $('.new').removeClass('new').addClass('far-future') 
 
-          previous = appView.slides.at(appView.slides.position)
-          $('#'+previous.id).show()
-          console.log 'next man' 
+        console.log @navigationMode
+          
 
       newSlide: (data)->
+        
         slide = new Slide data
         slideView = new SlideView ({model : slide })
-        appView.slides.add slide
+        @slides.add slide
         slide.save()
-        appView.slides.fetch()
-        $('#SlideList').append(slideView.render().el)
-        @showLast()
+        @slides.fetch()
+        if @navigationMode
+          console.log "Je Suis ICI? True?"
+          if (@slides.position == @slides.length-3)
+            $('#SlideList').append(slideView.render().el)
+            $('.new').removeClass('new').addClass('far-future') 
+          #
+        else
+          console.log "ou là?"
+          @slides.position = @slides.length-1
+          $('#SlideList').append(slideView.render().el)
+          @last()
+
 
       showLast: ()->
-        appView.slides.each (slide) ->
-          $('#'+slide.id).hide()
-        lastSlide = appView.slides.at(appView.slides.length - 1)
-        if lastSlide       
+
+        @slides.each (slide) ->
+          id = '#'+slide.id
+          $(id).hide()
+        lastSlide = @slides.at(@slides.length - 1)
+        if lastSlide
           $('#'+lastSlide.id).show()
-        appView.slides.position = appView.slides.length-1
+        if @slides.length == 0
+          @slides.position = 0
+        else
+          @slides.position = @slides.length-1
 
 
       restore: ()->
-        console.log "SO WHAT"
-        appView.slides.each (slide)=>
+        @navigationMode = false;
+        console.log @navigationMode
+
+        taille = @slides.length
+        max = 3
+        num = 0
+
+        while (max>0 && taille>0)
+          taille--
+          max--
+          num++
+          slide = @slides.at taille
           slideView = new SlideView 
             model : slide
           $('#SlideList').append(slideView.render().el)
           
-        @showLast()
+          switch num
+            when 1 then $('.new').removeClass('new').addClass('current') 
+            when 2 then $('.new').removeClass('new').addClass('past') 
+            when 3 then $('.new').removeClass('new').addClass('far-past') 
+        @slides.position = @slides.length-1
+
+
+      last: ()->
+        $('.new').removeClass('new').addClass('future')
+        $('.far-past').remove()
+        $('.past').removeClass('past').addClass('far-past')
+        $('.current').removeClass('current').addClass('past')
+        $('.future').removeClass('future').addClass('current')
+        $('.far-future').removeClass('far-future').addClass('future')
+        console.log  "my position ", @slides.position
+        @next()
+        
+        #$('.far-future').removeClass('far-future').addClass('current')
+
+      addTemplate: ()->
+        if navigationMode
+          
+        else
+          $('#SlideList').append(slideView.render().el)
+
+
+
+        
+      
+
 
 
         

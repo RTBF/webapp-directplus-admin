@@ -26,9 +26,9 @@ define [
         @appView.trigger 'newSlide', data
 
       @socket.on 'sreset', (data) =>
+        console.log "reseting"
         localStorage.clear()
         $('#SlideList').empty()
-        Application.slidesList.reset()
 
       @socket.on 'connect' , (data)=>
         @appView.trigger 'ServerConnection', data
