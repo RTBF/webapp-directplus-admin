@@ -5,7 +5,7 @@ mongoose = require("mongoose");
 
 Schema = mongoose.Schema;
 
-SlideSchema = new Schema('_type', {
+SlideSchema = Schema('_type', {
   _conf: {
     type: Schema.Types.ObjectId,
     ref: 'Conference'
@@ -15,19 +15,19 @@ SlideSchema = new Schema('_type', {
   Order: Number
 });
 
-SlideTextSchema = new Schema({
+SlideTextSchema = Schema({
   Content: String
 });
 
-SlideTwitterSchema = new Schema({
+SlideTwitterSchema = Schema({
   Embed: String
 });
 
-SlideVideoSchema = new Schema({
+SlideVideoSchema = Schema({
   Link: String
 });
 
-SlideQuizSchema = new Schema({
+SlideQuizSchema = Schema({
   BeginTime: Date,
   EndTime: Date,
   Question: String,
@@ -46,10 +46,5 @@ SlideSchema.registerType('slidetwt', SlideTwitterSchema);
 SlideSchema.registerType('slidevideo', SlideVideoSchema);
 
 SlideSchema.registerType('slidequiz', SlideQuizSchema);
-
-/*
-For polymorphism, use Slide.registerType ('typename', typename)
-*/
-
 
 module.exports = mongoose.model('Slide', SlideSchema, 'slides');

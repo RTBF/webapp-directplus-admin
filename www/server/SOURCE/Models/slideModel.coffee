@@ -37,9 +37,49 @@ SlideSchema.registerType 'slidetwt' , SlideTwitterSchema
 SlideSchema.registerType 'slidevideo' , SlideVideoSchema
 SlideSchema.registerType 'slidequiz' , SlideQuizSchema
 
+
+
 ###
 For polymorphism, use Slide.registerType ('typename', typename)
 ###
 
+ConferenceSchema = new mongoose.Schema
+  _orga:
+    type: Schema.Types.ObjectId
+    ref: 'Organisation'
+  name: String
+  date: Date
+  slides: [
+    type: Schema.Types.ObjectId
+    ref: 'Slide'
+    ]
 
+
+OrganisationSchema = new mongoose.Schema
+  _admin: 
+    type: Schema.Types.ObjectId 
+    ref: 'Admin'
+  name: String
+  date: Date
+  conferences: [
+    type: Schema.Types.ObjectId
+    ref: 'Conference'] 
+
+
+AdminSchema = new Schema 
+  firstname: String
+  lastname: String
+  email: 
+    type: String
+    required: true
+    index:
+      unique: true 
+  organisations: [
+    type: Schema.Types.ObjectId
+    ref: 'Organisation' 
+  ]
+
+module.exports = mongoose.model 'Admin', AdminSchema , 'admins'
+module.exports= mongoose.model 'Organisation', OrganisationSchema , 'organisations'
+modules.exports= mongoose.model 'Conference', ConferenceSchema, 'conferences'
 module.exports= mongoose.model 'Slide', SlideSchema , 'slides'

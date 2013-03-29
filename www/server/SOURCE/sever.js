@@ -5,11 +5,9 @@
   init: ->
 */
 
-var Admin, app, express, indice, io, server;
+var app, express, indice, io, server;
 
 express = require('express');
-
-Admin = require('./Models/adminModel.js');
 
 app = express();
 

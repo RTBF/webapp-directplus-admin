@@ -21,13 +21,10 @@
     </div>
 
     <div id="wrap">
-      <div id="header"></div>
-      
-
-
-      <div id="appcontainer">
-        <div id ="SlideList" ></div>
+      <div id="appcontainer" class="conference">
+        <div id ="SlideList" class= "slides"></div>
       </div>
+      <div id="header"></div>
       
       <div id="footer">
         <div class="navbar navbar-fixed-bottom">
@@ -45,17 +42,19 @@
               <li ><button class="btn btn-inverse" id="previous">Previous</button></li>
               <li ><button class="btn btn-inverse" id="next">Next</button></li>
             </ul>
-            <span class= "connect" class="text-right"> status</span>
-              <span class= "js-status disconnected" >  &nbsp;</span>  
+              <span class= "connect  pull-righ" > status</span>
+              <span class= "js-status disconnected pull-righ" >  &nbsp;</span>  
           </div>
 
         </div>
       
       </script>
       <script type="text/template" id="slide-template"> 
-            <div id="<%- id %>">
+            <div id="<%- id %>" >
+              <section class="middle">
                 <h1><%- title %></h1>
-                <h3><%- description %></h3>
+                <p><%- description %></p>
+                <section>
             </div>
       </script>
 

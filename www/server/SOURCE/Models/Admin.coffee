@@ -1,7 +1,7 @@
 mongoose = require  "mongoose"
 Schema = mongoose.Schema
 
-AdminSchema = new Schema 
+AdminSchema = Schema 
   firstname: String
   lastname: String
   email: 
@@ -14,4 +14,4 @@ AdminSchema = new Schema
     ref: 'Organisation' 
   ]
 
-module.exports = mongoose.model 'Admin', AdminSchema , 'admins'
+module.exports= mongoose.model 'Admin', AdminSchema , 'admins'

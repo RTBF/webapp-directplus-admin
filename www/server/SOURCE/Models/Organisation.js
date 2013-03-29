@@ -5,13 +5,12 @@ mongoose = require("mongoose");
 
 Schema = mongoose.Schema;
 
-OrganisationSchema = new mongoose.Schema({
+OrganisationSchema = Schema({
   _admin: {
     type: Schema.Types.ObjectId,
     ref: 'Admin'
   },
   name: String,
-  date: Date,
   conferences: [
     {
       type: Schema.Types.ObjectId,

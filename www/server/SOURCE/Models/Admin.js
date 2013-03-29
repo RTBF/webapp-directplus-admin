@@ -5,7 +5,7 @@ mongoose = require("mongoose");
 
 Schema = mongoose.Schema;
 
-AdminSchema = new Schema({
+AdminSchema = Schema({
   firstname: String,
   lastname: String,
   email: {

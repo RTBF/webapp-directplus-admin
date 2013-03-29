@@ -5,19 +5,13 @@ mongoose = require("mongoose");
 
 Schema = mongoose.Schema;
 
-ConferenceSchema = new mongoose.Schema({
+ConferenceSchema = Schema({
   _orga: {
     type: Schema.Types.ObjectId,
     ref: 'Organisation'
   },
   name: String,
-  date: Date,
-  slides: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'Slide'
-    }
-  ]
+  date: Date
 });
 
-modules.exports = mongoose.model('Conference', ConferenceSchema, 'conferences');
+module.exports = mongoose.model('Conference', ConferenceSchema, 'conferences');

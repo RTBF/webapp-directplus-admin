@@ -10,11 +10,12 @@ define(['jquery'], function($) {
           return found = false;
         });
         testpreviousSlide = function() {
-          var displayTxt;
-          displayTxt = $('#SlideList>div>div').last().css('display');
-          if (displayTxt === 'none') {
-            found = true;
-            console.log('none found');
+          $('#SlideList>li').each(function(index, elem) {
+            if ($(elem).hasClass('future')) {
+              return found = true;
+            }
+          });
+          if (found) {
             return true;
           } else {
             return false;
@@ -22,66 +23,35 @@ define(['jquery'], function($) {
         };
         waitsFor(testpreviousSlide, "previous slide found", 10000);
         return runs(function() {
-          var slideCount;
-          slideCount = 0;
-          $('#SlideList>div>div').each(function(index, elem) {
-            slideCount++;
-            console.log(elem);
-            if (index === 1) {
-              return expect($(elem).css('display')).toBe('none');
-            } else {
-              return expect($(elem).css('display')).toBe('block');
-            }
-          });
-          expect(found).toBe(true);
-          return expect(slideCount).toBe(2);
+          return expect(found).toBe(true);
         });
       });
     });
     return describe("test that the next slide is shown", function() {
       return it("should display the next slide received", function() {
-        var found, testpreviousSlide;
+        var found, nextId, testpreviousSlide;
         found = null;
+        nextId = null;
         runs(function() {
           return found = false;
         });
         testpreviousSlide = function() {
-          var displayTxt, testnextSlide;
-          displayTxt = $('#SlideList>div>div').last().css('display');
-          if (displayTxt === 'none') {
-            found = true;
-            testnextSlide = function() {
-              var displayTxtwo;
-              displayTxtwo = $('#SlideList>div>div').last().css('display');
-              if (displayTxtwo === 'block') {
-                found = true;
-                return true;
-              } else {
-
-              }
+          var testnextSlide;
+          nextId = $(".future").children().attr('id');
+          testnextSlide = function() {
+            if ($(".current").children().attr('id') === nextId) {
+              found = true;
+              return true;
+            } else {
               return false;
-            };
-            waitsFor(testnextSlide, "next slide found", 10000);
-            return true;
-          } else {
-            return false;
-          }
+            }
+          };
+          waitsFor(testnextSlide, "next slide found", 10000);
+          return true;
         };
         waitsFor(testpreviousSlide, "previous slide found", 10000);
         return runs(function() {
-          var slideCount;
-          slideCount = 0;
-          $('#SlideList>div>div').each(function(index, elem) {
-            slideCount++;
-            console.log(elem);
-            if (index === 1) {
-              return expect($(elem).css('display')).toBe('block');
-            } else {
-              return expect($(elem).css('display')).toBe('none');
-            }
-          });
-          expect(found).toBe(true);
-          return expect(slideCount).toBe(2);
+          return expect(found).toBe(true);
         });
       });
     });

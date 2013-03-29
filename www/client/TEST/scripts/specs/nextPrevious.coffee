@@ -9,62 +9,41 @@ define ['jquery'],($)->
         runs ()->
           found = false
         testpreviousSlide = ->
-            displayTxt = $('#SlideList>div>div').last().css('display')
-            if displayTxt is 'none'
-              found = true
-              console.log 'none found'
+            $('#SlideList>li').each (index,elem)->
+              if $(elem).hasClass('future')
+                found = true
+            if found
               return true
             else
               return false
         waitsFor testpreviousSlide, "previous slide found", 10000
         runs ()->
-          slideCount = 0
-          $('#SlideList>div>div').each (index,elem)->
-            slideCount++
-            console.log  elem
-            if index is 1
-              expect($(elem).css('display')).toBe('none')
-
-            else
-              expect($(elem).css('display')).toBe('block')
           expect(found).toBe(true)
-          expect(slideCount).toBe(2)
     
     #TEST2
     describe "test that the next slide is shown", ()->
       it "should display the next slide received", ()->
         
         found = null
+        nextId = null
+        
         runs ()->
           found = false
+        
         testpreviousSlide = ->
-            displayTxt = $('#SlideList>div>div').last().css('display')
-            if displayTxt is 'none'
-
+          nextId=$(".future").children().attr('id')
+          testnextSlide = ->
+            if $(".current").children().attr('id') == nextId
               found = true
-              testnextSlide = ->
-                displayTxtwo = $('#SlideList>div>div').last().css('display')
-                if displayTxtwo is 'block'
-                  found = true
-                  return true
-                else
-                return false
-              waitsFor testnextSlide, "next slide found", 10000
               return true
-            else
+            else 
               return false
-        waitsFor testpreviousSlide, "previous slide found", 10000
-        runs ()->
-          slideCount = 0
-          $('#SlideList>div>div').each (index,elem)->
-            slideCount++
-            console.log  elem
-            if index is 1
-              expect($(elem).css('display')).toBe('block')
+          waitsFor testnextSlide, "next slide found", 10000
+          return true
 
-            else
-              expect($(elem).css('display')).toBe('none')
+        waitsFor testpreviousSlide, "previous slide found", 10000
+        
+        runs ()->
           expect(found).toBe(true)
-          expect(slideCount).toBe(2)
 
    

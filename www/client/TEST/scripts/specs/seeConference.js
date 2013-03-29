@@ -30,9 +30,10 @@ define(['jquery'], function($) {
           return found = false;
         });
         testLastSlide = function() {
-          var lastSlideText;
-          lastSlideText = $('#SlideList>div').last().find('h1').text();
-          if (lastSlideText === "WORLD") {
+          var CurrentID;
+          CurrentID = $('.current>div').attr('id');
+          console.log(CurrentID);
+          if (CurrentID === "002") {
             found = true;
             console.log('found World');
             return true;
@@ -44,14 +45,8 @@ define(['jquery'], function($) {
         return runs(function() {
           var slideCount;
           slideCount = 0;
-          $('#SlideList>div>div').each(function(index, elem) {
-            slideCount++;
-            console.log(elem);
-            if (index === 1) {
-              return expect($(elem).css('display')).toBe('block');
-            } else {
-              return expect($(elem).css('display')).toBe('none');
-            }
+          $('#SlideList>li').each(function(index, elem) {
+            return slideCount++;
           });
           expect(found).toBe(true);
           return expect(slideCount).toBe(2);

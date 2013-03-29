@@ -3,7 +3,6 @@
 
   init: ->###
 express = require 'express'
-Admin = require './Models/adminModel.js'
 app = express()
 server = require('http').createServer app
 io = require('socket.io').listen server

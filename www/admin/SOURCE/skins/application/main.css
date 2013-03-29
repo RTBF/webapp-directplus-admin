@@ -1,0 +1,51 @@
+body {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0px; top: 0px;
+  -webkit-font-smoothing: antialiased;
+}
+
+.toSend {
+   padding:20px;
+   background-color: #EAEAED;
+    border-radius: 10px; 
+  -moz-border-radius: 10px;
+
+}
+
+.Sent {
+   padding:20px;
+   background-color: #EAEAED;
+    border-radius: 10px; 
+  -moz-border-radius: 10px;
+
+}
+
+.slide {
+  color: white;
+  display: block;
+  overflow: hidden;
+  padding:5px;
+  -webkit-transition-property: margin, -webkit-transform, opacity;
+  -webkit-transition-duration: 0.5s, 0.5s, 0.5s;
+  -webkit-transition-timing-function: ease-in-out;
+
+  -moz-transition-property: margin, -moz-transform, opacity;
+  -moz-transition-duration: 0.5s, 0.5s, 0.5s;
+  -moz-transition-timing-function: ease-in-out;
+
+  -o-transition-property: margin, -moz-transform, opacity;
+  -o-transition-duration: 0.5s, 0.5s, 0.5s;
+  -o-transition-timing-function: ease-in-out;
+
+}
+
+.item {
+  padding:5px;
+  background-color: #2E2E2E;
+  border-radius: 10px; 
+  -moz-border-radius: 10px;
+}

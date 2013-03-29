@@ -147,15 +147,16 @@ define [
 
       last: ()->
         $('.new').removeClass('new').addClass('future')
+        $('.future').hide()
+        $('.future').fadeIn()
         $('.far-past').remove()
         $('.past').removeClass('past').addClass('far-past')
         $('.current').removeClass('current').addClass('past')
         $('.future').removeClass('future').addClass('current')
+
         $('.far-future').removeClass('far-future').addClass('future')
         console.log  "my position ", @slides.position
         @next()
-        
-        #$('.far-future').removeClass('far-future').addClass('current')
 
       addTemplate: ()->
         if navigationMode

@@ -18,7 +18,7 @@ define ['jquery'],($)->
     #TEST 2
     describe "Data received is a slide and what kind it is",()->
       it "should "
-      #TODO with database
+      #TODO with database and differente slides
 
     #TEST 3
     describe "that if I receive two slide the last one which contains title WORLD is shown",()->
@@ -27,8 +27,9 @@ define ['jquery'],($)->
         runs ()->
           found = false
         testLastSlide = ->
-          lastSlideText = $('#SlideList>div').last().find('h1').text()
-          if lastSlideText is "WORLD"
+          CurrentID = $('.current>div').attr('id')
+          console.log CurrentID
+          if CurrentID is "002"
             found = true
             console.log 'found World'
             return true
@@ -37,14 +38,8 @@ define ['jquery'],($)->
         waitsFor testLastSlide, "Second slide found", 10000
         runs ()->
           slideCount = 0
-          $('#SlideList>div>div').each (index,elem)->
+          $('#SlideList>li').each (index,elem)->
             slideCount++
-            console.log  elem
-            if index is 1
-              expect($(elem).css('display')).toBe('block')
-
-            else
-              expect($(elem).css('display')).toBe('none')
           expect(found).toBe(true)
           expect(slideCount).toBe(2)
 

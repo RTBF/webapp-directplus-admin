@@ -169,6 +169,8 @@ define(['jquery', 'backbone', 'application/models/slide', 'application/views/sli
 
     appView.prototype.last = function() {
       $('.new').removeClass('new').addClass('future');
+      $('.future').hide();
+      $('.future').fadeIn();
       $('.far-past').remove();
       $('.past').removeClass('past').addClass('far-past');
       $('.current').removeClass('current').addClass('past');
