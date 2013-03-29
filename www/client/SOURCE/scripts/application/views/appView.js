@@ -31,6 +31,11 @@ define(['jquery', 'backbone', 'application/models/slide', 'application/views/sli
       this.on('ServerConnection', function(data) {
         return _this.connectNotif(data);
       });
+      this.on('reseting', function(data) {
+        _this.slides.reset();
+        _this.slides.position = 0;
+        return _this.navigationMode = false;
+      });
       this.slides.fetch();
       return this.restore();
     };

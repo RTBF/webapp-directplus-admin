@@ -29,6 +29,7 @@ define [
         console.log "reseting"
         localStorage.clear()
         $('#SlideList').empty()
+        @appView.trigger 'reseting', data
 
       @socket.on 'connect' , (data)=>
         @appView.trigger 'ServerConnection', data

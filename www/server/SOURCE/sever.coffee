@@ -28,6 +28,9 @@ io.sockets.on 'connection' , (socket) ->
   socket.on 'next', (data) ->
     brodcastSlide 'snext', data
 
+  socket.on 'remove', (data) ->
+    brodcastSlide 'sremove', data
+
   brodcastSlide = (message, data) ->
     socket.emit message, data
     socket.broadcast.emit message, data

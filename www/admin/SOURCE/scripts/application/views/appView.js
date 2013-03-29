@@ -109,14 +109,16 @@ define(['jquery', 'backbone', 'application/models/slide', 'application/views/sli
     appView.prototype.envoyer = function() {
       var id, slide, slideView;
       id = $('input:radio[name=slides]:checked').parent().parent().attr('id');
-      slide = new Slide(this.slides.get(id));
-      this.socket.emit('next', slide.toJSON());
-      slideView = new SlideView({
-        model: this.slides.get(id)
-      });
-      $('#' + id).parent().remove();
-      console.log(slideView.render().el);
-      return $('.Sent').append(slideView.render().el);
+      if (id) {
+        slide = new Slide(this.slides.get(id));
+        this.socket.emit('next', slide.toJSON());
+        slideView = new SlideView({
+          model: this.slides.get(id)
+        });
+        $('#' + id).parent().remove();
+        console.log(slideView.render().el);
+        return $('.Sent').append(slideView.render().el);
+      }
     };
 
     return appView;

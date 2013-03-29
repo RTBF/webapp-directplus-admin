@@ -115,13 +115,14 @@ define [
 
       envoyer:()->
         id = $('input:radio[name=slides]:checked').parent().parent().attr('id');
-        slide= new Slide @slides.get(id)
-        @socket.emit('next', slide.toJSON())        
-        slideView = new SlideView 
-          model : @slides.get(id)
-        $('#'+id).parent().remove()
-        console.log slideView.render().el
-        $('.Sent').append(slideView.render().el)
+        if id
+          slide= new Slide @slides.get(id)
+          @socket.emit('next', slide.toJSON())        
+          slideView = new SlideView 
+            model : @slides.get(id)
+          $('#'+id).parent().remove()
+          console.log slideView.render().el
+          $('.Sent').append(slideView.render().el)
       
 
 

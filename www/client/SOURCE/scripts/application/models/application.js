@@ -24,7 +24,8 @@ define(['application/routes/router', 'application/models/slide', 'application/co
       this.socket.on('sreset', function(data) {
         console.log("reseting");
         localStorage.clear();
-        return $('#SlideList').empty();
+        $('#SlideList').empty();
+        return _this.appView.trigger('reseting', data);
       });
       this.socket.on('connect', function(data) {
         return _this.appView.trigger('ServerConnection', data);

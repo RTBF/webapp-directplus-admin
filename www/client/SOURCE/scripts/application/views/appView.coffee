@@ -27,6 +27,10 @@ define [
           @newSlide data
         @on 'ServerConnection' , (data)=>
           @connectNotif data
+        @on 'reseting' , (data)=>
+          @slides.reset()
+          @slides.position= 0
+          @navigationMode = false
         @slides.fetch()
         @restore()
 
