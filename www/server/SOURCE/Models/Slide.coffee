@@ -2,14 +2,24 @@ mongoose = require  "mongoose"
 Schema = mongoose.Schema
 
 
-SlideSchema = Schema '_type'
-    _conf:
-      type: Schema.Types.ObjectId
-      ref: 'Conference'
-    type: String
-    Title: String
+SlideSchema = Schema 
+    Type: 
+      type: String
+      required : true
+    Title: 
+      type: String
+      required: true
     Description: String
-    Order: Number
-    JsonData:String
+    Order: 
+      type: Number
+      required: true
+    JsonData: 
+      type: String
+      required: true
+
+SlideSchema.methods.toJSON = ()->
+
+
+
 
 module.exports= mongoose.model 'Slide', SlideSchema , 'slides'
