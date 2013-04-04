@@ -38,17 +38,11 @@ describe('when a slide is saved', function() {
         console.log("into Saving");
         expect(err).toBeNull();
         if (err) {
-          console.log("pas bien");
+          return console.log("pas bien");
         } else {
           console.log("bien");
-          noError = true;
+          return noError = true;
         }
-        return Slide.findOne({
-          Order: 1
-        }, function(err, result) {
-          console.log("into Find One");
-          return expect(result.Type).toBe('text');
-        });
       });
       console.log('pas derreur', noError);
       return noError;

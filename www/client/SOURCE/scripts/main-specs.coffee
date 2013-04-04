@@ -1,4 +1,4 @@
-requirejs.config
+###requirejs.config
   paths:
     jquery: 'vendors/jquery/jquery'
     underscore: 'vendors/underscore/underscore'
@@ -25,4 +25,4 @@ require ['backbone', 'backbonels', 'jquery','application/models/application','bo
     console.log "launched"
     test = new Test()
     test.init()
-    console.log 'test launched'
+    console.log 'test launched'###

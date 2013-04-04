@@ -36,9 +36,7 @@ describe 'when a slide is saved', ()->
         else
           console.log "bien"
           noError = true
-        Slide.findOne Order:1 , (err, result)->
-          console.log "into Find One"
-          expect(result.Type).toBe('text')
+          
       console.log 'pas derreur', noError
       return noError
      

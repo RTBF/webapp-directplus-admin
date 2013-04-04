@@ -6,6 +6,7 @@ define [
     class slideView extends Backbone.View
 
       #el: '#appcontainer'
+      events:
 
       tagName : 'li'
       className : 'slide'
@@ -16,6 +17,7 @@ define [
       initialize : ()->
         console.log "Admin initialization"
         @listenTo @model, 'change', @render()
+        
         
 
 

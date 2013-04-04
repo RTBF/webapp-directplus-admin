@@ -1,10 +1,11 @@
 mongoose = require 'mongoose'
 Schema = mongoose.Schema
 Admin = require './Models/Admin.js'
+Slide = require './Models/Slide.js'
 Organisation = require "./Models/Organisation.js"
 Conference =  require "./Models/Conference.js"
 
-dsn = "mongodb://localhost/confTesting"
+dsn = "mongodb://localhost/WebConference"
 
 mongoose.connect dsn
 
@@ -71,7 +72,7 @@ confDB.once 'open', ()->
       organisation.conferences.push conference
       organisation.save (err, organisation)->
         if err
-          console.log "saving error man"###
+          console.log "saving error man"
 
   Organisation
   .findOne 
@@ -79,12 +80,122 @@ confDB.once 'open', ()->
   .populate('conferences')
   .exec (err, organisation)->
     console.log 'the Organisation', organisation
-    
+  
+  slide = new Slide 
+    Type: 'text'
+    Title: 'a tittle'
+    Description: "a description"
+    Order: 1
+    JsonData: "{ text : 'my texte'}"
+
+  slide.save (err, slide) ->
+    console.log "into Saving"
+  Slide.findOne Order:1 , (err, result)->
+    console.log "into Find One"
+    console.log result
+  ###
+
+  ###Organisation
+  .findOne 
+    name: 'RTBF'
+  .populate('conferences')
+  .exec (err, organisation)->
+    console.log organisation###
+  orga = null
+
+  Admin
+  .findOne 
+    firstname:'Fabrice'
+    (err, admin)=>
+      if err
+        console.log "error while trying to find the organisations of this admin"
+  .populate('organisations')
+  .exec (err, admin)=>
+    #console.log admin
+    orga = admin.organisations
+    console.log "Testing assignation",  JSON.stringify orga
+
+  Admin.find (err, admins) ->
+    if (err)
+      console.log "find erreur man"
+    if admins.length > 0 
+      len = admins.length - 1
+      for x in [0..len]
+        console.log " "
+        console.log "admins:", admins[x]
+        #admins[x].remove (err)->
+          #console.log "can't remove"
+      
+
+  Slide.find (err, slides) ->
+    if (err)
+      console.log "find erreur man"
+    #console.log slides
+    if slides.length > 0 
+      len = slides.length - 1
+      for x in [0..len]
+        console.log " "
+        console.log "Slides: ", slides[x]
+        #js =  JSON.stringify slides[x]
+        #console.log js
+        #slides[x].remove (err)->
+          #console.log "can't remove"
+
+  Admin.find (err, admins) ->
+    if (err)
+      console.log "find erreur man"
+    if admins.length > 0 
+      len = admins.length - 1
+      for x in [0..len]
+        console.log " "
+        console.log "admins:", admins[x]
+        #admins[x].remove (err)->
+          #console.log "can't remove"
+
+  Organisation.find (err, organisations) ->
+    if (err)
+      console.log "find erreur man"
+    if organisations.length > 0 
+      len = organisations.length - 1
+      for x in [0..len]
+        console.log " "
+        console.log "Organisation: " , organisations[x]
+        #organisations[x].remove (err)->
+          #console.log "can't remove"
+
+
+
+  Conference.find (err, conferences) ->
+    if (err)
+      console.log "find erreur man"
+    if conferences.length > 0 
+      len = conferences.length - 1
+      for x in [0..len]
+        console.log " "
+        console.log "conferences: ", conferences[x]
+        #conferences[x].remove (err)->
+          #console.log "can't remove"
+
+  organisation = null
+  Admin
+  .findOne 
+    _id: '515c1b1950e5c6a674000001'
+    (err, admin)=>
+      console.log "callback launched"
+      if err
+        console.log "error while trying to find the organisations of this admin"
+  .populate('organisations')
+  .exec (err, admin)=>
+    organisation = JSON.stringify admin.organisations
+    console.log "premier log:" , organisation
+  console.log "deuxieme log:" , organisation
 
 
 
 
-  ###SansChichiConf = new Conference
+
+  ###
+  SansChichiConf = new Conference
     _orga: ''
     name: String
 
