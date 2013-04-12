@@ -10,6 +10,7 @@ define(['jquery', 'backbone', 'application/views/slideScreen'], function($, Back
 
     Slide.prototype.defaults = {
       id: '???',
+      conf: 'none',
       title: 'empty Slide',
       description: 'no description'
     };

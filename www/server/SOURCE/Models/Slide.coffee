@@ -10,9 +10,12 @@ SlideSchema = Schema
     Type: 
       type: String
       required : true
+    Sent:
+      type:Boolean
+      required: true
     Order: 
       type: Number
-      required: true
+      required: false
     JsonData: 
       type: String
       required: true

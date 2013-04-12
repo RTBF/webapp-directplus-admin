@@ -22,7 +22,7 @@ confDB = mongoose.connection;
 confDB.on('error', console.error.bind(console, 'connection error:'));
 
 confDB.once('open', function() {
-  var orga, organisation,
+  var test,
     _this = this;
   console.log("I AM CONNECTED");
   /* AdminSchema = Schema 
@@ -113,105 +113,152 @@ confDB.once('open', function() {
     console.log organisation
   */
 
-  orga = null;
-  Admin.findOne({
-    firstname: 'Fabrice'
-  }, function(err, admin) {
-    if (err) {
-      return console.log("error while trying to find the organisations of this admin");
-    }
-  }).populate('organisations').exec(function(err, admin) {
-    orga = admin.organisations;
-    return console.log("Testing assignation", JSON.stringify(orga));
-  });
-  Admin.find(function(err, admins) {
-    var len, x, _i, _results;
-    if (err) {
-      console.log("find erreur man");
-    }
-    if (admins.length > 0) {
-      len = admins.length - 1;
-      _results = [];
-      for (x = _i = 0; 0 <= len ? _i <= len : _i >= len; x = 0 <= len ? ++_i : --_i) {
-        console.log(" ");
-        _results.push(console.log("admins:", admins[x]));
+  test = function() {
+    var orga, organisation;
+    console.log("Testing");
+    orga = null;
+    Admin.findOne({
+      firstname: 'Fabrice'
+    }, function(err, admin) {
+      if (err) {
+        return console.log("error while trying to find the organisations of this admin");
       }
-      return _results;
-    }
-  });
-  Slide.find(function(err, slides) {
-    var len, x, _i, _results;
-    if (err) {
-      console.log("find erreur man");
-    }
-    if (slides.length > 0) {
-      len = slides.length - 1;
-      _results = [];
-      for (x = _i = 0; 0 <= len ? _i <= len : _i >= len; x = 0 <= len ? ++_i : --_i) {
-        console.log(" ");
-        _results.push(console.log("Slides: ", slides[x]));
+    }).populate('organisations').exec(function(err, admin) {
+      orga = admin.organisations;
+      return console.log("Testing assignation", JSON.stringify(orga));
+    });
+    Admin.find(function(err, admins) {
+      var len, x, _i, _results;
+      if (err) {
+        console.log("find erreur man");
       }
-      return _results;
-    }
-  });
-  Admin.find(function(err, admins) {
-    var len, x, _i, _results;
-    if (err) {
-      console.log("find erreur man");
-    }
-    if (admins.length > 0) {
-      len = admins.length - 1;
-      _results = [];
-      for (x = _i = 0; 0 <= len ? _i <= len : _i >= len; x = 0 <= len ? ++_i : --_i) {
-        console.log(" ");
-        _results.push(console.log("admins:", admins[x]));
+      if (admins.length > 0) {
+        len = admins.length - 1;
+        _results = [];
+        for (x = _i = 0; 0 <= len ? _i <= len : _i >= len; x = 0 <= len ? ++_i : --_i) {
+          console.log(" ");
+          _results.push(console.log("admins:", admins[x]));
+        }
+        return _results;
       }
-      return _results;
-    }
-  });
-  Organisation.find(function(err, organisations) {
-    var len, x, _i, _results;
-    if (err) {
-      console.log("find erreur man");
-    }
-    if (organisations.length > 0) {
-      len = organisations.length - 1;
-      _results = [];
-      for (x = _i = 0; 0 <= len ? _i <= len : _i >= len; x = 0 <= len ? ++_i : --_i) {
-        console.log(" ");
-        _results.push(console.log("Organisation: ", organisations[x]));
+    });
+    Slide.find(function(err, slides) {
+      var len, x, _i, _results;
+      if (err) {
+        console.log("find erreur man");
       }
-      return _results;
-    }
-  });
-  Conference.find(function(err, conferences) {
-    var len, x, _i, _results;
-    if (err) {
-      console.log("find erreur man");
-    }
-    if (conferences.length > 0) {
-      len = conferences.length - 1;
-      _results = [];
-      for (x = _i = 0; 0 <= len ? _i <= len : _i >= len; x = 0 <= len ? ++_i : --_i) {
-        console.log(" ");
-        _results.push(console.log("conferences: ", conferences[x]));
+      if (slides.length > 0) {
+        len = slides.length - 1;
+        _results = [];
+        for (x = _i = 0; 0 <= len ? _i <= len : _i >= len; x = 0 <= len ? ++_i : --_i) {
+          console.log(" ");
+          _results.push(console.log("Slides: ", slides[x]));
+        }
+        return _results;
       }
-      return _results;
-    }
-  });
-  organisation = null;
-  Admin.findOne({
-    _id: '515c1b1950e5c6a674000001'
-  }, function(err, admin) {
-    console.log("callback launched");
-    if (err) {
-      return console.log("error while trying to find the organisations of this admin");
-    }
-  }).populate('organisations').exec(function(err, admin) {
-    organisation = JSON.stringify(admin.organisations);
-    return console.log("premier log:", organisation);
-  });
-  return console.log("deuxieme log:", organisation);
+    });
+    Admin.find(function(err, admins) {
+      var len, x, _i, _results;
+      if (err) {
+        console.log("find erreur man");
+      }
+      if (admins.length > 0) {
+        len = admins.length - 1;
+        _results = [];
+        for (x = _i = 0; 0 <= len ? _i <= len : _i >= len; x = 0 <= len ? ++_i : --_i) {
+          console.log(" ");
+          _results.push(console.log("admins:", admins[x]));
+        }
+        return _results;
+      }
+    });
+    Organisation.find(function(err, organisations) {
+      var len, x, _i, _results;
+      if (err) {
+        console.log("find erreur man");
+      }
+      if (organisations.length > 0) {
+        len = organisations.length - 1;
+        _results = [];
+        for (x = _i = 0; 0 <= len ? _i <= len : _i >= len; x = 0 <= len ? ++_i : --_i) {
+          console.log(" ");
+          _results.push(console.log("Organisation: ", organisations[x]));
+        }
+        return _results;
+      }
+    });
+    Slide.update({
+      Order: 1
+    }, {
+      Sent: true
+    }, {
+      multi: true
+    }, function(err, numberAffected, raw) {});
+    Slide.update({
+      Order: 2
+    }, {
+      Sent: true
+    }, {
+      multi: true
+    }, function(err, numberAffected, raw) {});
+    Slide.update({
+      Order: 3
+    }, {
+      Sent: true
+    }, {
+      multi: true
+    }, function(err, numberAffected, raw) {});
+    Slide.update({
+      Order: 4
+    }, {
+      Sent: true
+    }, {
+      multi: true
+    }, function(err, numberAffected, raw) {});
+    Slide.update({
+      Order: 5
+    }, {
+      Sent: true
+    }, {
+      multi: true
+    }, function(err, numberAffected, raw) {});
+    Slide.update({
+      Order: 6
+    }, {
+      Sent: true
+    }, {
+      multi: true
+    }, function(err, numberAffected, raw) {});
+    Conference.find(function(err, conferences) {
+      var len, x, _i, _results;
+      if (err) {
+        console.log("find erreur man");
+      }
+      if (conferences.length > 0) {
+        len = conferences.length - 1;
+        _results = [];
+        for (x = _i = 0; 0 <= len ? _i <= len : _i >= len; x = 0 <= len ? ++_i : --_i) {
+          console.log(" ");
+          _results.push(console.log("conferences: ", conferences[x]));
+        }
+        return _results;
+      }
+    });
+    organisation = null;
+    Admin.findOne({
+      _id: '515c1b1950e5c6a674000001'
+    }, function(err, admin) {
+      console.log("callback launched");
+      if (err) {
+        return console.log("error while trying to find the organisations of this admin");
+      }
+    }).populate('organisations').exec(function(err, admin) {
+      organisation = JSON.stringify(admin.organisations);
+      return console.log("premier log:", organisation);
+    });
+    return console.log("deuxieme log:", organisation);
+  };
+  return test();
   /*
     SansChichiConf = new Conference
       _orga: ''

@@ -4,7 +4,11 @@ define [
   'application/models/slide'
   'application/views/slideScreen'
   'application/collections/slides'
-  ],($,Backbone,Slide,SlideView,Slides)->
+  'application/models/organisation'
+  'application/views/organisationView'
+  'application/models/conference'
+  'application/views/conferenceView'
+  ],($,Backbone,Slide,SlideView,Slides,Organisation,OrganisationView,Conference, ConferenceView)->
 
    
 
@@ -22,6 +26,7 @@ define [
 
       initialize : ()->
         @slides = new Slides()
+        console.log @slides
         @render()
         @on 'newSlide', (data) =>
           @newSlide data
@@ -31,8 +36,22 @@ define [
           @slides.reset()
           @slides.position= 0
           @navigationMode = false
+        @on 'organisations', (data)=>
+          console.log data
+          @fullFillOrgList data
+        @on 'conferences', (data)=>
+          @fullFillConfList data
+        @on 'slides', (data)=>
+          @restore data
+        @on 'sremove', (data)=>
+          @removeSlide data
         @slides.fetch()
-        @restore()
+        console.log @slides
+
+       
+
+        
+        #@restore()
 
       connectNotif : (data)->
         $('.js-status').removeClass('disconnected').addClass('connected')
@@ -92,25 +111,80 @@ define [
           
 
       newSlide: (data)->
-        
-        slide = new Slide data
+        obj = $.parseJSON data.JsonData
+        slide = new Slide obj
+        slide.set("conf", data._conf)
         slideView = new SlideView ({model : slide })
         @slides.add slide
         slide.save()
         @slides.fetch()
+
+        ###slide = new Slide data
+        slideView = new SlideView ({model : slide })
+        @slides.add slide
+        slide.save()
+        @slides.fetch()###
         if @navigationMode
-          console.log "Je Suis ICI? True?"
           if (@slides.position == @slides.length-3)
             $('#SlideList').append(slideView.render().el)
             $('.new').removeClass('new').addClass('far-future') 
           #
         else
-          console.log "ou là?"
           @slides.position = @slides.length-1
           $('#SlideList').append(slideView.render().el)
           @last()
 
+      removeSlide: (data)->
+        console.log data
+        obj = $.parseJSON data.JsonData
+        obj = $.parseJSON data.JsonData
+        @slides.each (model)=>
+          if obj.id is model.get 'id'
+            model.destroy()
+        
 
+      fullFillOrgList: (data)->
+        len = data.length - 1
+        console.log len
+        for x in [0..len]
+          organisation = new Organisation data[x]
+          console.log organisation
+          organisationView = new OrganisationView ({model:organisation})
+          $('.organisationsList').append(organisationView.render().el)
+        
+        $("#loading").fadeOut()
+        $("#wrap").fadeIn()
+
+        $('.org-item').click (e)=>
+          console.log e.target
+          txt = $(e.target).attr('id')
+          console.log txt
+          @trigger 'organisationChoosed', txt
+
+  
+      fullFillConfList: (data)->
+        len = data.length - 1
+
+        for x in [0..len]
+          console.log data[x]
+          confs = new Conference data[x]
+          confView = new ConferenceView ({model:confs}) 
+          console.log confView.render().el
+          $('.confList').append(confView.render().el)
+
+        $('.organisationsBlock').removeClass('onshow').addClass('onhideleft')
+        $('.confBlock').fadeOut()
+        $('.confBlock').fadeIn()
+        $('.confBlock').removeClass('onhideright').addClass('onshow')
+        $('.organisationsBlock').fadeOut()
+        $('.organisationsBlock').remove()
+
+        $('.conf-item').click (e)=>
+          txt = $(e.target).attr('id')
+          @conference = $(e.target).attr('id')
+          console.log txt
+          @trigger 'conferenceChoosed', txt
+ 
       showLast: ()->
 
         @slides.each (slide) ->
@@ -125,29 +199,51 @@ define [
           @slides.position = @slides.length-1
 
 
-      restore: ()->
+      restore: (data)->
+
+        console.log @conference
         @navigationMode = false;
         console.log @navigationMode
-
+        console.log "number of slide received: ", data.length-1
+        console.log "the data I received: ", data
+        len = data.length-1
+        if len >= 0
+          sv = data[0]._conf
+          for x in [0..len]
+            console.log "here"
+            obj = $.parseJSON data[x].JsonData
+            slide = new Slide obj
+            slide.set("conf", sv)
+            slideView = new SlideView ({model : slide })
+            @slides.add slide
+            slide.save()
+            @slides.fetch()             
+        console.log @slides
         taille = @slides.length
+        
         max = 3
         num = 0
-
+        console.log 'taille', taille
         while (max>0 && taille>0)
           taille--
-          max--
-          num++
+          
+          
           slide = @slides.at taille
-          slideView = new SlideView 
-            model : slide
-          $('#SlideList').append(slideView.render().el)
+          console.log  slide.get 'conf'
+          if slide.get('conf') is @conference
+            slideView = new SlideView 
+              model : slide
+            $('#SlideList').append(slideView.render().el)
+            max--
+            num++
           
           switch num
             when 1 then $('.new').removeClass('new').addClass('current') 
             when 2 then $('.new').removeClass('new').addClass('past') 
             when 3 then $('.new').removeClass('new').addClass('far-past') 
         @slides.position = @slides.length-1
-
+        $('.confBlock').fadeOut()
+        $('.slides').fadeIn()
 
       last: ()->
         $('.new').removeClass('new').addClass('future')

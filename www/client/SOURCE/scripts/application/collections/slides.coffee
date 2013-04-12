@@ -14,6 +14,7 @@ define [
     localStorage: new Backbonels "slidesStore"
 
     position: 0
+    conf: null
 
   
 

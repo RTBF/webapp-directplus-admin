@@ -2,15 +2,17 @@
 var __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-define(['jquery', 'backbone', 'application/views/slideScreen'], function($, Backbone, slideScreen) {
+define(['jquery', 'backbone', 'application/views/slideScreen', 'text!application/templates/organisations.html', 'text!application/templates/conferences.html', 'text!application/templates/slides.html'], function($, Backbone, slideScreen, OrganisationTemplate, ConferenceTemplate, SlideTemplate) {
   var Router;
   return Router = (function(_super) {
 
     __extends(Router, _super);
 
     Router.prototype.routes = {
+      organisation: 'organisationScreen',
+      conference: 'conferenceScreen',
       slide: 'slideScreen',
-      '*actions': 'slideScreen'
+      '*actions': 'organisationScreen'
     };
 
     function Router() {
@@ -18,12 +20,22 @@ define(['jquery', 'backbone', 'application/views/slideScreen'], function($, Back
     }
 
     Router.prototype.initialize = function() {
+      this.on('route:organisationScreen', function() {
+        console.log("org screen show");
+        return $('#appcontainer').html(OrganisationTemplate);
+      });
+      this.on('route:conferenceScreen', function() {
+        console.log('conf screen show');
+        $('#appcontainer').append(ConferenceTemplate);
+        return this.trigger('confRoute', '');
+      });
       this.on('route:slideScreen', function() {
-        $("#loading").fadeOut();
-        return $("#wrap").fadeIn();
+        $('#appcontainer').append(SlideTemplate);
+        $('.slides').hide();
+        return this.trigger('slideRoute', '');
       });
       Backbone.history.start();
-      return console.log("Route Initialized");
+      return console.log(" The Route Initialized");
     };
 
     return Router;

@@ -25,12 +25,14 @@ Serveur = (function() {
   function Serveur() {
     this.brodcastSlide = __bind(this.brodcastSlide, this);
     console.log("construction");
+    this.fabId = '515c1b1950e5c6a674000001';
+    this.Admin = require('../Models/Admin.js');
     this.init();
   }
 
   Serveur.prototype.init = function() {
     var _this = this;
-    console.log(dbrequest.readOrganisations('515c1b1950e5c6a674000001'));
+    dbrequest.readOrganisations(this.fabId, function(doc) {});
     return io.sockets.on('connection', function(socket) {
       socket.on('admin', function(data) {
         return console.log('admin connected');

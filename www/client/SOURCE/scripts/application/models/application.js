@@ -21,6 +21,32 @@ define(['application/routes/router', 'application/models/slide', 'application/co
         console.log("snext received");
         return _this.appView.trigger('newSlide', data);
       });
+      this.socket.on('sremove', function(data) {
+        console.log("remove ask received");
+        return _this.appView.trigger('sremove', data);
+      });
+      this.socket.on('organisations', function(data) {
+        console.log(data);
+        _this.appView.trigger("organisations", data);
+        return _this.appView.on('organisationChoosed', function(data) {
+          return _this.socket.emit('organisationChoosed', data);
+        });
+      });
+      this.socket.on('conferences', function(data) {
+        return _this.router.on("confRoute", function(datas) {
+          console.log("confList received", data);
+          _this.appView.trigger('conferences', data);
+          return _this.appView.on('conferenceChoosed', function(data) {
+            return _this.socket.emit('conferenceChoosed', data);
+          });
+        });
+      });
+      this.socket.on('slides', function(data) {
+        return _this.router.on('slideRoute', function(datas) {
+          return _this.appView.trigger('slides', data);
+        });
+      });
+      this.router.on("slideRoute", function(data) {});
       this.socket.on('sreset', function(data) {
         console.log("reseting");
         localStorage.clear();

@@ -101,94 +101,154 @@ confDB.once 'open', ()->
   .populate('conferences')
   .exec (err, organisation)->
     console.log organisation###
-  orga = null
+  test= ()=>
+    console.log "Testing"
+    orga = null
 
-  Admin
-  .findOne 
-    firstname:'Fabrice'
-    (err, admin)=>
-      if err
-        console.log "error while trying to find the organisations of this admin"
-  .populate('organisations')
-  .exec (err, admin)=>
-    #console.log admin
-    orga = admin.organisations
-    console.log "Testing assignation",  JSON.stringify orga
+    Admin
+    .findOne 
+      firstname:'Fabrice'
+      (err, admin)=>
+        if err
+          console.log "error while trying to find the organisations of this admin"
+    .populate('organisations')
+    .exec (err, admin)=>
+      #console.log admin
+      orga = admin.organisations
+      console.log "Testing assignation",  JSON.stringify orga
 
-  Admin.find (err, admins) ->
-    if (err)
-      console.log "find erreur man"
-    if admins.length > 0 
-      len = admins.length - 1
-      for x in [0..len]
-        console.log " "
-        console.log "admins:", admins[x]
-        #admins[x].remove (err)->
-          #console.log "can't remove"
-      
+    Admin.find (err, admins) ->
+      if (err)
+        console.log "find erreur man"
+      if admins.length > 0 
+        len = admins.length - 1
+        for x in [0..len]
+          console.log " "
+          console.log "admins:", admins[x]
+          #admins[x].remove (err)->
+            #console.log "can't remove"
+        
 
-  Slide.find (err, slides) ->
-    if (err)
-      console.log "find erreur man"
-    #console.log slides
-    if slides.length > 0 
-      len = slides.length - 1
-      for x in [0..len]
-        console.log " "
-        console.log "Slides: ", slides[x]
-        #js =  JSON.stringify slides[x]
-        #console.log js
-        #slides[x].remove (err)->
-          #console.log "can't remove"
+    Slide.find (err, slides) ->
+      if (err)
+        console.log "find erreur man"
+      #console.log slides
+      if slides.length > 0 
+        len = slides.length - 1
+        for x in [0..len]
+          console.log " "
+          console.log "Slides: ", slides[x]
+          #js =  JSON.stringify slides[x]
+          #console.log js
+          #slides[x].remove (err)->
+            #console.log "can't remove"
 
-  Admin.find (err, admins) ->
-    if (err)
-      console.log "find erreur man"
-    if admins.length > 0 
-      len = admins.length - 1
-      for x in [0..len]
-        console.log " "
-        console.log "admins:", admins[x]
-        #admins[x].remove (err)->
-          #console.log "can't remove"
+    Admin.find (err, admins) ->
+      if (err)
+        console.log "find erreur man"
+      if admins.length > 0 
+        len = admins.length - 1
+        for x in [0..len]
+          console.log " "
+          console.log "admins:", admins[x]
+          #admins[x].remove (err)->
+            #console.log "can't remove"
 
-  Organisation.find (err, organisations) ->
-    if (err)
-      console.log "find erreur man"
-    if organisations.length > 0 
-      len = organisations.length - 1
-      for x in [0..len]
-        console.log " "
-        console.log "Organisation: " , organisations[x]
-        #organisations[x].remove (err)->
-          #console.log "can't remove"
+    Organisation.find (err, organisations) ->
+      if (err)
+        console.log "find erreur man"
+      if organisations.length > 0 
+        len = organisations.length - 1
+        for x in [0..len]
+          console.log " "
+          console.log "Organisation: " , organisations[x]
+          #organisations[x].remove (err)->
+            #console.log "can't remove"
 
 
+    Slide.update 
+      Order: 1 
+    , 
+      Sent: true
+    , 
+      multi:true
+    , 
+      (err, numberAffected, raw)->
+        #
+    Slide.update 
+      Order: 2 
+    , 
+      Sent: true
+    , 
+      multi:true
+    , 
+      (err, numberAffected, raw)->
+        #
+    Slide.update 
+      Order: 3 
+    , 
+      Sent: true
+    , 
+      multi:true
+    , 
+      (err, numberAffected, raw)->
+        #
+    Slide.update 
+      Order: 4 
+    , 
+      Sent: true
+    , 
+      multi:true
+    , 
+      (err, numberAffected, raw)->
+        #
+    Slide.update 
+      Order: 5 
+    , 
+      Sent: true
+    , 
+      multi:true
+    , 
+      (err, numberAffected, raw)->
+        #
+    Slide.update 
+      Order: 6 
+    , 
+      Sent: true
+    , 
+      multi:true
+    , 
+      (err, numberAffected, raw)->
+        #
 
-  Conference.find (err, conferences) ->
-    if (err)
-      console.log "find erreur man"
-    if conferences.length > 0 
-      len = conferences.length - 1
-      for x in [0..len]
-        console.log " "
-        console.log "conferences: ", conferences[x]
-        #conferences[x].remove (err)->
-          #console.log "can't remove"
 
-  organisation = null
-  Admin
-  .findOne 
-    _id: '515c1b1950e5c6a674000001'
-    (err, admin)=>
-      console.log "callback launched"
-      if err
-        console.log "error while trying to find the organisations of this admin"
-  .populate('organisations')
-  .exec (err, admin)=>
-    organisation = JSON.stringify admin.organisations
-    console.log "premier log:" , organisation
-  console.log "deuxieme log:" , organisation
+    Conference.find (err, conferences) ->
+      if (err)
+        console.log "find erreur man"
+      if conferences.length > 0 
+        len = conferences.length - 1
+        for x in [0..len]
+          console.log " "
+          console.log "conferences: ", conferences[x]
+          #conferences[x].remove (err)->
+            #console.log "can't remove"
+
+    organisation = null
+    Admin
+    .findOne 
+      _id: '515c1b1950e5c6a674000001'
+      (err, admin)=>
+        console.log "callback launched"
+        if err
+          console.log "error while trying to find the organisations of this admin"
+    .populate('organisations')
+    .exec (err, admin)=>
+      organisation = JSON.stringify admin.organisations
+      console.log "premier log:" , organisation
+    console.log "deuxieme log:" , organisation
+
+  test();
+
 
 
 

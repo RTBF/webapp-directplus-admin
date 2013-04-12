@@ -20,6 +20,7 @@ define(['jquery', 'backbone'], function($, Backbone) {
 
     slideScreen.prototype.initialize = function() {
       this.listenTo(this.model, 'change', this.render());
+      this.initrender();
       return console.log("slideScreen initilized");
     };
 

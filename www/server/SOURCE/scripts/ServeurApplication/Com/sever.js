@@ -5,7 +5,27 @@
   init: ->
 */
 
-var app, express, indice, io, server;
+var Admin, Conference, Organisation, Slide, app, async, confDB, dsn, express, indice, io, mongoose, server;
+
+mongoose = require('mongoose');
+
+Admin = require('../Models/Admin.js');
+
+Slide = require('../Models/Slide.js');
+
+Organisation = require("../Models/Organisation.js");
+
+Conference = require("../Models/Conference.js");
+
+async = require('async');
+
+dsn = "mongodb://localhost/WebConference";
+
+mongoose.connect(dsn);
+
+confDB = mongoose.connection;
+
+confDB.on('error', console.error.bind(console, 'connection error:'));
 
 express = require('express');
 
@@ -24,25 +44,45 @@ io.set('log level', 1);
 io.set('transports', ['websocket', 'flashsocket', 'htmlfile', 'xhr-polling', 'jsonp-polling']);
 
 io.sockets.on('connection', function(socket) {
-  var brodcastSlide;
-  socket.on('admin', function(data) {
-    return console.log('admin connected');
+  var _this = this;
+  console.log("hello");
+  return confDB.once('open', function() {
+    var brodcastSlide;
+    console.log("I am here");
+    _this.Admin.findOne({
+      _id: AdminId
+    }, function(err, admin) {
+      console.log("please come here");
+      if (err) {
+        callback(err);
+      }
+    }).populate('organisations').exec(function(err, admin) {
+      var organisation;
+      console.log(organisation = JSON.stringify(admin.organisations));
+      return console.log("premier log:", organisation);
+    });
+    socket.on('admin', function(data) {
+      return console.log('admin connected');
+    });
+    socket.on('reset', function(data) {
+      console.log('admin asks for reseting');
+      return socket.broadcast.emit('sreset', data);
+    });
+    socket.on('user', function(data) {
+      socket.name = data.name;
+      return console.log('user connected');
+    });
+    socket.on('next', function(data) {
+      return brodcastSlide('snext', data);
+    });
+    socket.on('remove', function(data) {
+      return brodcastSlide('sremove', data);
+    });
+    return brodcastSlide = function(message, data) {
+      socket.emit(message, data);
+      return socket.broadcast.emit(message, data);
+    };
   });
-  socket.on('reset', function(data) {
-    console.log('admin asks for reseting');
-    return socket.broadcast.emit('sreset', data);
-  });
-  socket.on('user', function(data) {
-    socket.name = data.name;
-    return console.log('user connected');
-  });
-  socket.on('next', function(data) {
-    return brodcastSlide('snext', data);
-  });
-  return brodcastSlide = function(message, data) {
-    socket.emit(message, data);
-    return socket.broadcast.emit(message, data);
-  };
 });
 
 console.log('Serveur lancé');

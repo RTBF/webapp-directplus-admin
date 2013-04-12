@@ -10,6 +10,8 @@ define(['jquery', 'backbone', 'application/views/slideView'], function($, Backbo
 
     Slide.prototype.defaults = {
       id: '???',
+      _id: ' ',
+      sent: ' ',
       title: 'empty Slide',
       description: 'no description'
     };

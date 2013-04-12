@@ -1,45 +1,62 @@
-
-test = "i am exported too"
-
 class DBRequest
 
   constructor: () ->
+    console.log "construction"
     @mongoose = require 'mongoose'
-    @Schema = @mongoose.Schema
     @Admin = require '../Models/Admin.js'
     @Slide = require '../Models/Slide.js'
     @Organisation = require "../Models/Organisation.js"
     @Conference =  require "../Models/Conference.js"
+    @async = require 'async'
     
     @dsn = "mongodb://localhost/WebConference"
     @mongoose.connect @dsn
+    @confDB = @mongoose.connection
+    @confDB.on 'error', console.error.bind(console, 'connection error:')
+    @confDB.once 'open', ()=>
+      @Admin
+      .findOne 
+        _id:'515c1b1950e5c6a674000001'
+        (err, admin)=>
+          console.log "please come here"
+          if err
+            callback(err)
+            return
+            #console.log "error while trying to find the organisations of this admin"
+      .populate('organisations')
+      .exec (err, admin)=>
+        console.log  organisation = JSON.stringify admin.organisations
+        console.log "premier log:" , organisation
     @init()
     # ...
 
   init: ()->
-    #
     
+    #
 
-
-  readOrganisations:(AdminId)->
+  readOrganisations:(AdminId, callback)->
     organisation = null
-    confDB = @mongoose.connection
-    confDB.on 'error', console.error.bind(console, 'connection error:')
-    confDB.once 'open', ()=>
-      console.log AdminId
-      @Admin
-      .findOne 
-        _id:AdminId
-        (err, admin)=>
-          console.log "callback launched"
-          if err
-            console.log "error while trying to find the organisations of this admin"
-      .populate('organisations')
-      .exec (err, admin)=>
-        organisation = JSON.stringify admin.organisations
-        console.log "premier log:" , organisation
-      console.log "deuxieme log:" , organisation
-    organisation
+    
+    
+    console.log AdminId
+    console.log "your are in"
+    console.log @Admin.findOne
+    @Admin
+    .findOne 
+      _id:AdminId
+      (err, admin)=>
+        console.log "please come here"
+        if err
+          callback(err)
+          return
+          #console.log "error while trying to find the organisations of this admin"
+    .populate('organisations')
+    .exec (err, admin)=>
+      console.log  organisation = JSON.stringify admin.organisations
+      console.log "premier log:" , organisation
+    console.log "end of fonction"
+    console.log "fuck"
+    
 
   readConference:(OrgId)->
     Confs = null
@@ -54,6 +71,7 @@ class DBRequest
       Confs = JSON.stringify organisation.conferences
     Confs
 
+
   readSlideList:(ConfId)->
     slides = null
     Conference
@@ -67,7 +85,7 @@ class DBRequest
       slides = JSON.stringify conference.slides
     slides
 
-module.exports = new DBRequest
+db = new DBRequest
 
 
   

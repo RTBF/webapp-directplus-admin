@@ -8,6 +8,8 @@ define [
 
       defaults: 
         id: '???'
+        _id: ' '
+        sent: ' '
         title : 'empty Slide'
         description: 'no description'
      

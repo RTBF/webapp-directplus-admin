@@ -12,16 +12,20 @@ class Serveur
   
   constructor: ->
     console.log "construction"
+    @fabId = '515c1b1950e5c6a674000001'
+    @Admin = require '../Models/Admin.js'
     @init()
+
     # ...
 
   init: ->
-    console.log dbrequest.readOrganisations('515c1b1950e5c6a674000001')
+    dbrequest.readOrganisations  @fabId , (doc)=>
+      #
 
     io.sockets.on 'connection' , (socket) =>
       
       socket.on 'admin', (data) =>
-        #TODO CHECK BD FOR ADMIN
+        #TODO CHECK BD FOR ADMIN 
         console.log 'admin connected'
       
       socket.on 'reset', (data) =>

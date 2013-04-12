@@ -8,6 +8,7 @@ define [
 
       defaults: 
         id: '???'
+        conf: 'none'
         title : 'empty Slide'
         description: 'no description'
      

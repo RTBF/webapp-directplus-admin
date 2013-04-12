@@ -15,7 +15,6 @@ define [
 
       initialize : ()->
         @listenTo @model, 'change', @render()
-
         console.log  "slideScreen initilized"
 
       initrender:()->
