@@ -2,7 +2,7 @@
 var __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-define(['jquery', 'backbone', 'application/views/slideScreen', 'text!application/templates/organisations.html', 'text!application/templates/conferences.html', 'text!application/templates/slides.html'], function($, Backbone, slideScreen, OrganisationTemplate, ConferenceTemplate, SlideTemplate) {
+define(['jquery', 'backbone', 'application/views/appView'], function($, Backbone, AppView) {
   var Router;
   return Router = (function(_super) {
 
@@ -20,19 +20,34 @@ define(['jquery', 'backbone', 'application/views/slideScreen', 'text!application
     }
 
     Router.prototype.initialize = function() {
+      var _this = this;
+      this.trigger('orgRoute');
+      this.appView = new AppView();
       this.on('route:organisationScreen', function() {
-        console.log("org screen show");
-        return $('#appcontainer').html(OrganisationTemplate);
+        $('.slides').fadeOut();
+        $('.confBlock').addClass('onhideright').removeClass('onshow');
+        return $('.organisationsBlock').addClass('onshow').removeClass('onhideleft');
       });
       this.on('route:conferenceScreen', function() {
-        console.log('conf screen show');
-        $('#appcontainer').append(ConferenceTemplate);
-        return this.trigger('confRoute', '');
+        $('.slides').fadeOut();
+        $('.organisationsBlock').addClass('onhideleft').removeClass('onshow');
+        return $('.confBlock').fadeIn(function() {
+          return $('.confBlock').addClass('onshow').removeClass('onhideright');
+        });
       });
       this.on('route:slideScreen', function() {
-        $('#appcontainer').append(SlideTemplate);
-        $('.slides').hide();
-        return this.trigger('slideRoute', '');
+        $('.organisationsBlock').removeClass('onshow').addClass('onhideleft');
+        return $('.confBlock').fadeOut(function() {
+          return $('.slides').fadeIn();
+        });
+      });
+      this.appView.on('organisationChoosed', function(data) {
+        console.log('router organisation choosed: ', data);
+        return _this.trigger('confRoute', data);
+      });
+      this.appView.on('conferenceChoosed', function(data) {
+        console.log('router conference choosed: ', data);
+        return _this.trigger('slideRoute', data);
       });
       Backbone.history.start();
       return console.log(" The Route Initialized");

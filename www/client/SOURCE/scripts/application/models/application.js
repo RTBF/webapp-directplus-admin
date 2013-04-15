@@ -11,50 +11,50 @@ define(['application/routes/router', 'application/models/slide', 'application/co
     function Application() {
       this.router = new Router();
       this.socket = null;
-      this.appView = new AppView();
     }
 
     Application.prototype.init = function() {
       var _this = this;
       this.socket = io.connect('http://localhost:3000');
+      this.router.on('orgRoute', function() {
+        return _this.connect();
+      });
+      this.router.on('confRoute', function(data) {
+        console.log('app confRoute id org choosed: ', data);
+        return _this.socket.emit('organisationChoosed', data);
+      });
+      this.router.on('slideRoute', function(data) {
+        console.log('app slideRoute id conf choosed: ', data);
+        return _this.socket.emit('conferenceChoosed', data);
+      });
+      this.socket.on('organisations', function(data) {
+        console.log('app organisations recieved: ', data);
+        return _this.router.appView.trigger("organisations", data);
+      });
+      this.socket.on('conferences', function(data) {
+        console.log("app confList received", data);
+        return _this.router.appView.trigger('conferences', data);
+      });
+      this.socket.on('slides', function(data) {
+        console.log('app slides received', data);
+        return _this.router.appView.trigger('slides', data);
+      });
       this.socket.on('snext', function(data) {
         console.log("snext received");
-        return _this.appView.trigger('newSlide', data);
+        return _this.router.appView.trigger('newSlide', data);
       });
       this.socket.on('sremove', function(data) {
         console.log("remove ask received");
-        return _this.appView.trigger('sremove', data);
+        return _this.router.appView.trigger('sremove', data);
       });
-      this.socket.on('organisations', function(data) {
-        console.log(data);
-        _this.appView.trigger("organisations", data);
-        return _this.appView.on('organisationChoosed', function(data) {
-          return _this.socket.emit('organisationChoosed', data);
-        });
-      });
-      this.socket.on('conferences', function(data) {
-        return _this.router.on("confRoute", function(datas) {
-          console.log("confList received", data);
-          _this.appView.trigger('conferences', data);
-          return _this.appView.on('conferenceChoosed', function(data) {
-            return _this.socket.emit('conferenceChoosed', data);
-          });
-        });
-      });
-      this.socket.on('slides', function(data) {
-        return _this.router.on('slideRoute', function(datas) {
-          return _this.appView.trigger('slides', data);
-        });
-      });
-      this.router.on("slideRoute", function(data) {});
       this.socket.on('sreset', function(data) {
         console.log("reseting");
         localStorage.clear();
         $('#SlideList').empty();
-        return _this.appView.trigger('reseting', data);
+        return _this.router.appView.trigger('reseting', data);
       });
       this.socket.on('connect', function(data) {
-        return _this.appView.trigger('ServerConnection', data);
+        return _this.router.appView.trigger('ServerConnection', data);
       });
       return this.connect();
     };

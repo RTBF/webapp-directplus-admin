@@ -3,7 +3,8 @@
 
 <head>
   <title>Client Screen</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="utf-8">
   <!-- Bootstrap -->
   <link href="skins/css/bootstrap/bootstrap.min.css" rel="stylesheet" media="screen">
   <link href="skins/css/application/app.css" rel="stylesheet" media="screen">
@@ -23,6 +24,18 @@
     <div id="header"></div>
 
     <div id="appcontainer" >
+      <div class=" container organisationsBlock onshow">
+      <ul class="organisationsList"></ul>
+      </div>
+      <div class="container confBlock onhideright">
+      <ul class="confList"></ul>
+      </div>
+      <div class= "slides">
+        
+        <ul  id ="SlideList"></ul>
+        <button id="precedent" class="left carousel-control">‹</button>
+        <button id="suivant" class="right carousel-control">›</button>
+      </div>
     </div>
 
 

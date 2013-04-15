@@ -16,6 +16,10 @@ define(['jquery', 'backbone'], function($, Backbone) {
 
     ConferenceView.prototype.className = 'conf';
 
+    ConferenceView.prototype.events = {
+      'click .org-item': 'choose'
+    };
+
     ConferenceView.prototype.template = _.template($('#conf-template').html());
 
     ConferenceView.prototype.initialize = function() {};
@@ -23,6 +27,12 @@ define(['jquery', 'backbone'], function($, Backbone) {
     ConferenceView.prototype.render = function() {
       this.$el.html(this.template(this.model.toJSON()));
       return this;
+    };
+
+    ConferenceView.prototype.choose = function(evt) {
+      var txt;
+      txt = $(evt.target).attr('id');
+      return this.conference = $(evt.target).attr('id');
     };
 
     return ConferenceView;

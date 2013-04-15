@@ -16,15 +16,15 @@ define(['jquery', 'backbone', 'application/models/slide', 'application/views/sli
 
     appView.prototype.template = _.template($('#app-template').html());
 
-    appView.prototype.events = {
-      'click #previous': 'previous',
-      'click #next': 'next'
-    };
+    /*--events:
+      'click #previous' : 'previous'
+      'click #next' : 'next'
+    */
+
 
     appView.prototype.initialize = function() {
       var _this = this;
       this.slides = new Slides();
-      console.log(this.slides);
       this.render();
       this.on('newSlide', function(data) {
         return _this.newSlide(data);
@@ -33,12 +33,12 @@ define(['jquery', 'backbone', 'application/models/slide', 'application/views/sli
         return _this.connectNotif(data);
       });
       this.on('reseting', function(data) {
+        console.log("reseting");
         _this.slides.reset();
         _this.slides.position = 0;
         return _this.navigationMode = false;
       });
       this.on('organisations', function(data) {
-        console.log(data);
         return _this.fullFillOrgList(data);
       });
       this.on('conferences', function(data) {
@@ -51,7 +51,31 @@ define(['jquery', 'backbone', 'application/models/slide', 'application/views/sli
         return _this.removeSlide(data);
       });
       this.slides.fetch();
-      return console.log(this.slides);
+      $('#appcontainer').delegate('.org-item', 'click', function(e) {
+        var txt;
+        console.log(e.target);
+        txt = $(e.target).attr('id');
+        console.log(txt);
+        return _this.trigger('organisationChoosed', txt);
+      });
+      $('#appcontainer').delegate('.conf-item', 'click ', function(e) {
+        var txt;
+        txt = $(e.target).attr('id');
+        _this.conference = $(e.target).attr('id');
+        console.log(txt);
+        return _this.trigger('conferenceChoosed', txt);
+      });
+      $('#suivant').click(function(e) {
+        e.preventDefault();
+        _this.suivant();
+        return console.log("pushed next bt");
+      });
+      $('#precedent').click(function(e) {
+        e.preventDefault();
+        _this.precedent();
+        return console.log("pushed previous bt");
+      });
+      return console.log("appView built");
     };
 
     appView.prototype.connectNotif = function(data) {
@@ -63,7 +87,7 @@ define(['jquery', 'backbone', 'application/models/slide', 'application/views/sli
       return this;
     };
 
-    appView.prototype.previous = function() {
+    appView.prototype.precedent = function() {
       var newPosSlide, previous, slide, slideView;
       console.log(this.slides.position);
       if (this.slides.position > 0) {
@@ -85,10 +109,11 @@ define(['jquery', 'backbone', 'application/models/slide', 'application/views/sli
           $('.new').removeClass('new').addClass('far-past');
         }
       }
-      return console.log(this.navigationMode);
+      console.log("Mode navigation?: ", this.navigationMode);
+      return console.log("ma position: ", this.slides.position);
     };
 
-    appView.prototype.next = function() {
+    appView.prototype.suivant = function() {
       var newPosSlide, previous, slide, slideView;
       if (this.slides.position < (this.slides.length - 1)) {
         console.log("I am in");
@@ -112,7 +137,8 @@ define(['jquery', 'backbone', 'application/models/slide', 'application/views/sli
           $('.new').removeClass('new').addClass('far-future');
         }
       }
-      return console.log(this.navigationMode);
+      console.log("Mode navigation?: ", this.navigationMode);
+      return console.log("ma position: ", this.slides.position);
     };
 
     appView.prototype.newSlide = function(data) {
@@ -136,31 +162,75 @@ define(['jquery', 'backbone', 'application/models/slide', 'application/views/sli
       if (this.navigationMode) {
         if (this.slides.position === this.slides.length - 3) {
           $('#SlideList').append(slideView.render().el);
-          return $('.new').removeClass('new').addClass('far-future');
+          $('.new').removeClass('new').addClass('far-future');
         }
       } else {
         this.slides.position = this.slides.length - 1;
         $('#SlideList').append(slideView.render().el);
-        return this.last();
+        this.last();
       }
+      console.log("Mode navigation?: ", this.navigationMode);
+      return console.log("ma position: ", this.slides.position);
     };
 
     appView.prototype.removeSlide = function(data) {
-      var obj,
-        _this = this;
+      var id, index, obj, slide;
       console.log(data);
       obj = $.parseJSON(data.JsonData);
-      obj = $.parseJSON(data.JsonData);
-      return this.slides.each(function(model) {
-        if (obj.id === model.get('id')) {
-          return model.destroy();
+      slide = new Slide(obj);
+      slide.set("conf", data._conf);
+      index = this.slides.indexOf(this.slides.get(obj.id));
+      this.slides.localStorage.destroy(this.slides.get(obj.id));
+      this.slides.remove(this.slides.get(obj.id));
+      this.slides.fetch();
+      id = '#' + obj.id;
+      console.log("la position en index of: ", index);
+      console.log("la position en position: ", this.slides.position);
+      if (index < this.slides.position) {
+        this.slides.position = this.slides.position - 1;
+      }
+      if ($(id).parent().hasClass('far-future')) {
+        $(id).parent().remove();
+        return this.hasNext();
+      } else if ($(id).parent().hasClass('future')) {
+        $(id).parent().slideUp(function() {
+          return $(id).parent().remove();
+        });
+        $('.far-future').removeClass('far-future').addClass("future");
+        this.hasNext();
+        return this.setNavigationMode();
+      } else if ($(id).parent().hasClass('current')) {
+        $(id).parent().slideUp(function() {
+          return $(id).parent().remove();
+        });
+        if (this.navigationMode) {
+          console.log("c'est pcq je suis en mode navigation");
+          $('.future').removeClass('future').addClass('current');
+          $('.far-future').removeClass('far-future').addClass('future');
+          this.hasNext();
+          return this.setNavigationMode();
+        } else {
+          console.log("c pcq je ne suis pas en mode navigation");
+          $('.past').removeClass('past').addClass('current');
+          $('.far-past').removeClass('far-past').addClass('past');
+          this.slides.position = this.slides.position - 1;
+          return this.navigationMode = false;
         }
-      });
+      } else if ($(id).parent().hasClass('past')) {
+        $(id).parent().slideUp(function() {
+          return $(id).parent().remove();
+        });
+        $('.far-past').removeClass('far-past').addClass("past");
+        return this.hasPrevious();
+      } else if ($(id).parent().hasClass('far-past')) {
+        $(id).parent().remove();
+        return this.hasPrevious();
+      }
     };
 
     appView.prototype.fullFillOrgList = function(data) {
-      var len, organisation, organisationView, x, _i,
-        _this = this;
+      var len, organisation, organisationView, x, _i;
+      $(".organisationsList").children().remove();
       len = data.length - 1;
       console.log(len);
       for (x = _i = 0; 0 <= len ? _i <= len : _i >= len; x = 0 <= len ? ++_i : --_i) {
@@ -172,20 +242,14 @@ define(['jquery', 'backbone', 'application/models/slide', 'application/views/sli
         $('.organisationsList').append(organisationView.render().el);
       }
       $("#loading").fadeOut();
-      $("#wrap").fadeIn();
-      return $('.org-item').click(function(e) {
-        var txt;
-        console.log(e.target);
-        txt = $(e.target).attr('id');
-        console.log(txt);
-        return _this.trigger('organisationChoosed', txt);
-      });
+      return $("#wrap").fadeIn();
     };
 
     appView.prototype.fullFillConfList = function(data) {
-      var confView, confs, len, x, _i,
-        _this = this;
+      var confView, confs, len, x, _i, _results;
+      $(".confList").children().remove();
       len = data.length - 1;
+      _results = [];
       for (x = _i = 0; 0 <= len ? _i <= len : _i >= len; x = 0 <= len ? ++_i : --_i) {
         console.log(data[x]);
         confs = new Conference(data[x]);
@@ -193,21 +257,9 @@ define(['jquery', 'backbone', 'application/models/slide', 'application/views/sli
           model: confs
         });
         console.log(confView.render().el);
-        $('.confList').append(confView.render().el);
+        _results.push($('.confList').append(confView.render().el));
       }
-      $('.organisationsBlock').removeClass('onshow').addClass('onhideleft');
-      $('.confBlock').fadeOut();
-      $('.confBlock').fadeIn();
-      $('.confBlock').removeClass('onhideright').addClass('onshow');
-      $('.organisationsBlock').fadeOut();
-      $('.organisationsBlock').remove();
-      return $('.conf-item').click(function(e) {
-        var txt;
-        txt = $(e.target).attr('id');
-        _this.conference = $(e.target).attr('id');
-        console.log(txt);
-        return _this.trigger('conferenceChoosed', txt);
-      });
+      return _results;
     };
 
     appView.prototype.showLast = function() {
@@ -230,16 +282,21 @@ define(['jquery', 'backbone', 'application/models/slide', 'application/views/sli
 
     appView.prototype.restore = function(data) {
       var len, max, num, obj, slide, slideView, sv, taille, x, _i;
-      console.log(this.conference);
+      $('#SlideList').children().remove();
+      taille = this.slides.length;
+      len = data.length - 1;
+      console.log("restore la conference d'id: ", this.conference);
       this.navigationMode = false;
       console.log(this.navigationMode);
-      console.log("number of slide received: ", data.length - 1);
-      console.log("the data I received: ", data);
-      len = data.length - 1;
+      if (data[0]._conf !== this.conference || taille > data.length) {
+        this.slides.reset();
+        localStorage.clear();
+        this.slides.fetch();
+        console.log("j'ai reseté");
+      }
       if (len >= 0) {
         sv = data[0]._conf;
         for (x = _i = 0; 0 <= len ? _i <= len : _i >= len; x = 0 <= len ? ++_i : --_i) {
-          console.log("here");
           obj = $.parseJSON(data[x].JsonData);
           slide = new Slide(obj);
           slide.set("conf", sv);
@@ -251,8 +308,6 @@ define(['jquery', 'backbone', 'application/models/slide', 'application/views/sli
           this.slides.fetch();
         }
       }
-      console.log(this.slides);
-      taille = this.slides.length;
       max = 3;
       num = 0;
       console.log('taille', taille);
@@ -279,30 +334,64 @@ define(['jquery', 'backbone', 'application/models/slide', 'application/views/sli
             $('.new').removeClass('new').addClass('far-past');
         }
       }
-      this.slides.position = this.slides.length - 1;
+      if (this.slides.length === 0) {
+        this.slides.position = 0;
+      } else {
+        this.slides.position = this.slides.length - 1;
+      }
       $('.confBlock').fadeOut();
-      return $('.slides').fadeIn();
+      $('.slides').fadeIn();
+      console.log("Mode navigation?: ", this.navigationMode);
+      return console.log("ma position: ", this.slides.position);
     };
 
     appView.prototype.last = function() {
-      $('.new').removeClass('new').addClass('future');
-      $('.future').hide();
-      $('.future').fadeIn();
+      $('.new').removeClass('new').addClass('far-future');
+      $('.far-future').hide();
+      $('.far-future').fadeIn();
       $('.far-past').remove();
       $('.past').removeClass('past').addClass('far-past');
       $('.current').removeClass('current').addClass('past');
-      $('.future').removeClass('future').addClass('current');
-      $('.far-future').removeClass('far-future').addClass('future');
-      console.log("my position ", this.slides.position);
-      return this.next();
+      $('.far-future').removeClass('far-future').addClass('current');
+      return console.log("my position ", this.slides.position);
     };
 
-    appView.prototype.addTemplate = function() {
-      if (navigationMode) {
-
-      } else {
-        return $('#SlideList').append(slideView.render().el);
+    appView.prototype.hasNext = function() {
+      var newPosSlide, slide, slideView;
+      if (this.slides.position <= (this.slides.length - 3)) {
+        console.log("je verifie mon tableau");
+        newPosSlide = this.slides.position + 2;
+        slide = this.slides.at(newPosSlide);
+        slideView = new SlideView({
+          model: slide
+        });
+        $('#SlideList').append(slideView.render().el);
+        return $('.new').removeClass('new').addClass('far-future');
       }
+    };
+
+    appView.prototype.hasPrevious = function() {
+      var newPosSlide, slide, slideView;
+      if (this.slides.position > 1) {
+        newPosSlide = this.slides.position - 2;
+        slide = this.slides.at(newPosSlide);
+        slideView = new SlideView({
+          model: slide
+        });
+        $('#SlideList').append(slideView.render().el);
+        return $('.new').removeClass('new').addClass('far-past');
+      }
+    };
+
+    appView.prototype.setNavigationMode = function() {
+      if (this.slides.position === this.slides.length - 1) {
+        this.navigationMode = false;
+      } else {
+        if (this.slides.position < this.slides.length - 1) {
+          this.navigationMode = true;
+        }
+      }
+      return console.log("mode navigation: ", this.navigationMode);
     };
 
     return appView;

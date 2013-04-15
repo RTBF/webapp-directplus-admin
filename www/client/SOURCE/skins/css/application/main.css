@@ -72,15 +72,15 @@ margin-left:0px;
   font-size: 20px;
   width: 100%;
   -webkit-transition-property:opacity;
-  -webkit-transition-duration: 0.5s;
+  -webkit-transition-duration: 0.2s;
   -webkit-transition-timing-function: ease-in-out;
 
   -moz-transition-property: opacity;
-  -moz-transition-duration:  0.5s;
+  -moz-transition-duration:  0.2s;
   -moz-transition-timing-function: ease-in-out;
 
   -o-transition-property: opacity;
-  -o-transition-duration: 0.5s;
+  -o-transition-duration: 0.2s;
   -o-transition-timing-function: ease-in-out;
 }
 
@@ -97,34 +97,34 @@ margin-left:0px;
   margin-top: 50px;
 
   -webkit-transition-property: margin, -webkit-transform, opacity;
-  -webkit-transition-duration: 1s, 3s, 3s;
+  -webkit-transition-duration: 0.5s, 3s, 3s;
   -webkit-transition-timing-function: ease-in-out;
 
   -moz-transition-property: margin, -moz-transform, opacity;
-  -moz-transition-duration: 1s, 3s, 3s;
+  -moz-transition-duration: 0.5s, 3s, 3s;
   -moz-transition-timing-function: ease-in-out;
 
   -o-transition-property: margin, -moz-transform, opacity;
-  -o-transition-duration: 1s, 3s, 3s;
+  -o-transition-duration: 0.5s, 3s, 3s;
   -o-transition-timing-function: ease-in-out;
  
 }
 .confBlock{
   overflow: hidden;
   visibility: visible;
-  display: none;
+  display: block;
   position: absolute;
   margin-top: 50px;
   -webkit-transition-property: margin, -webkit-transform, opacity;
-  -webkit-transition-duration: 1s, 3s, 3s;
+  -webkit-transition-duration: 0.5s, 3s, 3s;
   -webkit-transition-timing-function: ease-in-out;
 
   -moz-transition-property: margin, -moz-transform, opacity;
-  -moz-transition-duration: 1s, 3s, 3s;
+  -moz-transition-duration: 0.5s, 3s, 3s;
   -moz-transition-timing-function: ease-in-out;
 
   -o-transition-property: margin, -moz-transform, opacity;
-  -o-transition-duration: 1s, 3s, 3s;
+  -o-transition-duration: 0.5s, 3s, 3s;
   -o-transition-timing-function: ease-in-out;
 }
 .span4{
@@ -203,6 +203,14 @@ margin-left:0px;
   transition: transform 1.5s ease-in-out;
 }
 
+.left.carousel-control{
+  margin-left: 100px;
+}
+
+.right.carousel-control{
+  margin-right: 70px;
+}
+
 .slide {
   color: black;
   display: block;
@@ -222,15 +230,15 @@ margin-left:0px;
   -o-transform: scale(0.8);
 
   -webkit-transition-property: margin, -webkit-transform, opacity;
-  -webkit-transition-duration: 3s, 3s, 3s;
+  -webkit-transition-duration: 1s, 1s, 2s;
   -webkit-transition-timing-function: ease-in-out;
 
   -moz-transition-property: margin, -moz-transform, opacity;
-  -moz-transition-duration: 3s, 3s, 3s;
+  -moz-transition-duration: 1s, 1s, 2s;
   -moz-transition-timing-function: ease-in-out;
 
   -o-transition-property: margin, -moz-transform, opacity;
-  -o-transition-duration: 3s, 3s, 3s;
+  -o-transition-duration: 1s, 1s, 2s;
   -o-transition-timing-function: ease-in-out;
 }
 

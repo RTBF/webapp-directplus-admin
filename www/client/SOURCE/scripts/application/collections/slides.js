@@ -16,8 +16,6 @@ define(['jquery', 'backbone', 'backbonels', 'application/views/slideScreen', 'ap
 
     slides.prototype.localStorage = new Backbonels("slidesStore");
 
-    slides.prototype.position = 0;
-
     slides.prototype.conf = null;
 
     return slides;

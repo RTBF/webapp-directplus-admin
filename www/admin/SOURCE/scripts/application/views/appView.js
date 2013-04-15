@@ -44,6 +44,7 @@ define(['jquery', 'backbone', 'application/models/slide', 'application/views/sli
         slide.set("conf", data[x]._conf);
         slide.set("sent", data[x].Sent);
         slide.set("_id", data[x]._id);
+        slide.set("Order", data[x].Order);
         this.slides.add(slide);
         slide.save();
         this.slides.fetch();

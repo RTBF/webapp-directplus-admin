@@ -25,11 +25,16 @@ define(['jquery', 'backbone'], function($, Backbone) {
     OrganisationView.prototype.initialize = function() {};
 
     OrganisationView.prototype.render = function() {
+      console.log("fuck?");
       this.$el.html(this.template(this.model.toJSON()));
       return this;
     };
 
-    OrganisationView.prototype.choose = function() {};
+    OrganisationView.prototype.choose = function(ev) {
+      var txt;
+      console.log(ev.target);
+      return txt = $(ev.target).attr('id');
+    };
 
     return OrganisationView;
 

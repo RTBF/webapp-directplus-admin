@@ -19,25 +19,24 @@ define [
 
       template : _.template($('#app-template').html())
 
-      events:
+      ###--events:
         'click #previous' : 'previous'
-        'click #next' : 'next'
+        'click #next' : 'next'###
 
 
       initialize : ()->
         @slides = new Slides()
-        console.log @slides
         @render()
         @on 'newSlide', (data) =>
           @newSlide data
         @on 'ServerConnection' , (data)=>
           @connectNotif data
         @on 'reseting' , (data)=>
+          console.log "reseting"
           @slides.reset()
           @slides.position= 0
           @navigationMode = false
         @on 'organisations', (data)=>
-          console.log data
           @fullFillOrgList data
         @on 'conferences', (data)=>
           @fullFillConfList data
@@ -46,9 +45,33 @@ define [
         @on 'sremove', (data)=>
           @removeSlide data
         @slides.fetch()
-        console.log @slides
 
-       
+        $('#appcontainer').delegate '.org-item', 'click', (e)=>
+          console.log e.target
+          txt = $(e.target).attr('id')
+          console.log txt
+          @trigger 'organisationChoosed', txt
+
+
+        $('#appcontainer').delegate '.conf-item' ,'click ', (e)=>
+          txt = $(e.target).attr('id')
+          @conference = $(e.target).attr('id')
+          console.log txt
+          @trigger 'conferenceChoosed', txt
+
+        $('#suivant').click (e)=>
+          e.preventDefault()
+          @suivant()
+          console.log "pushed next bt"
+        
+        $('#precedent').click (e)=>
+          e.preventDefault()
+          @precedent()
+          console.log "pushed previous bt"
+
+        console.log "appView built"
+        
+
 
         
         #@restore()
@@ -60,7 +83,7 @@ define [
         @$el.html @template()
         @
 
-      previous: ()->
+      precedent: ()->
         console.log @slides.position
         if @slides.position>0
           $('.far-future').remove()
@@ -79,11 +102,13 @@ define [
               model : slide
             $('#SlideList').append(slideView.render().el)
             $('.new').removeClass('new').addClass('far-past')
-        console.log @navigationMode 
+          
+        console.log "Mode navigation?: ", @navigationMode
+        console.log  "ma position: ", @slides.position
 
          
 
-      next: ()->
+      suivant: ()->
         if (@slides.position < (@slides.length-1))
           console.log "I am in"
           $('.far-past').remove()
@@ -107,7 +132,10 @@ define [
             $('#SlideList').append(slideView.render().el)
             $('.new').removeClass('new').addClass('far-future') 
 
-        console.log @navigationMode
+        console.log "Mode navigation?: ", @navigationMode
+
+       
+        console.log  "ma position: ", @slides.position
           
 
       newSlide: (data)->
@@ -125,7 +153,7 @@ define [
         slide.save()
         @slides.fetch()###
         if @navigationMode
-          if (@slides.position == @slides.length-3)
+          if (@slides.position is @slides.length-3)
             $('#SlideList').append(slideView.render().el)
             $('.new').removeClass('new').addClass('far-future') 
           #
@@ -133,17 +161,66 @@ define [
           @slides.position = @slides.length-1
           $('#SlideList').append(slideView.render().el)
           @last()
+        console.log "Mode navigation?: ", @navigationMode
+        console.log  "ma position: ", @slides.position
 
       removeSlide: (data)->
         console.log data
         obj = $.parseJSON data.JsonData
-        obj = $.parseJSON data.JsonData
-        @slides.each (model)=>
-          if obj.id is model.get 'id'
-            model.destroy()
+        slide = new Slide obj
+        slide.set("conf", data._conf)
+        index= @slides.indexOf @slides.get(obj.id)
+        @slides.localStorage.destroy(@slides.get(obj.id))
+        @slides.remove @slides.get(obj.id)
+        @slides.fetch()
+        id= '#'+obj.id
+        console.log "la position en index of: ", index
+        console.log "la position en position: ", @slides.position
+        if index < @slides.position
+          @slides.position = @slides.position - 1
+
+        if $(id).parent().hasClass('far-future')
+          $(id).parent().remove()
+          @hasNext()
+
+        else if $(id).parent().hasClass('future')
+          $(id).parent().slideUp ()->
+            $(id).parent().remove()
+          $('.far-future').removeClass('far-future').addClass("future")
+          @hasNext()
+          @setNavigationMode()
         
+        else if $(id).parent().hasClass('current')
+          $(id).parent().slideUp ()->
+            $(id).parent().remove()
+          if @navigationMode 
+            console.log "c'est pcq je suis en mode navigation"
+            $('.future').removeClass('future').addClass('current')
+            $('.far-future').removeClass('far-future').addClass('future')
+            @hasNext()
+            @setNavigationMode()
+            
+          else
+            console.log "c pcq je ne suis pas en mode navigation"
+            $('.past').removeClass('past').addClass('current')
+            $('.far-past').removeClass('far-past').addClass('past')
+            @slides.position = @slides.position-1
+            @navigationMode = false;
+           
+        
+        else if $(id).parent().hasClass('past')
+          $(id).parent().slideUp ()->
+            $(id).parent().remove();
+          $('.far-past').removeClass('far-past').addClass("past")
+          @hasPrevious()
+        
+        else if $(id).parent().hasClass('far-past')
+          $(id).parent().remove()
+          @hasPrevious()
+          
 
       fullFillOrgList: (data)->
+        $(".organisationsList").children().remove()
         len = data.length - 1
         console.log len
         for x in [0..len]
@@ -155,14 +232,11 @@ define [
         $("#loading").fadeOut()
         $("#wrap").fadeIn()
 
-        $('.org-item').click (e)=>
-          console.log e.target
-          txt = $(e.target).attr('id')
-          console.log txt
-          @trigger 'organisationChoosed', txt
+        
 
   
       fullFillConfList: (data)->
+        $(".confList").children().remove()
         len = data.length - 1
 
         for x in [0..len]
@@ -172,19 +246,7 @@ define [
           console.log confView.render().el
           $('.confList').append(confView.render().el)
 
-        $('.organisationsBlock').removeClass('onshow').addClass('onhideleft')
-        $('.confBlock').fadeOut()
-        $('.confBlock').fadeIn()
-        $('.confBlock').removeClass('onhideright').addClass('onshow')
-        $('.organisationsBlock').fadeOut()
-        $('.organisationsBlock').remove()
 
-        $('.conf-item').click (e)=>
-          txt = $(e.target).attr('id')
-          @conference = $(e.target).attr('id')
-          console.log txt
-          @trigger 'conferenceChoosed', txt
- 
       showLast: ()->
 
         @slides.each (slide) ->
@@ -200,17 +262,23 @@ define [
 
 
       restore: (data)->
-
-        console.log @conference
+        $('#SlideList').children().remove()
+        taille = @slides.length
+        len = data.length-1
+        console.log "restore la conference d'id: ", @conference
         @navigationMode = false;
         console.log @navigationMode
-        console.log "number of slide received: ", data.length-1
-        console.log "the data I received: ", data
-        len = data.length-1
+    
+        
+        if data[0]._conf != @conference || taille > data.length
+          @slides.reset()
+          localStorage.clear()
+          @slides.fetch()
+          console.log "j'ai reseté"
+        
         if len >= 0
           sv = data[0]._conf
           for x in [0..len]
-            console.log "here"
             obj = $.parseJSON data[x].JsonData
             slide = new Slide obj
             slide.set("conf", sv)
@@ -218,9 +286,7 @@ define [
             @slides.add slide
             slide.save()
             @slides.fetch()             
-        console.log @slides
-        taille = @slides.length
-        
+      
         max = 3
         num = 0
         console.log 'taille', taille
@@ -241,30 +307,56 @@ define [
             when 1 then $('.new').removeClass('new').addClass('current') 
             when 2 then $('.new').removeClass('new').addClass('past') 
             when 3 then $('.new').removeClass('new').addClass('far-past') 
-        @slides.position = @slides.length-1
+        if @slides.length == 0
+          @slides.position = 0
+        else
+          @slides.position = @slides.length-1
         $('.confBlock').fadeOut()
         $('.slides').fadeIn()
+        console.log "Mode navigation?: ", @navigationMode
+        console.log  "ma position: ", @slides.position
+
+       
 
       last: ()->
-        $('.new').removeClass('new').addClass('future')
-        $('.future').hide()
-        $('.future').fadeIn()
+        $('.new').removeClass('new').addClass('far-future')
+        $('.far-future').hide()
+        $('.far-future').fadeIn()
         $('.far-past').remove()
         $('.past').removeClass('past').addClass('far-past')
         $('.current').removeClass('current').addClass('past')
-        $('.future').removeClass('future').addClass('current')
+        $('.far-future').removeClass('far-future').addClass('current')
 
-        $('.far-future').removeClass('far-future').addClass('future')
+        #$('.far-future').removeClass('far-future').addClass('future')
         console.log  "my position ", @slides.position
-        @next()
 
-      addTemplate: ()->
-        if navigationMode
-          
-        else
+      hasNext:()->
+        if @slides.position <= (@slides.length-3)
+          console.log "je verifie mon tableau"
+          newPosSlide = @slides.position + 2 
+          slide = @slides.at newPosSlide
+          slideView = new SlideView 
+            model : slide
           $('#SlideList').append(slideView.render().el)
+          $('.new').removeClass('new').addClass('far-future') 
 
 
+      hasPrevious:()->
+        if @slides.position > 1
+          newPosSlide = @slides.position - 2 
+          slide = @slides.at newPosSlide
+          slideView = new SlideView 
+            model : slide
+          $('#SlideList').append(slideView.render().el)
+          $('.new').removeClass('new').addClass('far-past')
+
+      setNavigationMode:()->
+        if @slides.position is @slides.length-1
+          @navigationMode = false
+        else 
+          if @slides.position < @slides.length-1 
+            @navigationMode = true
+        console.log "mode navigation: ", @navigationMode
 
         
       

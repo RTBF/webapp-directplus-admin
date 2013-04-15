@@ -20,11 +20,14 @@ define [
        #
 
       render: ()-> 
+        console.log "fuck?"
         @$el.html @template(@model.toJSON())
         @
       
-      choose:()->
+      choose:(ev)->
         #
+        console.log ev.target
+        txt = $(ev.target).attr('id')
 
 
 

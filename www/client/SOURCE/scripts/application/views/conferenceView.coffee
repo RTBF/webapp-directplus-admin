@@ -10,7 +10,8 @@ define [
       tagName : 'li'
       className : 'conf'
    
-
+      events:
+        'click .org-item' : 'choose'
 
       template : _.template($('#conf-template').html())
 
@@ -20,6 +21,12 @@ define [
       render: ()-> 
         @$el.html @template(@model.toJSON())
         @
+
+      choose:(evt)->
+        txt = $(evt.target).attr('id')
+        @conference = $(evt.target).attr('id')
+
+
  
 
 

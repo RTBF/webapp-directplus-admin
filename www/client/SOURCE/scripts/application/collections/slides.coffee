@@ -12,8 +12,6 @@ define [
     model : Slide
 
     localStorage: new Backbonels "slidesStore"
-
-    position: 0
     conf: null
 
   
