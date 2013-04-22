@@ -2,7 +2,7 @@
 var __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-define(['jquery', 'backbone'], function($, Backbone) {
+define(['jquery', 'backbone', 'application/views/conferenceView'], function($, Backbone, ConferenceView) {
   var OrganisationView;
   return OrganisationView = (function(_super) {
 
@@ -22,11 +22,21 @@ define(['jquery', 'backbone'], function($, Backbone) {
 
     OrganisationView.prototype.template = _.template($('#Organisation-template').html());
 
-    OrganisationView.prototype.initialize = function() {};
+    OrganisationView.prototype.initialize = function() {
+      return this.listenTo(this.model, 'change', this.render);
+    };
 
     OrganisationView.prototype.render = function() {
-      console.log("fuck?");
+      $('.confList').children().remove();
+      console.log("Je suis lorganisation et je me renderer");
       this.$el.html(this.template(this.model.toJSON()));
+      this.model.get('conferencesC').each(function(conference) {
+        var conferenceView;
+        conferenceView = new ConferenceView({
+          model: conference
+        });
+        return $('.confList').append(conferenceView.render().el);
+      });
       return this;
     };
 

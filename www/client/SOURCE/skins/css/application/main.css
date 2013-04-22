@@ -22,13 +22,16 @@ ul {
     opacity: 1.00;
 
 }
-.onshow{
+.onshow.onhideright{
+margin-left:0px; 
+}
+.onshow.onhideleft{
 margin-left:0px; 
 }
 
 .onhideright{
   overflow: hidden;
-  margin-left: 2400px;
+  margin-left: 2000px;
 }
 
 #appcontainer{
@@ -48,7 +51,7 @@ margin-left:0px;
 
 .onhideleft{
   overflow: hidden;
-  margin-left: -2400px;
+  margin-left: -2000px;
 }
 .modal-body {
   background: -webkit-gradient(linear, left top, left bottom, from(#333), to(black));

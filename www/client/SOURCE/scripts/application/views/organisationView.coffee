@@ -1,7 +1,8 @@
 define [
   'jquery'
   'backbone'
-  ],($,Backbone)->
+  'application/views/conferenceView'
+  ],($,Backbone,ConferenceView)->
 
     class OrganisationView extends Backbone.View
 
@@ -17,11 +18,16 @@ define [
       template : _.template($('#Organisation-template').html())
 
       initialize : ()->
-       #
+        @listenTo @model, 'change', @render
+       
 
       render: ()-> 
-        console.log "fuck?"
+        $('.confList').children().remove()
+        console.log "Je suis lorganisation et je me renderer"
         @$el.html @template(@model.toJSON())
+        @model.get('conferencesC').each (conference)->
+          conferenceView = new ConferenceView ({model:conference})
+          $('.confList').append(conferenceView.render().el)
         @
       
       choose:(ev)->

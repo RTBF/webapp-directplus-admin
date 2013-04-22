@@ -20,7 +20,6 @@ define(['application/routes/router', 'application/models/slide', 'application/co
         return _this.connect();
       });
       this.router.on('confRoute', function(data) {
-        console.log('app confRoute id org choosed: ', data);
         return _this.socket.emit('organisationChoosed', data);
       });
       this.router.on('slideRoute', function(data) {
@@ -29,32 +28,32 @@ define(['application/routes/router', 'application/models/slide', 'application/co
       });
       this.socket.on('organisations', function(data) {
         console.log('app organisations recieved: ', data);
-        return _this.router.appView.trigger("organisations", data);
+        return _this.router.app.trigger("organisations", data);
       });
       this.socket.on('conferences', function(data) {
         console.log("app confList received", data);
-        return _this.router.appView.trigger('conferences', data);
+        return _this.router.app.trigger('conferences', data);
       });
       this.socket.on('slides', function(data) {
         console.log('app slides received', data);
-        return _this.router.appView.trigger('slides', data);
+        return _this.router.app.trigger('slides', data);
       });
       this.socket.on('snext', function(data) {
         console.log("snext received");
-        return _this.router.appView.trigger('newSlide', data);
+        return _this.router.app.trigger('newSlide', data);
       });
       this.socket.on('sremove', function(data) {
         console.log("remove ask received");
-        return _this.router.appView.trigger('sremove', data);
+        return _this.router.app.trigger('sremove', data);
       });
       this.socket.on('sreset', function(data) {
         console.log("reseting");
         localStorage.clear();
         $('#SlideList').empty();
-        return _this.router.appView.trigger('reseting', data);
+        return _this.router.app.trigger('reseting', data);
       });
       this.socket.on('connect', function(data) {
-        return _this.router.appView.trigger('ServerConnection', data);
+        return _this.router.app.trigger('ServerConnection', data);
       });
       return this.connect();
     };

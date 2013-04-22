@@ -24,7 +24,6 @@ define [
         @connect()
 
       @router.on 'confRoute', (data)=>
-        console.log 'app confRoute id org choosed: ', data
         @socket.emit 'organisationChoosed', data
       
       @router.on 'slideRoute', (data)=>
@@ -33,35 +32,35 @@ define [
 
       @socket.on 'organisations', (data)=>
         console.log 'app organisations recieved: ', data
-        @router.appView.trigger "organisations", data
+        @router.app.trigger "organisations", data
 
       @socket.on 'conferences', (data)=>
         console.log "app confList received", data
-        @router.appView.trigger 'conferences', data
+        @router.app.trigger 'conferences', data
     
 
       @socket.on 'slides', (data)=>
         console.log 'app slides received', data
-        @router.appView.trigger 'slides', data
+        @router.app.trigger 'slides', data
 
 
       @socket.on 'snext', (data) =>
         console.log "snext received"
-        @router.appView.trigger 'newSlide', data
+        @router.app.trigger 'newSlide', data
 
       @socket.on 'sremove', (data)=>
         console.log "remove ask received"
-        @router.appView.trigger 'sremove', data
+        @router.app.trigger 'sremove', data
 
     
       @socket.on 'sreset', (data) =>
         console.log "reseting"
         localStorage.clear()
         $('#SlideList').empty()
-        @router.appView.trigger 'reseting', data
+        @router.app.trigger 'reseting', data
 
       @socket.on 'connect' , (data)=>
-        @router.appView.trigger 'ServerConnection', data
+        @router.app.trigger 'ServerConnection', data
 
       @connect()
 

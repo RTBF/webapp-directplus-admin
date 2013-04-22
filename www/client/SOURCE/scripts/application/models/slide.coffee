@@ -6,11 +6,6 @@ define [
 
     class Slide extends Backbone.Model
 
-      defaults: 
-        id: '???'
-        conf: 'none'
-        title : 'empty Slide'
-        description: 'no description'
      
       constructor: (aSlide)->
         super aSlide

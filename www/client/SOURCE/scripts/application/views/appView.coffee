@@ -81,7 +81,7 @@ define [
 
       render: ()-> 
         @$el.html @template()
-        @
+        #@
 
       precedent: ()->
         console.log @slides.position
@@ -315,9 +315,8 @@ define [
         $('.slides').fadeIn()
         console.log "Mode navigation?: ", @navigationMode
         console.log  "ma position: ", @slides.position
-
+        
        
-
       last: ()->
         $('.new').removeClass('new').addClass('far-future')
         $('.far-future').hide()

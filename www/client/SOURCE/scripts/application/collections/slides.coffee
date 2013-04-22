@@ -13,14 +13,3 @@ define [
 
     localStorage: new Backbonels "slidesStore"
     conf: null
-
-  
-
-     
-      
-
-
-
-
-
-  

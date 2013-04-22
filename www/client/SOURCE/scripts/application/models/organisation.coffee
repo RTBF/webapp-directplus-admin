@@ -1,19 +1,35 @@
 define [
   'jquery'
   'backbone'
-  'application/views/organisationView'
-  ],($,Backbone,OrganisationView)->
+  'application/models/conference'
+  'application/collections/conferences'
+  ],($,Backbone,Conference,Conferences)->
 
     class Organisation extends Backbone.Model
 
       defaults:
-        _id :' ' 
-        name : 'noname'
+        conferencesC: new Conferences()
 
      
       constructor: (aOrg)->
         super aOrg
          # ...
+
+      initialize:()->
+        @on 'conferences', (data)->
+          @restore data
+
+      restore:(data)->
+        @get('conferencesC').reset()
+        len = data.length - 1
+        for x in [0..len]
+          conference = new Conference data[x]
+          @get('conferencesC').add conference
+        @trigger 'change'
+        
+     
+
+
 
   
 

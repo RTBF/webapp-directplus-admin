@@ -83,8 +83,7 @@ define(['jquery', 'backbone', 'application/models/slide', 'application/views/sli
     };
 
     appView.prototype.render = function() {
-      this.$el.html(this.template());
-      return this;
+      return this.$el.html(this.template());
     };
 
     appView.prototype.precedent = function() {

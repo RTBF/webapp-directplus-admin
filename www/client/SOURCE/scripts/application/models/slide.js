@@ -8,13 +8,6 @@ define(['jquery', 'backbone', 'application/views/slideScreen'], function($, Back
 
     __extends(Slide, _super);
 
-    Slide.prototype.defaults = {
-      id: '???',
-      conf: 'none',
-      title: 'empty Slide',
-      description: 'no description'
-    };
-
     function Slide(aSlide) {
       Slide.__super__.constructor.call(this, aSlide);
     }

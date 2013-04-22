@@ -2,7 +2,7 @@
 var __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-define(['jquery', 'backbone'], function($, Backbone) {
+define(['jquery', 'backbone', 'application/views/slideScreen'], function($, Backbone, SlideView) {
   var ConferenceView;
   return ConferenceView = (function(_super) {
 
@@ -16,23 +16,36 @@ define(['jquery', 'backbone'], function($, Backbone) {
 
     ConferenceView.prototype.className = 'conf';
 
-    ConferenceView.prototype.events = {
-      'click .org-item': 'choose'
-    };
-
     ConferenceView.prototype.template = _.template($('#conf-template').html());
 
-    ConferenceView.prototype.initialize = function() {};
+    ConferenceView.prototype.initialize = function() {
+      this.listenTo(this.model, 'change', this.render);
+      return this.listenTo(this.model, 'new', this["new"]);
+    };
 
     ConferenceView.prototype.render = function() {
       this.$el.html(this.template(this.model.toJSON()));
+      if ($('#SlideList').is(':empty')) {
+        this.model.get('slidesC').each(function(slide) {
+          var slideView;
+          console.log(slide);
+          console.log(slide.get('state'));
+          slideView = new SlideView({
+            model: slide
+          });
+          return slideView.render();
+        });
+      }
       return this;
     };
 
-    ConferenceView.prototype.choose = function(evt) {
-      var txt;
-      txt = $(evt.target).attr('id');
-      return this.conference = $(evt.target).attr('id');
+    ConferenceView.prototype["new"] = function() {
+      var slide, slideView;
+      slide = this.model.get('slidesC').at(this.model.get('slidesC').length - 1);
+      slideView = new SlideView({
+        model: slide
+      });
+      return slideView["new"]();
     };
 
     return ConferenceView;

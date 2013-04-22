@@ -1,8 +1,9 @@
 define [
   'jquery'
   'backbone'
-  'application/views/appView'
-  ],($,Backbone,AppView)->
+  'application/views/mainView'
+  'application/models/app'
+  ],($,Backbone,MainView,App)->
     class Router extends Backbone.Router
       routes:
         organisation: 'organisationScreen'
@@ -19,32 +20,35 @@ define [
 
       initialize:()->
         @trigger 'orgRoute'
-        @appView = new AppView()
+        @app = new App()
+
+        @mainView = new MainView
+          model:  @app
+        
         @on 'route:organisationScreen',()->
-          $('.slides').fadeOut()
-          
-          $('.confBlock').addClass('onhideright').removeClass('onshow')
-          $('.organisationsBlock').addClass('onshow').removeClass('onhideleft')
+          $('.slides').fadeOut() 
+          $('.confBlock').removeClass('onshow')
+          $('.organisationsBlock').addClass('onshow')
             
 
         @on 'route:conferenceScreen',()->
           $('.slides').fadeOut()
-          $('.organisationsBlock').addClass('onhideleft').removeClass('onshow')
-          $('.confBlock').fadeIn ()->
-            $('.confBlock').addClass('onshow').removeClass('onhideright')
+          $('.organisationsBlock').removeClass('onshow')
+          $('.confBlock').show ()->
+            $('.confBlock').addClass('onshow')
             
 
         @on 'route:slideScreen', ()->
-          $('.organisationsBlock').removeClass('onshow').addClass('onhideleft')
+          $('.organisationsBlock').removeClass('onshow')
           $('.confBlock').fadeOut ()->
             $('.slides').fadeIn()
           
         
-        @appView.on 'organisationChoosed', (data)=>
+        @mainView.on 'organisationChoosed', (data)=>
           console.log 'router organisation choosed: ', data
           @trigger 'confRoute', data
 
-        @appView.on 'conferenceChoosed', (data)=>
+        @mainView.on 'conferenceChoosed', (data)=>
           console.log 'router conference choosed: ', data
           @trigger 'slideRoute', data
                
