@@ -25,23 +25,20 @@ define(['jquery', 'backbone', 'application/views/organisationView'], function($,
         _this.trigger('organisationChoosed', txt);
         return console.log("organisation choosed", txt);
       });
-      return $('#appcontainer').delegate('.conf-item', 'click ', function(e) {
+      $('#appcontainer').delegate('.conf-item', 'click ', function(e) {
         var txt;
         txt = $(e.target).attr('id');
         _this.conference = $(e.target).attr('id');
         return _this.trigger('conferenceChoosed', txt);
       });
-      /*$('#suivant').click (e)=>
-        e.preventDefault()
-        @suivant()
-        console.log "pushed next bt"
-      
-      $('#precedent').click (e)=>
-        e.preventDefault()
-        @precedent()
-        console.log "pushed previous bt"
-      */
-
+      $('#suivant').click(function(e) {
+        e.preventDefault();
+        return _this.model.trigger("next");
+      });
+      return $('#precedent').click(function(e) {
+        e.preventDefault();
+        return _this.model.trigger("previous");
+      });
     };
 
     mainView.prototype.connectNotif = function(data) {

@@ -26,8 +26,17 @@ define(['jquery', 'backbone', 'application/collections/organisations', 'applicat
       this.on('slides', function(data) {
         return this.restoreSlides(data);
       });
-      return this.on('newSlide', function(data) {
+      this.on('newSlide', function(data) {
         return this.conference.trigger('newSlide', data);
+      });
+      this.on('next', function() {
+        return this.conference.trigger('next');
+      });
+      this.on('previous', function() {
+        return this.conference.trigger('previous');
+      });
+      return this.on('sremove', function(data) {
+        return this.conference.trigger('sremove', data);
       });
     };
 

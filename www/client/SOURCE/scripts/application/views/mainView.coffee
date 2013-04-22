@@ -25,15 +25,13 @@ define [
           @conference = $(e.target).attr('id')
           @trigger 'conferenceChoosed', txt
 
-        ###$('#suivant').click (e)=>
+        $('#suivant').click (e)=>
           e.preventDefault()
-          @suivant()
-          console.log "pushed next bt"
+          @model.trigger "next"
         
         $('#precedent').click (e)=>
           e.preventDefault()
-          @precedent()
-          console.log "pushed previous bt"###
+          @model.trigger "previous"
 
 
       connectNotif : (data)->

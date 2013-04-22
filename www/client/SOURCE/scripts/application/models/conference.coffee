@@ -16,12 +16,19 @@ define [
 
       initialize:()->
         @navMode = false
-        @on 'slides', (data)->
+        @on 'slides', (data)=>
           @restore data
-        @on 'newSlide', (data)->
+        @on 'newSlide', (data)=>
           @newSlide data
+        @on 'next', ()=>
+          @next()
+        @on 'previous', ()=>
+          @previous()
+        @on 'sremove',(data)=>
+          @remove(data) 
 
       restore: (data)->
+        @navMode = false
         console.log "j'ai été restaurement"
         console.log @get('slidesC')
         @get('slidesC').fetch()
@@ -90,7 +97,167 @@ define [
 
         @trigger 'new'
 
-  
 
-   
-  
+      next:()->
+        slideff = @get('slidesC').where state:'current'
+        index = @get('slidesC').indexOf slideff[0]
+        if index < @get('slidesC').length-1
+          i= index
+          max = index
+          min = index-1
+          while (max< @get('slidesC').length && max < index+5 )
+            slidem = @get('slidesC').at(max)
+            switch max
+              when index
+                slidem.set 'state', 'past'
+              when index+1 
+                slidem.set 'state', 'current'
+              when index+2
+                slidem.set 'state', 'future'
+              when index+3 
+                slidem.set 'state', 'far-future'
+              when index+4 
+                slidem.set 'state', 'out'
+            max++
+
+          while (min>=0 && min > index-3)
+            slidem = @get('slidesC').at(min)
+            switch min
+              when index-1
+                slidem.set 'state', 'far-past'
+              when index-2
+                slidem.set 'state', 'out'
+            min--
+        if index+1 is @get('slidesC').length-1
+          @navMode = false
+        console.log @navMode
+
+      previous:()->
+        slideff = @get('slidesC').where state:'current'
+        index = @get('slidesC').indexOf slideff[0]
+        if index > 0
+          i = index
+          max = index
+          min = index-1
+          console.log "le i vaut", i
+          while ((max<@get('slidesC').length) && (max<index+3))
+            slidem = @get('slidesC').at(max)
+            console.log max
+            switch max
+              when i
+                slidem.set 'state', 'future'
+              when i+1
+                slidem.set 'state', 'far-future'
+              when i+2
+                slidem.set 'state', 'out'
+            max++
+            
+            
+          i = index-1
+          console.log min
+          while ((min>=0) && (min > index-4))
+            slidem = @get('slidesC').at(min)
+            console.log "min vaut", min
+            switch min
+              when i
+                slidem.set 'state', 'current'
+              when i-1
+                slidem.set 'state', 'past'
+              when i-2
+                slidem.set 'state', 'far-past'
+              when i-3
+                slidem.set 'state', 'out'
+            min--
+        @navMode = true  
+        console.log @navMode  
+        console.log @get('slidesC')
+
+      remove:(data)->
+        slideff = @get('slidesC').where state:'current'
+        currentPos = @get('slidesC').indexOf slideff[0]
+        console.log "current pos", currentPos
+        obj = $.parseJSON data.JsonData
+        slideToRemove = @get('slidesC').get(obj.id)
+        state = slideToRemove.get("state")
+        removePos= @get('slidesC').indexOf slideToRemove
+        @get('slidesC').get(obj.id).set 'state', 'removed'
+        @get('slidesC').localStorage.destroy(@get('slidesC').get(obj.id))
+        @get('slidesC').remove @get('slidesC').get(obj.id)
+
+        if state is 'current'
+          if @navMode 
+            taille = @get('slidesC').length
+            max = currentPos
+            while (max<taille && max<currentPos+4)
+              slidem = @get('slidesC').at(max)
+              switch max
+                when currentPos
+                  slidem.set 'state', 'current'
+                when currentPos+1
+                  slidem.set 'state', 'future'
+                when currentPos+2
+                  slidem.set 'state', 'far-future'
+                 when currentPos+3
+                  slidem.set 'state', 'out'
+              max++
+            if @get('slidesC').at(@get('slidesC').length-1).get('state') is "current"
+              @navMode = false  
+
+          else       
+            currentPos = currentPos-1
+            min = currentPos
+            while ((min>=0) && (min > currentPos-4))
+              slidem = @get('slidesC').at(min)
+              switch min
+                when currentPos
+                  slidem.set 'state', 'current'
+                when currentPos-1
+                  slidem.set 'state', 'past'
+                when currentPos-2
+                  slidem.set 'state', 'far-past'
+                when currentPos-3
+                  slidem.set 'state', 'out'
+              min--
+      
+        else
+          if removePos>currentPos && removePos<currentPos+3
+            console.log 'je suis au dessus du current'
+            taille = @get('slidesC').length
+            max = currentPos+1
+            while (max<taille && max<currentPos+4)
+              slidem = @get('slidesC').at(max)
+              switch max
+                when currentPos+1
+                  slidem.set 'state', 'future'
+                when currentPos+2
+                  slidem.set 'state', 'far-future'
+                when currentPos+3
+                  slidem.set 'state', 'out'
+              max++
+          else
+            if removePos<currentPos && removePos>currentPos-3
+              console.log "je suis en dessous du current"
+              currentPos=currentPos-1
+              min = currentPos-1
+              while ((min>=0) && (min > currentPos-3))
+                slidem = @get('slidesC').at(min)
+                console.log "min vaut", min
+                switch min
+                  when currentPos-1
+                    slidem.set 'state', 'past'
+                  when currentPos-2
+                    slidem.set 'state', 'far-past'
+                  when currentPos-3
+                    slidem.set 'state', 'out'
+                min--
+
+        #@get('slidesC').fetch()
+
+
+          
+
+
+
+
+
+

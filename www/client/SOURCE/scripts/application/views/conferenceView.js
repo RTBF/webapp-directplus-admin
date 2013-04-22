@@ -12,6 +12,11 @@ define(['jquery', 'backbone', 'application/views/slideScreen'], function($, Back
       return ConferenceView.__super__.constructor.apply(this, arguments);
     }
 
+    ConferenceView.prototype.events = {
+      'click #suivant': 'suivant',
+      'click #precedent': 'precedent'
+    };
+
     ConferenceView.prototype.tagName = 'li';
 
     ConferenceView.prototype.className = 'conf';
@@ -25,6 +30,7 @@ define(['jquery', 'backbone', 'application/views/slideScreen'], function($, Back
 
     ConferenceView.prototype.render = function() {
       this.$el.html(this.template(this.model.toJSON()));
+      $('#SlideList').children().remove();
       if ($('#SlideList').is(':empty')) {
         this.model.get('slidesC').each(function(slide) {
           var slideView;
@@ -45,7 +51,23 @@ define(['jquery', 'backbone', 'application/views/slideScreen'], function($, Back
       slideView = new SlideView({
         model: slide
       });
-      return slideView["new"]();
+      slide = this.model.get('slidesC').where({
+        state: 'future'
+      });
+      if (slide[0]) {
+        return slideView.render();
+      } else {
+        console.log("future doesn't exist");
+        return slideView["new"]();
+      }
+    };
+
+    ConferenceView.prototype.suivant = function() {
+      return console.log("j'ai cliqué sur le suivant");
+    };
+
+    ConferenceView.prototype.precedent = function() {
+      return console.log("j'ai cliqué sur le precedent");
     };
 
     return ConferenceView;

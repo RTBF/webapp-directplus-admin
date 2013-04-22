@@ -37,7 +37,10 @@ define(['jquery', 'backbone', 'application/views/conferenceView'], function($, B
       }
       $(modelId).parent().removeClass().addClass("slide").addClass(this.model.get('state'));
       if (this.model.get('state') === 'out') {
-        return $(modelId).parent().remove();
+        $(modelId).parent().remove();
+      }
+      if (this.model.get('state') === 'removed') {
+        return $(modelId).parent().slideUp();
       }
     };
 

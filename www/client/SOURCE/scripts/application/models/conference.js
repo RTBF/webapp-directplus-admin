@@ -17,17 +17,28 @@ define(['jquery', 'backbone', 'application/collections/slides', 'application/mod
     }
 
     Conference.prototype.initialize = function() {
+      var _this = this;
       this.navMode = false;
       this.on('slides', function(data) {
-        return this.restore(data);
+        return _this.restore(data);
       });
-      return this.on('newSlide', function(data) {
-        return this.newSlide(data);
+      this.on('newSlide', function(data) {
+        return _this.newSlide(data);
+      });
+      this.on('next', function() {
+        return _this.next();
+      });
+      this.on('previous', function() {
+        return _this.previous();
+      });
+      return this.on('sremove', function(data) {
+        return _this.remove(data);
       });
     };
 
     Conference.prototype.restore = function(data) {
       var len, max, obj, slide, slideLen, taille, x, _i;
+      this.navMode = false;
       console.log("j'ai été restaurement");
       console.log(this.get('slidesC'));
       this.get('slidesC').fetch();
@@ -109,6 +120,215 @@ define(['jquery', 'backbone', 'application/collections/slides', 'application/mod
       this.get('slidesC').fetch;
       console.log(this.get('slidesC'));
       return this.trigger('new');
+    };
+
+    Conference.prototype.next = function() {
+      var i, index, max, min, slideff, slidem;
+      slideff = this.get('slidesC').where({
+        state: 'current'
+      });
+      index = this.get('slidesC').indexOf(slideff[0]);
+      if (index < this.get('slidesC').length - 1) {
+        i = index;
+        max = index;
+        min = index - 1;
+        while (max < this.get('slidesC').length && max < index + 5) {
+          slidem = this.get('slidesC').at(max);
+          switch (max) {
+            case index:
+              slidem.set('state', 'past');
+              break;
+            case index + 1:
+              slidem.set('state', 'current');
+              break;
+            case index + 2:
+              slidem.set('state', 'future');
+              break;
+            case index + 3:
+              slidem.set('state', 'far-future');
+              break;
+            case index + 4:
+              slidem.set('state', 'out');
+          }
+          max++;
+        }
+        while (min >= 0 && min > index - 3) {
+          slidem = this.get('slidesC').at(min);
+          switch (min) {
+            case index - 1:
+              slidem.set('state', 'far-past');
+              break;
+            case index - 2:
+              slidem.set('state', 'out');
+          }
+          min--;
+        }
+      }
+      if (index + 1 === this.get('slidesC').length - 1) {
+        this.navMode = false;
+      }
+      return console.log(this.navMode);
+    };
+
+    Conference.prototype.previous = function() {
+      var i, index, max, min, slideff, slidem;
+      slideff = this.get('slidesC').where({
+        state: 'current'
+      });
+      index = this.get('slidesC').indexOf(slideff[0]);
+      if (index > 0) {
+        i = index;
+        max = index;
+        min = index - 1;
+        console.log("le i vaut", i);
+        while ((max < this.get('slidesC').length) && (max < index + 3)) {
+          slidem = this.get('slidesC').at(max);
+          console.log(max);
+          switch (max) {
+            case i:
+              slidem.set('state', 'future');
+              break;
+            case i + 1:
+              slidem.set('state', 'far-future');
+              break;
+            case i + 2:
+              slidem.set('state', 'out');
+          }
+          max++;
+        }
+        i = index - 1;
+        console.log(min);
+        while ((min >= 0) && (min > index - 4)) {
+          slidem = this.get('slidesC').at(min);
+          console.log("min vaut", min);
+          switch (min) {
+            case i:
+              slidem.set('state', 'current');
+              break;
+            case i - 1:
+              slidem.set('state', 'past');
+              break;
+            case i - 2:
+              slidem.set('state', 'far-past');
+              break;
+            case i - 3:
+              slidem.set('state', 'out');
+          }
+          min--;
+        }
+      }
+      this.navMode = true;
+      console.log(this.navMode);
+      return console.log(this.get('slidesC'));
+    };
+
+    Conference.prototype.remove = function(data) {
+      var currentPos, max, min, obj, removePos, slideToRemove, slideff, slidem, state, taille, _results, _results1, _results2;
+      slideff = this.get('slidesC').where({
+        state: 'current'
+      });
+      currentPos = this.get('slidesC').indexOf(slideff[0]);
+      console.log("current pos", currentPos);
+      obj = $.parseJSON(data.JsonData);
+      slideToRemove = this.get('slidesC').get(obj.id);
+      state = slideToRemove.get("state");
+      removePos = this.get('slidesC').indexOf(slideToRemove);
+      this.get('slidesC').get(obj.id).set('state', 'removed');
+      this.get('slidesC').localStorage.destroy(this.get('slidesC').get(obj.id));
+      this.get('slidesC').remove(this.get('slidesC').get(obj.id));
+      if (state === 'current') {
+        if (this.navMode) {
+          taille = this.get('slidesC').length;
+          max = currentPos;
+          while (max < taille && max < currentPos + 4) {
+            slidem = this.get('slidesC').at(max);
+            switch (max) {
+              case currentPos:
+                slidem.set('state', 'current');
+                break;
+              case currentPos + 1:
+                slidem.set('state', 'future');
+                break;
+              case currentPos + 2:
+                slidem.set('state', 'far-future');
+                break;
+              case currentPos + 3:
+                slidem.set('state', 'out');
+            }
+            max++;
+          }
+          if (this.get('slidesC').at(this.get('slidesC').length - 1).get('state') === "current") {
+            return this.navMode = false;
+          }
+        } else {
+          currentPos = currentPos - 1;
+          min = currentPos;
+          _results = [];
+          while ((min >= 0) && (min > currentPos - 4)) {
+            slidem = this.get('slidesC').at(min);
+            switch (min) {
+              case currentPos:
+                slidem.set('state', 'current');
+                break;
+              case currentPos - 1:
+                slidem.set('state', 'past');
+                break;
+              case currentPos - 2:
+                slidem.set('state', 'far-past');
+                break;
+              case currentPos - 3:
+                slidem.set('state', 'out');
+            }
+            _results.push(min--);
+          }
+          return _results;
+        }
+      } else {
+        if (removePos > currentPos && removePos < currentPos + 3) {
+          console.log('je suis au dessus du current');
+          taille = this.get('slidesC').length;
+          max = currentPos + 1;
+          _results1 = [];
+          while (max < taille && max < currentPos + 4) {
+            slidem = this.get('slidesC').at(max);
+            switch (max) {
+              case currentPos + 1:
+                slidem.set('state', 'future');
+                break;
+              case currentPos + 2:
+                slidem.set('state', 'far-future');
+                break;
+              case currentPos + 3:
+                slidem.set('state', 'out');
+            }
+            _results1.push(max++);
+          }
+          return _results1;
+        } else {
+          if (removePos < currentPos && removePos > currentPos - 3) {
+            console.log("je suis en dessous du current");
+            currentPos = currentPos - 1;
+            min = currentPos - 1;
+            _results2 = [];
+            while ((min >= 0) && (min > currentPos - 3)) {
+              slidem = this.get('slidesC').at(min);
+              console.log("min vaut", min);
+              switch (min) {
+                case currentPos - 1:
+                  slidem.set('state', 'past');
+                  break;
+                case currentPos - 2:
+                  slidem.set('state', 'far-past');
+                  break;
+                case currentPos - 3:
+                  slidem.set('state', 'out');
+              }
+              _results2.push(min--);
+            }
+            return _results2;
+          }
+        }
+      }
     };
 
     return Conference;

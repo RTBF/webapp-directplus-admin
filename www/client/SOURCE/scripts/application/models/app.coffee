@@ -20,6 +20,12 @@ define [
           @restoreSlides data
         @on 'newSlide', (data)->
           @conference.trigger 'newSlide', data
+        @on 'next', ()->
+          @conference.trigger 'next'
+        @on 'previous', ()->
+          @conference.trigger 'previous'
+        @on 'sremove',(data)->
+          @conference.trigger 'sremove', data
 
 
       restore:(data)->

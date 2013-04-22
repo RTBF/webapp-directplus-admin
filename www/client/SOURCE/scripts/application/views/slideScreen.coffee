@@ -29,6 +29,8 @@ define [
         $(modelId).parent().removeClass().addClass("slide").addClass(@model.get('state'))
         if @model.get('state') is 'out'
           $(modelId).parent().remove()
+        if @model.get('state') is 'removed'
+          $(modelId).parent().slideUp()
         #@
       
       new:()->
