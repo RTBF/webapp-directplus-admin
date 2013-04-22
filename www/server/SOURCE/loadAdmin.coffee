@@ -14,9 +14,9 @@ confDB = mongoose.connection
 confDB.on 'error', console.error.bind(console, 'connection error:')
 
 confDB.once 'open', ()->
-  console.log "I AM CONNECTED"
 
-  ### AdminSchema = Schema 
+
+  ###AdminSchema = Schema 
     firstname: String
     lastname: String
     email: 
@@ -27,8 +27,8 @@ confDB.once 'open', ()->
   
   Admin = mongoose.model 'Admin', AdminSchema , 'admins'###
 
-
-  ###Seba = new Admin
+  ###
+  Seba = new Admin
     firstname: 'Sebastien' 
     lastname: 'Barbeiri'
     email: 'seba@rtbf.com'
@@ -39,9 +39,9 @@ confDB.once 'open', ()->
       console.log err
     else
       console.log 'Seba as admin added'
-  ###
+  
 
-  ###
+  
   RTBF = new Organisation
     name: 'RTBF'
 
@@ -51,8 +51,8 @@ confDB.once 'open', ()->
       console.log err
     else
       console.log 'RTBF as Organisation added'
-  ###
-  ###Organisation.findOne name: 'RTBF' , (err, organisation)=>
+  
+  Organisation.findOne name: 'RTBF' , (err, organisation)=>
     
     SansChichiConf = new Conference
       _orga: organisation._id
@@ -93,14 +93,14 @@ confDB.once 'open', ()->
   Slide.findOne Order:1 , (err, result)->
     console.log "into Find One"
     console.log result
-  ###
+  
 
-  ###Organisation
+  Organisation
   .findOne 
     name: 'RTBF'
   .populate('conferences')
   .exec (err, organisation)->
-    console.log organisation###
+    console.log organisation
   test= ()=>
     console.log "Testing"
     orga = null
@@ -126,24 +126,24 @@ confDB.once 'open', ()->
           console.log " "
           console.log "admins:", admins[x]
           #admins[x].remove (err)->
-            #console.log "can't remove"
+            #console.log "can't remove"###
         
 
-    Slide.find (err, slides) ->
-      if (err)
-        console.log "find erreur man"
-      #console.log slides
-      if slides.length > 0 
-        len = slides.length - 1
-        for x in [0..len]
-          console.log " "
-          console.log "Slides: ", slides[x]
-          #js =  JSON.stringify slides[x]
-          #console.log js
-          #slides[x].remove (err)->
-            #console.log "can't remove"
+  Slide.find (err, slides) ->
+    if (err)
+      console.log "find erreur man"
+    #console.log slides
+    if slides.length > 0 
+      len = slides.length - 1
+      for x in [0..len]
+        console.log " "
+        console.log "Slides: ", slides[x]
+        #js =  JSON.stringify slides[x]
+        #console.log js
+        #slides[x].remove (err)->
+          #console.log "can't remove"
 
-    Admin.find (err, admins) ->
+    ###Admin.find (err, admins) ->
       if (err)
         console.log "find erreur man"
       if admins.length > 0 
@@ -164,97 +164,99 @@ confDB.once 'open', ()->
           console.log "Organisation: " , organisations[x]
           #organisations[x].remove (err)->
             #console.log "can't remove"
+    
 
 
-    Slide.update 
-      Order: 1 
-    , 
-      Sent: true
-    , 
-      multi:true
-    , 
-      (err, numberAffected, raw)->
-        #
-    Slide.update 
-      Order: 2 
-    , 
-      Sent: true
-    , 
-      multi:true
-    , 
-      (err, numberAffected, raw)->
-        #
-    Slide.update 
-      Order: 3 
-    , 
-      Sent: true
-    , 
-      multi:true
-    , 
-      (err, numberAffected, raw)->
-        #
-    Slide.update 
-      Order: 4 
-    , 
-      Sent: true
-    , 
-      multi:true
-    , 
-      (err, numberAffected, raw)->
-        #
-    Slide.update 
-      Order: 5 
-    , 
-      Sent: true
-    , 
-      multi:true
-    , 
-      (err, numberAffected, raw)->
-        #
-    Slide.update 
-      Order: 6 
-    , 
-      Sent: true
-    , 
-      multi:true
-    , 
-      (err, numberAffected, raw)->
-        #
+  Slide.update 
+    Sent: false 
+  , 
+    Order: 0
+  , 
+    multi:true
+  , 
+    (err, numberAffected, raw)->
+      #
+        
+  Slide.update 
+    Order: 2 
+  , 
+    Sent: true
+  , 
+    multi:true
+  , 
+    (err, numberAffected, raw)->
+      #
+  Slide.update 
+    Order: 3 
+  , 
+    Sent: true
+  , 
+    multi:true
+  , 
+    (err, numberAffected, raw)->
+      #
+  Slide.update 
+    Order: 4 
+  , 
+    Sent: true
+  , 
+    multi:true
+  , 
+    (err, numberAffected, raw)->
+      #
+  Slide.update 
+    Order: 5 
+  , 
+    Sent: true
+  , 
+    multi:true
+  , 
+    (err, numberAffected, raw)->
+      #
+  Slide.update 
+    Order: 6 
+  , 
+    Sent: true
+  , 
+    multi:true
+  , 
+    (err, numberAffected, raw)->
+      #
 
 
-    Conference.find (err, conferences) ->
-      if (err)
-        console.log "find erreur man"
-      if conferences.length > 0 
-        len = conferences.length - 1
-        for x in [0..len]
-          console.log " "
-          console.log "conferences: ", conferences[x]
-          #conferences[x].remove (err)->
-            #console.log "can't remove"
+  Conference.find (err, conferences) ->
+    if (err)
+      console.log "find erreur man"
+    if conferences.length > 0 
+      len = conferences.length - 1
+      for x in [0..len]
+        console.log " "
+        console.log "conferences: ", conferences[x]
+        #conferences[x].remove (err)->
+          #console.log "can't remove"
 
-    organisation = null
-    Admin
-    .findOne 
-      _id: '515c1b1950e5c6a674000001'
-      (err, admin)=>
-        console.log "callback launched"
-        if err
-          console.log "error while trying to find the organisations of this admin"
-    .populate('organisations')
-    .exec (err, admin)=>
-      organisation = JSON.stringify admin.organisations
-      console.log "premier log:" , organisation
-    console.log "deuxieme log:" , organisation
+  organisation = null
+  Admin
+  .findOne 
+    _id: '515c1b1950e5c6a674000001'
+    (err, admin)=>
+      console.log "callback launched"
+      if err
+        console.log "error while trying to find the organisations of this admin"
+  .populate('organisations')
+  .exec (err, admin)=>
+    organisation = JSON.stringify admin.organisations
+    console.log "premier log:" , organisation
+  console.log "deuxieme log:" , organisation
 
-  test();
-
-
+test();
 
 
 
 
-  ###
+
+
+  
   SansChichiConf = new Conference
     _orga: ''
     name: String
@@ -264,10 +266,10 @@ confDB.once 'open', ()->
       console.log "saving error man"
       console.log err
     else
-      console.log 'Sans Chichi as Conférence added'###
+      console.log 'Sans Chichi as Conférence added'
 
 
-  ###Conference
+  Conference
   .findOne 
     name: "Conférence Sans ChiChi"
   .populate('_orga')

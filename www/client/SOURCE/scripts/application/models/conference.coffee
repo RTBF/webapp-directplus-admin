@@ -168,7 +168,8 @@ define [
               when i-3
                 slidem.set 'state', 'out'
             min--
-        @navMode = true  
+          @navMode = true  
+       
         console.log @navMode  
         console.log @get('slidesC')
 

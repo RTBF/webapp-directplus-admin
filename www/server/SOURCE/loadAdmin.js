@@ -22,10 +22,7 @@ confDB = mongoose.connection;
 confDB.on('error', console.error.bind(console, 'connection error:'));
 
 confDB.once('open', function() {
-  var test,
-    _this = this;
-  console.log("I AM CONNECTED");
-  /* AdminSchema = Schema 
+  /*AdminSchema = Schema 
     firstname: String
     lastname: String
     email: 
@@ -37,20 +34,21 @@ confDB.once('open', function() {
   Admin = mongoose.model 'Admin', AdminSchema , 'admins'
   */
 
-  /*Seba = new Admin
-    firstname: 'Sebastien' 
-    lastname: 'Barbeiri'
-    email: 'seba@rtbf.com'
-  
-  Seba.save (err, fabriceData)->
-    if err
-      console.log "saving error man"
-      console.log err
-    else
-      console.log 'Seba as admin added'
-  */
-
   /*
+    Seba = new Admin
+      firstname: 'Sebastien' 
+      lastname: 'Barbeiri'
+      email: 'seba@rtbf.com'
+  
+    Seba.save (err, fabriceData)->
+      if err
+        console.log "saving error man"
+        console.log err
+      else
+        console.log 'Seba as admin added'
+    
+  
+    
     RTBF = new Organisation
       name: 'RTBF'
   
@@ -60,243 +58,249 @@ confDB.once('open', function() {
         console.log err
       else
         console.log 'RTBF as Organisation added'
-  */
-
-  /*Organisation.findOne name: 'RTBF' , (err, organisation)=>
     
-    SansChichiConf = new Conference
-      _orga: organisation._id
-      name: "Conférence Sans ChiChi"
+    Organisation.findOne name: 'RTBF' , (err, organisation)=>
+      
+      SansChichiConf = new Conference
+        _orga: organisation._id
+        name: "Conférence Sans ChiChi"
   
-    SansChichiConf.save (err, SansChichiConf)->
-      if err
-        console.log "saving error man"
-        console.log err
-      else
-        console.log 'Sans Chichi as Conférence added'
-  
-  Organisation.findOne name: 'RTBF' , (err, organisation)=>
-    Conference.findOne name: "Conférence Sans ChiChi" , (err, conference)=>
-      console.log "oraganisation found" , organisation
-      console.log "conference found" , conference
-      organisation.conferences.push conference
-      organisation.save (err, organisation)->
+      SansChichiConf.save (err, SansChichiConf)->
         if err
           console.log "saving error man"
+          console.log err
+        else
+          console.log 'Sans Chichi as Conférence added'
   
-  Organisation
-  .findOne 
-    name: 'RTBF'
-  .populate('conferences')
-  .exec (err, organisation)->
-    console.log 'the Organisation', organisation
+    Organisation.findOne name: 'RTBF' , (err, organisation)=>
+      Conference.findOne name: "Conférence Sans ChiChi" , (err, conference)=>
+        console.log "oraganisation found" , organisation
+        console.log "conference found" , conference
+        organisation.conferences.push conference
+        organisation.save (err, organisation)->
+          if err
+            console.log "saving error man"
   
-  slide = new Slide 
-    Type: 'text'
-    Title: 'a tittle'
-    Description: "a description"
-    Order: 1
-    JsonData: "{ text : 'my texte'}"
-  
-  slide.save (err, slide) ->
-    console.log "into Saving"
-  Slide.findOne Order:1 , (err, result)->
-    console.log "into Find One"
-    console.log result
-  */
-
-  /*Organisation
-  .findOne 
-    name: 'RTBF'
-  .populate('conferences')
-  .exec (err, organisation)->
-    console.log organisation
-  */
-
-  test = function() {
-    var orga, organisation;
-    console.log("Testing");
-    orga = null;
-    Admin.findOne({
-      firstname: 'Fabrice'
-    }, function(err, admin) {
-      if (err) {
-        return console.log("error while trying to find the organisations of this admin");
-      }
-    }).populate('organisations').exec(function(err, admin) {
-      orga = admin.organisations;
-      return console.log("Testing assignation", JSON.stringify(orga));
-    });
-    Admin.find(function(err, admins) {
-      var len, x, _i, _results;
-      if (err) {
-        console.log("find erreur man");
-      }
-      if (admins.length > 0) {
-        len = admins.length - 1;
-        _results = [];
-        for (x = _i = 0; 0 <= len ? _i <= len : _i >= len; x = 0 <= len ? ++_i : --_i) {
-          console.log(" ");
-          _results.push(console.log("admins:", admins[x]));
-        }
-        return _results;
-      }
-    });
-    Slide.find(function(err, slides) {
-      var len, x, _i, _results;
-      if (err) {
-        console.log("find erreur man");
-      }
-      if (slides.length > 0) {
-        len = slides.length - 1;
-        _results = [];
-        for (x = _i = 0; 0 <= len ? _i <= len : _i >= len; x = 0 <= len ? ++_i : --_i) {
-          console.log(" ");
-          _results.push(console.log("Slides: ", slides[x]));
-        }
-        return _results;
-      }
-    });
-    Admin.find(function(err, admins) {
-      var len, x, _i, _results;
-      if (err) {
-        console.log("find erreur man");
-      }
-      if (admins.length > 0) {
-        len = admins.length - 1;
-        _results = [];
-        for (x = _i = 0; 0 <= len ? _i <= len : _i >= len; x = 0 <= len ? ++_i : --_i) {
-          console.log(" ");
-          _results.push(console.log("admins:", admins[x]));
-        }
-        return _results;
-      }
-    });
-    Organisation.find(function(err, organisations) {
-      var len, x, _i, _results;
-      if (err) {
-        console.log("find erreur man");
-      }
-      if (organisations.length > 0) {
-        len = organisations.length - 1;
-        _results = [];
-        for (x = _i = 0; 0 <= len ? _i <= len : _i >= len; x = 0 <= len ? ++_i : --_i) {
-          console.log(" ");
-          _results.push(console.log("Organisation: ", organisations[x]));
-        }
-        return _results;
-      }
-    });
-    Slide.update({
+    Organisation
+    .findOne 
+      name: 'RTBF'
+    .populate('conferences')
+    .exec (err, organisation)->
+      console.log 'the Organisation', organisation
+    
+    slide = new Slide 
+      Type: 'text'
+      Title: 'a tittle'
+      Description: "a description"
       Order: 1
-    }, {
-      Sent: true
-    }, {
-      multi: true
-    }, function(err, numberAffected, raw) {});
-    Slide.update({
-      Order: 2
-    }, {
-      Sent: true
-    }, {
-      multi: true
-    }, function(err, numberAffected, raw) {});
-    Slide.update({
-      Order: 3
-    }, {
-      Sent: true
-    }, {
-      multi: true
-    }, function(err, numberAffected, raw) {});
-    Slide.update({
-      Order: 4
-    }, {
-      Sent: true
-    }, {
-      multi: true
-    }, function(err, numberAffected, raw) {});
-    Slide.update({
-      Order: 5
-    }, {
-      Sent: true
-    }, {
-      multi: true
-    }, function(err, numberAffected, raw) {});
-    Slide.update({
-      Order: 6
-    }, {
-      Sent: true
-    }, {
-      multi: true
-    }, function(err, numberAffected, raw) {});
-    Conference.find(function(err, conferences) {
-      var len, x, _i, _results;
-      if (err) {
-        console.log("find erreur man");
-      }
-      if (conferences.length > 0) {
-        len = conferences.length - 1;
-        _results = [];
-        for (x = _i = 0; 0 <= len ? _i <= len : _i >= len; x = 0 <= len ? ++_i : --_i) {
-          console.log(" ");
-          _results.push(console.log("conferences: ", conferences[x]));
-        }
-        return _results;
-      }
-    });
-    organisation = null;
-    Admin.findOne({
-      _id: '515c1b1950e5c6a674000001'
-    }, function(err, admin) {
-      console.log("callback launched");
-      if (err) {
-        return console.log("error while trying to find the organisations of this admin");
-      }
-    }).populate('organisations').exec(function(err, admin) {
-      organisation = JSON.stringify(admin.organisations);
-      return console.log("premier log:", organisation);
-    });
-    return console.log("deuxieme log:", organisation);
-  };
-  return test();
-  /*
-    SansChichiConf = new Conference
-      _orga: ''
-      name: String
+      JsonData: "{ text : 'my texte'}"
   
-    SansChichiConf.save (err, SansChichiConf)->
-      if err
-        console.log "saving error man"
-        console.log err
-      else
-        console.log 'Sans Chichi as Conférence added'
+    slide.save (err, slide) ->
+      console.log "into Saving"
+    Slide.findOne Order:1 , (err, result)->
+      console.log "into Find One"
+      console.log result
+    
+  
+    Organisation
+    .findOne 
+      name: 'RTBF'
+    .populate('conferences')
+    .exec (err, organisation)->
+      console.log organisation
+    test= ()=>
+      console.log "Testing"
+      orga = null
+  
+      Admin
+      .findOne 
+        firstname:'Fabrice'
+        (err, admin)=>
+          if err
+            console.log "error while trying to find the organisations of this admin"
+      .populate('organisations')
+      .exec (err, admin)=>
+        #console.log admin
+        orga = admin.organisations
+        console.log "Testing assignation",  JSON.stringify orga
+  
+      Admin.find (err, admins) ->
+        if (err)
+          console.log "find erreur man"
+        if admins.length > 0 
+          len = admins.length - 1
+          for x in [0..len]
+            console.log " "
+            console.log "admins:", admins[x]
+            #admins[x].remove (err)->
+              #console.log "can't remove"
   */
-
-  /*Conference
-  .findOne 
+  return Slide.find(function(err, slides) {
+    var len, x, _i, _results;
+    if (err) {
+      console.log("find erreur man");
+    }
+    if (slides.length > 0) {
+      len = slides.length - 1;
+      _results = [];
+      for (x = _i = 0; 0 <= len ? _i <= len : _i >= len; x = 0 <= len ? ++_i : --_i) {
+        console.log(" ");
+        _results.push(console.log("Slides: ", slides[x]));
+      }
+      return _results;
+    }
+    /*Admin.find (err, admins) ->
+      if (err)
+        console.log "find erreur man"
+      if admins.length > 0 
+        len = admins.length - 1
+        for x in [0..len]
+          console.log " "
+          console.log "admins:", admins[x]
+          #admins[x].remove (err)->
+            #console.log "can't remove"
+    
+    Organisation.find (err, organisations) ->
+      if (err)
+        console.log "find erreur man"
+      if organisations.length > 0 
+        len = organisations.length - 1
+        for x in [0..len]
+          console.log " "
+          console.log "Organisation: " , organisations[x]
+          #organisations[x].remove (err)->
+            #console.log "can't remove"
+    
+    
+    
+      Slide.update 
+    Sent: false 
+      , 
+    Order: 0
+      , 
+    multi:true
+      , 
+    (err, numberAffected, raw)->
+      #
+        
+      Slide.update 
+    Order: 2 
+      , 
+    Sent: true
+      , 
+    multi:true
+      , 
+    (err, numberAffected, raw)->
+      #
+      Slide.update 
+    Order: 3 
+      , 
+    Sent: true
+      , 
+    multi:true
+      , 
+    (err, numberAffected, raw)->
+      #
+      Slide.update 
+    Order: 4 
+      , 
+    Sent: true
+      , 
+    multi:true
+      , 
+    (err, numberAffected, raw)->
+      #
+      Slide.update 
+    Order: 5 
+      , 
+    Sent: true
+      , 
+    multi:true
+      , 
+    (err, numberAffected, raw)->
+      #
+      Slide.update 
+    Order: 6 
+      , 
+    Sent: true
+      , 
+    multi:true
+      , 
+    (err, numberAffected, raw)->
+      #
+    
+    
+      Conference.find (err, conferences) ->
+    if (err)
+      console.log "find erreur man"
+    if conferences.length > 0 
+      len = conferences.length - 1
+      for x in [0..len]
+        console.log " "
+        console.log "conferences: ", conferences[x]
+        #conferences[x].remove (err)->
+          #console.log "can't remove"
+    
+      organisation = null
+      Admin
+      .findOne 
+    _id: '515c1b1950e5c6a674000001'
+    (err, admin)=>
+      console.log "callback launched"
+      if err
+        console.log "error while trying to find the organisations of this admin"
+      .populate('organisations')
+      .exec (err, admin)=>
+    organisation = JSON.stringify admin.organisations
+    console.log "premier log:" , organisation
+      console.log "deuxieme log:" , organisation
+    
+    test();
+    
+    
+    
+    
+    
+    
+      
+      SansChichiConf = new Conference
+    _orga: ''
+    name: String
+    
+      SansChichiConf.save (err, SansChichiConf)->
+    if err
+      console.log "saving error man"
+      console.log err
+    else
+      console.log 'Sans Chichi as Conférence added'
+    
+    
+      Conference
+      .findOne 
     name: "Conférence Sans ChiChi"
-  .populate('_orga')
-  .exec (err, conference)->
+      .populate('_orga')
+      .exec (err, conference)->
     console.log 'the Organisation of this conf is', conference._orga.name
-  
-  
-  
-  
-   
-  Admin.find (err, admins) ->
+    
+    
+    
+    
+     
+      Admin.find (err, admins) ->
     if (err)
       console.log "find erreur man"
     console.log admins
-  
-  Organisation.find (err, organisations) ->
+    
+      Organisation.find (err, organisations) ->
     if (err)
       console.log "find erreur man"
     console.log organisations
-  
-  Conference.find (err, conferences) ->
+    
+      Conference.find (err, conferences) ->
     if (err)
       console.log "find erreur man"
     console.log "Les nouvelles conférences: " , conferences
-  */
+    */
 
+  });
 });

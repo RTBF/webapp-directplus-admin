@@ -216,8 +216,8 @@ define(['jquery', 'backbone', 'application/collections/slides', 'application/mod
           }
           min--;
         }
+        this.navMode = true;
       }
-      this.navMode = true;
       console.log(this.navMode);
       return console.log(this.get('slidesC'));
     };
