@@ -18,10 +18,11 @@ requirejs.config
       exports: '_'
     bootstrap : 
       deps: ['jquery']
+   
   wait: '5s'
 
 # require 
-require ['backbone', 'backbonels', 'jquery','application/models/application','bootstrap',],(Backbone,Backbonels,$,App) ->
+require ['backbone', 'backbonels', 'jquery','application/models/application','bootstrap'],(Backbone,Backbonels,$,App) ->
 #require ['backbone','jquery','application/models/application', 'bootstrap'],(Backbone,$,Application) ->
   $ ()->
     App = new App()

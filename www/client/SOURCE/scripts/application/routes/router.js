@@ -9,9 +9,9 @@ define(['jquery', 'backbone', 'application/views/mainView', 'application/models/
     __extends(Router, _super);
 
     Router.prototype.routes = {
-      organisation: 'organisationScreen',
-      conference: 'conferenceScreen',
-      slide: 'slideScreen',
+      'organisation': 'organisationScreen',
+      'conference/:orgid': 'conferenceScreen',
+      'slide': 'slideScreen',
       '*actions': 'organisationScreen'
     };
 
@@ -26,24 +26,6 @@ define(['jquery', 'backbone', 'application/views/mainView', 'application/models/
       this.mainView = new MainView({
         model: this.app
       });
-      this.on('route:organisationScreen', function() {
-        $('.slides').fadeOut();
-        $('.confBlock').removeClass('onshow');
-        return $('.organisationsBlock').addClass('onshow');
-      });
-      this.on('route:conferenceScreen', function() {
-        $('.slides').fadeOut();
-        $('.organisationsBlock').removeClass('onshow');
-        return $('.confBlock').show(function() {
-          return $('.confBlock').addClass('onshow');
-        });
-      });
-      this.on('route:slideScreen', function() {
-        $('.organisationsBlock').removeClass('onshow');
-        return $('.confBlock').fadeOut(function() {
-          return $('.slides').fadeIn();
-        });
-      });
       this.mainView.on('organisationChoosed', function(data) {
         console.log('router organisation choosed: ', data);
         return _this.trigger('confRoute', data);
@@ -54,6 +36,27 @@ define(['jquery', 'backbone', 'application/views/mainView', 'application/models/
       });
       Backbone.history.start();
       return console.log(" The Route Initialized");
+    };
+
+    Router.prototype.organisationScreen = function() {
+      $('.slides').fadeOut();
+      $('.confBlock').removeClass('onshow');
+      return $('.organisationsBlock').addClass('onshow');
+    };
+
+    Router.prototype.conferenceScreen = function(orgid) {
+      $('.slides').fadeOut();
+      $('.organisationsBlock').removeClass('onshow');
+      return $('.confBlock').show(function() {
+        return $('.confBlock').addClass('onshow');
+      });
+    };
+
+    Router.prototype.slideScreen = function() {
+      $('.organisationsBlock').removeClass('onshow');
+      return $('.confBlock').fadeOut(function() {
+        return $('.slides').fadeIn();
+      });
     };
 
     return Router;

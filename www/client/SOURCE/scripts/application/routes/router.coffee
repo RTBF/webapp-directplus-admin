@@ -6,9 +6,9 @@ define [
   ],($,Backbone,MainView,App)->
     class Router extends Backbone.Router
       routes:
-        organisation: 'organisationScreen'
-        conference: 'conferenceScreen'
-        slide: 'slideScreen'
+        'organisation': 'organisationScreen'
+        'conference/:orgid': 'conferenceScreen'
+        'slide': 'slideScreen'
         # default
         
         '*actions': 'organisationScreen'
@@ -23,27 +23,8 @@ define [
         @app = new App()
 
         @mainView = new MainView
-          model:  @app
-        
-        @on 'route:organisationScreen',()->
-          $('.slides').fadeOut() 
-          $('.confBlock').removeClass('onshow')
-          $('.organisationsBlock').addClass('onshow')
-            
+          model:  @app  
 
-        @on 'route:conferenceScreen',()->
-          $('.slides').fadeOut()
-          $('.organisationsBlock').removeClass('onshow')
-          $('.confBlock').show ()->
-            $('.confBlock').addClass('onshow')
-            
-
-        @on 'route:slideScreen', ()->
-          $('.organisationsBlock').removeClass('onshow')
-          $('.confBlock').fadeOut ()->
-            $('.slides').fadeIn()
-          
-        
         @mainView.on 'organisationChoosed', (data)=>
           console.log 'router organisation choosed: ', data
           @trigger 'confRoute', data
@@ -53,7 +34,30 @@ define [
           @trigger 'slideRoute', data
                
         # Tell backbone to take care of the url navigation and history
-        Backbone.history.start()
+        Backbone.history.start() #pushState: true
+    
         console.log " The Route Initialized"
+
+      organisationScreen:()->
+        $('.slides').fadeOut() 
+        $('.confBlock').removeClass('onshow')
+        $('.organisationsBlock').addClass('onshow')
+            
+
+      conferenceScreen: (orgid)->
+        #@navigate '//lol', trigger:true
+        $('.slides').fadeOut()
+        $('.organisationsBlock').removeClass('onshow')
+        $('.confBlock').show ()->
+          $('.confBlock').addClass('onshow')
+          
+
+      slideScreen: ()->
+        $('.organisationsBlock').removeClass('onshow')
+        $('.confBlock').fadeOut ()->
+          $('.slides').fadeIn()
+          
+        
+        
 
       

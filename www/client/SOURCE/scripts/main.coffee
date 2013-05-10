@@ -21,11 +21,12 @@ requirejs.config
   wait: '5s'
 
 # require 
-require ['backbone', 'backbonels', 'jquery','application/models/application','bootstrap',],(Backbone,Backbonels,$,App) ->
+require ['backbone', 'backbonels', 'jquery','application/models/application','bootstrap'],(Backbone,Backbonels,$,App,Bs) ->
 #require ['backbone','jquery','application/models/application', 'bootstrap'],(Backbone,$,Application) ->
   $ ()->
     console.log "Alors?"
     App = new App()
+
     App.init()
     console.log "launched"
 

@@ -10,6 +10,10 @@ ConferenceSchema = Schema
     type: String
     required: true
   date: Date
+  tumb: 
+    type: String
+  description:
+    type: String
   slides: [
       type: Schema.Types.ObjectId
       ref: 'Slide'

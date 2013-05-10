@@ -25,17 +25,17 @@ confDB.on('error', console.error.bind(console, 'connection error:'));
 module.exports.getOrgaListfromAdmin = getOrgaList = function(AdminId, callback) {
   var organisation;
   organisation = null;
-  console.log(_this.Admin.findOne);
-  _this.Admin.findOne({
+  return Admin.findOne({
     _id: AdminId
-  }, function(errorr, admin) {
+  }, function(err, admin) {
     if (err) {
       console.log(err);
     }
   }).populate('organisations').exec(function(err, admin) {
-    return organisation = admin.organisations;
+    var organisations;
+    organisations = admin.organisations;
+    return callback(organisations);
   });
-  return organisation;
 };
 
 module.exports.getOrgaList = getOrgaList = function(callback) {
@@ -111,7 +111,7 @@ module.exports.readSlideToSend = readSlideToSend = function(slideId, callback) {
     _id: slideId
   }, function(err, slide) {
     if (err) {
-      console.log(err);
+      console.log("voici l'erreur", err);
     }
     return callback(slide);
   });

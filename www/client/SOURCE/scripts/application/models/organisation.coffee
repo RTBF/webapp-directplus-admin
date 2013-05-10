@@ -25,7 +25,11 @@ define [
         for x in [0..len]
           conference = new Conference data[x]
           @get('conferencesC').add conference
-        @trigger 'change'
+        @trigger 'change:conferencesC'
+
+      conferenceChoosed:(id)->
+        confsFound = @get('conferencesC').where _id:id
+        @set 'conference', confsFound[0]
         
      
 

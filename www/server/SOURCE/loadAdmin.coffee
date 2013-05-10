@@ -14,9 +14,37 @@ confDB = mongoose.connection
 confDB.on 'error', console.error.bind(console, 'connection error:')
 
 confDB.once 'open', ()->
+  Admin.find (err, admins) ->
+    if (err)
+      console.log "find erreur man"
+    if admins.length > 0 
+      len = admins.length - 1
+      for x in [0..len]
+        console.log " "
+        console.log "admins:", admins[x]
+        #admins[x].remove (err)->
+          #console.log "can't remove"
+  ###slideId = '515c429aa6d8d5797b000001'
+  Slide.findOne
+    _id:slideId
+    (err, slide)=>
+      if err
+        console.log "voici l'erreur", err
+      console.log slide
+
+  d1 = new Date("May 13, 2013 11:13:00")
+  Conference.update 
+    name: 'Ciné Station'
+  , 
+    date: d1
+  , 
+    multi:true
+  , 
+    (err, numberAffected, raw)->
+      #
 
 
-  ###AdminSchema = Schema 
+  AdminSchema = Schema 
     firstname: String
     lastname: String
     email: 
@@ -126,7 +154,7 @@ confDB.once 'open', ()->
           console.log " "
           console.log "admins:", admins[x]
           #admins[x].remove (err)->
-            #console.log "can't remove"###
+            #console.log "can't remove"
         
 
   Slide.find (err, slides) ->
@@ -143,7 +171,7 @@ confDB.once 'open', ()->
         #slides[x].remove (err)->
           #console.log "can't remove"
 
-    ###Admin.find (err, admins) ->
+    Admin.find (err, admins) ->
       if (err)
         console.log "find erreur man"
       if admins.length > 0 

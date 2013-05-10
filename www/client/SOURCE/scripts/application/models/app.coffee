@@ -19,13 +19,13 @@ define [
         @on 'slides', (data)->
           @restoreSlides data
         @on 'newSlide', (data)->
-          @conference.trigger 'newSlide', data
+          @get('organisation').get('conference').trigger 'newSlide', data
         @on 'next', ()->
-          @conference.trigger 'next'
+          @get('organisation').get('conference').trigger 'next'
         @on 'previous', ()->
-          @conference.trigger 'previous'
+          @get('organisation').get('conference').trigger 'previous'
         @on 'sremove',(data)->
-          @conference.trigger 'sremove', data
+          @get('organisation').get('conference').trigger 'sremove', data
 
 
       restore:(data)->
@@ -35,30 +35,28 @@ define [
           for x in [0..len]
             organisation = new Organisation data[x]
             @get('organisations').add organisation
-          @trigger 'change'
+          @trigger 'change:organisations'
           console.log @get 'organisations'
 
       restoreConf : (data)->
         console.log data
         len = data.length - 1
+
         if len>=0
-          orgId= data[0]._orga
-          console.log orgId
-          organisationsFound = @get('organisations').where _id:orgId
-          console.log organisationsFound[0]
-          @organisation = organisationsFound[0]
-          @organisation.trigger 'conferences', data
+          @get('organisation').restore data
+
 
       restoreSlides : (data)->
         console.log data
         len = data.length - 1
         if len>=0
-          confId = data[0]._conf
-          console.log confId
-          confsFound = @organisation.get('conferencesC').where _id:confId
-          console.log confsFound[0]
-          @conference = confsFound[0]
-          @conference.trigger 'slides', data
+          @get('organisation').get('conference').restore data
+
+
+      organisationChoosed : (id)->
+        organisationsFound = @get('organisations').where _id:id
+        console.log organisationsFound[0]
+        @set 'organisation', organisationsFound[0]
 
 
 

@@ -9,6 +9,10 @@ OrganisationSchema = Schema
     name: 
       type: String
       required: true
+    tumb:
+      type: String
+    description:
+      type:String
     conferences: [
       type: Schema.Types.ObjectId
       ref: 'Conference'

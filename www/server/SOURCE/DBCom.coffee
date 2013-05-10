@@ -16,19 +16,18 @@ confDB.on 'error', console.error.bind(console, 'connection error:')
 
 module.exports.getOrgaListfromAdmin = getOrgaList = (AdminId , callback)=>
   organisation = null
-  console.log @Admin.findOne
-  @Admin
+  Admin
   .findOne 
     _id:AdminId
-    (errorr, admin)=>
+    (err, admin)=>
       if err
         console.log err
         return
         #console.log "error while trying to find the organisations of this admin"
   .populate('organisations')
   .exec (err, admin)=>
-    organisation =  admin.organisations
-  organisation
+    organisations =  admin.organisations
+    callback(organisations)
 
 
 module.exports.getOrgaList = getOrgaList = (callback)=>
@@ -91,7 +90,7 @@ module.exports.readSlideToSend = readSlideToSend = (slideId, callback)->
     _id:slideId
     (err, slide)=>
       if err
-        console.log err
+        console.log "voici l'erreur", err
       callback (slide)
 
 module.exports.setSent = setSent = (sent, id)->

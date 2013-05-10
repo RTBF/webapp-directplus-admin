@@ -16,6 +16,12 @@ ConferenceSchema = Schema({
     required: true
   },
   date: Date,
+  tumb: {
+    type: String
+  },
+  description: {
+    type: String
+  },
   slides: [
     {
       type: Schema.Types.ObjectId,

@@ -60,7 +60,8 @@ define [
         @router.app.trigger 'reseting', data
 
       @socket.on 'connect' , (data)=>
-        @router.app.trigger 'ServerConnection', data
+        console.log "connected"
+        @router.mainView.trigger 'ServerConnection', data
 
       @connect()
 

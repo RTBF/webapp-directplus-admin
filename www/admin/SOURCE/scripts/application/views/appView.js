@@ -45,6 +45,7 @@ define(['jquery', 'backbone', 'application/models/slide', 'application/views/sli
         slide.set("sent", data[x].Sent);
         slide.set("_id", data[x]._id);
         slide.set("Order", data[x].Order);
+        slide.set("Type", data[x].Type);
         this.slides.add(slide);
         slide.save();
         this.slides.fetch();
@@ -78,7 +79,7 @@ define(['jquery', 'backbone', 'application/models/slide', 'application/views/sli
       console.log(slideView);
       console.log(slideView.render().el);
       $('.Sent').append(slideView.render().el);
-      return $(lid).remove();
+      return $(lid).parent().parent().remove();
     };
 
     appView.prototype.recuperer = function() {
@@ -92,7 +93,7 @@ define(['jquery', 'backbone', 'application/models/slide', 'application/views/sli
       var lid, slideView;
       console.log("je suis ic", data);
       lid = '#' + data.id;
-      $(lid).remove();
+      $(lid).parent().parent().remove();
       slideView = new SlideView({
         model: this.slides.get(data.id)
       });

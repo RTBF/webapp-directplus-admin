@@ -53,7 +53,8 @@ define(['application/routes/router', 'application/models/slide', 'application/co
         return _this.router.app.trigger('reseting', data);
       });
       this.socket.on('connect', function(data) {
-        return _this.router.app.trigger('ServerConnection', data);
+        console.log("connected");
+        return _this.router.mainView.trigger('ServerConnection', data);
       });
       return this.connect();
     };

@@ -27,16 +27,16 @@ define(['jquery', 'backbone', 'application/collections/organisations', 'applicat
         return this.restoreSlides(data);
       });
       this.on('newSlide', function(data) {
-        return this.conference.trigger('newSlide', data);
+        return this.get('organisation').get('conference').trigger('newSlide', data);
       });
       this.on('next', function() {
-        return this.conference.trigger('next');
+        return this.get('organisation').get('conference').trigger('next');
       });
       this.on('previous', function() {
-        return this.conference.trigger('previous');
+        return this.get('organisation').get('conference').trigger('previous');
       });
       return this.on('sremove', function(data) {
-        return this.conference.trigger('sremove', data);
+        return this.get('organisation').get('conference').trigger('sremove', data);
       });
     };
 
@@ -49,41 +49,36 @@ define(['jquery', 'backbone', 'application/collections/organisations', 'applicat
           organisation = new Organisation(data[x]);
           this.get('organisations').add(organisation);
         }
-        this.trigger('change');
+        this.trigger('change:organisations');
         return console.log(this.get('organisations'));
       }
     };
 
     App.prototype.restoreConf = function(data) {
-      var len, orgId, organisationsFound;
+      var len;
       console.log(data);
       len = data.length - 1;
       if (len >= 0) {
-        orgId = data[0]._orga;
-        console.log(orgId);
-        organisationsFound = this.get('organisations').where({
-          _id: orgId
-        });
-        console.log(organisationsFound[0]);
-        this.organisation = organisationsFound[0];
-        return this.organisation.trigger('conferences', data);
+        return this.get('organisation').restore(data);
       }
     };
 
     App.prototype.restoreSlides = function(data) {
-      var confId, confsFound, len;
+      var len;
       console.log(data);
       len = data.length - 1;
       if (len >= 0) {
-        confId = data[0]._conf;
-        console.log(confId);
-        confsFound = this.organisation.get('conferencesC').where({
-          _id: confId
-        });
-        console.log(confsFound[0]);
-        this.conference = confsFound[0];
-        return this.conference.trigger('slides', data);
+        return this.get('organisation').get('conference').restore(data);
       }
+    };
+
+    App.prototype.organisationChoosed = function(id) {
+      var organisationsFound;
+      organisationsFound = this.get('organisations').where({
+        _id: id
+      });
+      console.log(organisationsFound[0]);
+      return this.set('organisation', organisationsFound[0]);
     };
 
     return App;

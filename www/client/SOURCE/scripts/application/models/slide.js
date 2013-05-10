@@ -8,6 +8,10 @@ define(['jquery', 'backbone', 'application/views/slideScreen'], function($, Back
 
     __extends(Slide, _super);
 
+    Slide.prototype.defaults = {
+      Order: 0
+    };
+
     function Slide(aSlide) {
       Slide.__super__.constructor.call(this, aSlide);
     }

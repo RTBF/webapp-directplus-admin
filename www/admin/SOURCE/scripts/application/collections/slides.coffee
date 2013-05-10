@@ -15,6 +15,9 @@ define [
 
     position: 0
 
+    comparator: (item)=>
+      item.get("Order")
+
   
 
      

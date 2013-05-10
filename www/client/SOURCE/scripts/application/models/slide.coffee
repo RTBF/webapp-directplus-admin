@@ -6,6 +6,8 @@ define [
 
     class Slide extends Backbone.Model
 
+      defaults:
+        Order: 0
      
       constructor: (aSlide)->
         super aSlide

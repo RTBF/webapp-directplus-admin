@@ -46,6 +46,7 @@ define [
           slide.set("sent", data[x].Sent)
           slide.set("_id", data[x]._id)
           slide.set("Order", data[x].Order)
+          slide.set("Type", data[x].Type)
           @slides.add slide
           slide.save()
           @slides.fetch()
@@ -71,7 +72,7 @@ define [
         console.log slideView
         console.log slideView.render().el
         $('.Sent').append(slideView.render().el)
-        $(lid).remove()
+        $(lid).parent().parent().remove()
 
 
       recuperer:()->
@@ -82,7 +83,7 @@ define [
       toToSentList:(data)->
         console.log "je suis ic", data
         lid= '#'+data.id
-        $(lid).remove()
+        $(lid).parent().parent().remove()
         slideView = new SlideView 
           model : @slides.get(data.id)
         $('.toSend').append(slideView.render().el)

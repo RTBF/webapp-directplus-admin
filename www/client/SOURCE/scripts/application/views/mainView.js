@@ -18,17 +18,21 @@ define(['jquery', 'backbone', 'application/views/organisationView'], function($,
 
     mainView.prototype.initialize = function() {
       var _this = this;
-      this.listenTo(this.model, 'change', this.render);
+      this.listenTo(this.model, 'change:organisations', this.render);
+      this.on('ServerConnection', function(data) {
+        console.log("mainV connected");
+        return _this.connectNotif(data);
+      });
       $('#appcontainer').delegate('.org-item', 'click', function(e) {
         var txt;
         txt = $(e.target).attr('id');
-        _this.trigger('organisationChoosed', txt);
-        return console.log("organisation choosed", txt);
+        _this.model.organisationChoosed(txt);
+        return _this.trigger('organisationChoosed', txt);
       });
       $('#appcontainer').delegate('.conf-item', 'click ', function(e) {
         var txt;
         txt = $(e.target).attr('id');
-        _this.conference = $(e.target).attr('id');
+        _this.model.get('organisation').conferenceChoosed(txt);
         return _this.trigger('conferenceChoosed', txt);
       });
       $('#suivant').click(function(e) {
@@ -42,15 +46,23 @@ define(['jquery', 'backbone', 'application/views/organisationView'], function($,
     };
 
     mainView.prototype.connectNotif = function(data) {
-      return $('.js-status').removeClass('disconnected').addClass('connected');
+      console.log("notif connected");
+      return $('.label').slideUp(function() {
+        console.log('first');
+        $('.label').removeClass('label-important').addClass('label-success');
+        $('.label').text('connected');
+        console.log("seconde");
+        return $('.label').slideDown();
+      });
     };
 
     mainView.prototype.render = function() {
       $('.organisationsList').children().remove();
       console.log("main view is redenring");
-      if ($('#header').is(':empty')) {
-        this.$el.html(this.template());
-      }
+      /*if $('#header').is ':empty'
+        @$el.html @template()
+      */
+
       this.model.get('organisations').each(function(organisation) {
         var organisationView;
         organisationView = new OrganisationView({

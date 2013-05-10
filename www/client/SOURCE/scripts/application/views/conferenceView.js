@@ -12,23 +12,19 @@ define(['jquery', 'backbone', 'application/views/slideScreen'], function($, Back
       return ConferenceView.__super__.constructor.apply(this, arguments);
     }
 
-    ConferenceView.prototype.events = {
-      'click #suivant': 'suivant',
-      'click #precedent': 'precedent'
-    };
-
     ConferenceView.prototype.tagName = 'li';
 
-    ConferenceView.prototype.className = 'conf';
+    ConferenceView.prototype.className = 'conf span4';
 
     ConferenceView.prototype.template = _.template($('#conf-template').html());
 
     ConferenceView.prototype.initialize = function() {
-      this.listenTo(this.model, 'change', this.render);
+      this.listenTo(this.model, 'change:slidesC', this.render);
       return this.listenTo(this.model, 'new', this["new"]);
     };
 
     ConferenceView.prototype.render = function() {
+      console.log("confView");
       this.$el.html(this.template(this.model.toJSON()));
       $('#SlideList').children().remove();
       if ($('#SlideList').is(':empty')) {
@@ -47,6 +43,7 @@ define(['jquery', 'backbone', 'application/views/slideScreen'], function($, Back
 
     ConferenceView.prototype["new"] = function() {
       var slide, slideView;
+      console.log("render new");
       slide = this.model.get('slidesC').at(this.model.get('slidesC').length - 1);
       slideView = new SlideView({
         model: slide
@@ -60,14 +57,6 @@ define(['jquery', 'backbone', 'application/views/slideScreen'], function($, Back
         console.log("future doesn't exist");
         return slideView["new"]();
       }
-    };
-
-    ConferenceView.prototype.suivant = function() {
-      return console.log("j'ai cliqué sur le suivant");
-    };
-
-    ConferenceView.prototype.precedent = function() {
-      return console.log("j'ai cliqué sur le precedent");
     };
 
     return ConferenceView;

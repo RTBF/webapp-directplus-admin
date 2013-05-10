@@ -18,6 +18,12 @@ define(['jquery', 'backbone', 'application/collections/slides', 'application/mod
 
     Conference.prototype.initialize = function() {
       var _this = this;
+      this.get('slidesC').comparator = function() {
+        var slide;
+        slide = new Slide();
+        return slide.get('Order');
+      };
+      this.get('slidesC').sort();
       this.navMode = false;
       this.on('slides', function(data) {
         return _this.restore(data);
@@ -51,6 +57,7 @@ define(['jquery', 'backbone', 'application/collections/slides', 'application/mod
         this.get('slidesC').fetch();
         for (x = _i = 0; 0 <= len ? _i <= len : _i >= len; x = 0 <= len ? ++_i : --_i) {
           obj = $.parseJSON(data[x].JsonData);
+          obj.id = data[x]._id;
           slide = new Slide(obj);
           this.get('slidesC').add(slide);
           slide.save();
@@ -79,12 +86,13 @@ define(['jquery', 'backbone', 'application/collections/slides', 'application/mod
       }
       console.log(this.get('slidesC'));
       console.log(this.get('slidesC'));
-      return this.trigger('change');
+      return this.trigger('change:slidesC');
     };
 
     Conference.prototype.newSlide = function(data) {
       var max, obj, slide, slideff, slidet, taille;
       obj = $.parseJSON(data.JsonData);
+      obj.id = data._id;
       slide = new Slide(obj);
       if (this.navMode) {
         slideff = this.get('slidesC').where({
@@ -119,6 +127,7 @@ define(['jquery', 'backbone', 'application/collections/slides', 'application/mod
       slide.save();
       this.get('slidesC').fetch;
       console.log(this.get('slidesC'));
+      console.log("AAAAAAAAAreceived new slides");
       return this.trigger('new');
     };
 
@@ -230,12 +239,12 @@ define(['jquery', 'backbone', 'application/collections/slides', 'application/mod
       currentPos = this.get('slidesC').indexOf(slideff[0]);
       console.log("current pos", currentPos);
       obj = $.parseJSON(data.JsonData);
-      slideToRemove = this.get('slidesC').get(obj.id);
+      slideToRemove = this.get('slidesC').get(data._id);
       state = slideToRemove.get("state");
       removePos = this.get('slidesC').indexOf(slideToRemove);
-      this.get('slidesC').get(obj.id).set('state', 'removed');
-      this.get('slidesC').localStorage.destroy(this.get('slidesC').get(obj.id));
-      this.get('slidesC').remove(this.get('slidesC').get(obj.id));
+      this.get('slidesC').get(data._id).set('state', 'removed');
+      this.get('slidesC').localStorage.destroy(this.get('slidesC').get(data._id));
+      this.get('slidesC').remove(this.get('slidesC').get(data._id));
       if (state === 'current') {
         if (this.navMode) {
           taille = this.get('slidesC').length;

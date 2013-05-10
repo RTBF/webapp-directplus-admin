@@ -15,6 +15,10 @@ define [
          # ...
 
       initialize:()->
+        @get('slidesC').comparator = ()=>
+          slide = new Slide()
+          slide.get 'Order'
+        @get('slidesC').sort()
         @navMode = false
         @on 'slides', (data)=>
           @restore data
@@ -42,6 +46,7 @@ define [
           @get('slidesC').fetch()
           for x in [0..len]
             obj = $.parseJSON data[x].JsonData
+            obj.id = data[x]._id
             slide = new Slide obj
             @get('slidesC').add slide
             slide.save()
@@ -63,10 +68,12 @@ define [
           max--
         console.log @get('slidesC')
         console.log @get('slidesC')
-        @trigger 'change'
+        @trigger 'change:slidesC'
 
       newSlide: (data)->
+        
         obj = $.parseJSON data.JsonData
+        obj.id = data._id
         slide = new Slide obj
         if @navMode
           slideff = @get('slidesC').where state:'far-future'
@@ -94,7 +101,7 @@ define [
         slide.save()
         @get('slidesC').fetch
         console.log @get('slidesC')
-
+        console.log "AAAAAAAAAreceived new slides"
         @trigger 'new'
 
 
@@ -178,12 +185,12 @@ define [
         currentPos = @get('slidesC').indexOf slideff[0]
         console.log "current pos", currentPos
         obj = $.parseJSON data.JsonData
-        slideToRemove = @get('slidesC').get(obj.id)
+        slideToRemove = @get('slidesC').get(data._id)
         state = slideToRemove.get("state")
         removePos= @get('slidesC').indexOf slideToRemove
-        @get('slidesC').get(obj.id).set 'state', 'removed'
-        @get('slidesC').localStorage.destroy(@get('slidesC').get(obj.id))
-        @get('slidesC').remove @get('slidesC').get(obj.id)
+        @get('slidesC').get(data._id).set 'state', 'removed'
+        @get('slidesC').localStorage.destroy(@get('slidesC').get(data._id))
+        @get('slidesC').remove @get('slidesC').get(data._id)
 
         if state is 'current'
           if @navMode 

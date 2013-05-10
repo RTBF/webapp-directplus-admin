@@ -30,7 +30,15 @@ define(['jquery', 'backbone', 'application/models/conference', 'application/coll
         conference = new Conference(data[x]);
         this.get('conferencesC').add(conference);
       }
-      return this.trigger('change');
+      return this.trigger('change:conferencesC');
+    };
+
+    Organisation.prototype.conferenceChoosed = function(id) {
+      var confsFound;
+      confsFound = this.get('conferencesC').where({
+        _id: id
+      });
+      return this.set('conference', confsFound[0]);
     };
 
     return Organisation;

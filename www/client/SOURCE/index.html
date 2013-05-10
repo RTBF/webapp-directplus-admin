@@ -19,22 +19,51 @@
       <div class="ball1"></div>
     </div>
   </div>
+  <div id="header"> 
+  <div class="navbar navbar-inverse navbar-fixed-top">
 
+    <div class="navbar-inner">
+      <div class="container">
+        <div class="nav-collapse collapse"></div>
+        <ul class="nav">
+          <li >
+           <a href="#/organisation">Home</a>
+         </li>
+         <li >
+           <a href="">About</a>
+         </li>
+       </ul>
+
+       <span class= "js-status disconnected " >  &nbsp;</span>  
+       <span class="labels"><span class="label label-important">disconnected</span></span>
+       <span class="brand">WEB CONFERENCE</span>
+       
+  
+       
+     </div>
+           
+   </div>
+ </div></div>
+  
   <div id="wrap">
-    <div id="header"></div>
+    
 
     <div id="appcontainer" >
+      <div class='notifications bottom-right'></div>
+
+
       <div class=" container organisationsBlock onshow onhideleft">
       <ul class="organisationsList"></ul>
       </div>
       <div class="container confBlock onhideright">
-      <ul class="confList"></ul>
+      <ul class="confList thumbnails"></ul>
       </div>
       <div class= "slides">
         
         <ul  id ="SlideList"></ul>
         <button id="precedent" class="left carousel-control">‹</button>
         <button id="suivant" class="right carousel-control">›</button>
+
       </div>
     </div>
 
@@ -49,35 +78,30 @@
   </div>
   
   <script type="text/template" id="app-template"> 
-         <div class="navbar navbar-inverse navbar-fixed-top">
-
-    <div class="navbar-inner">
-      <div class="container">
-        <div class=""></div>
-        <ul class="nav">
-          <li >
-           <a href="#/organisation">Home</a>
-         </li>
-         <li >
-           <a href="">About</a>
-         </li>
-       </ul>
-
-       <span class= "js-status disconnected " >  &nbsp;</span>  
-       <span class="brand">WEB CONFERENCE</span>
-     </div>
-   </div>
- </div>
+ 
  </script>
  
  <script type="text/template" id="Organisation-template"> 
-      <i class="icon-chevron-right"></i>
-      <a href="#/conference" class="org-item" ><h3 id="<%- _id %>"><%- name%></h3></a>
+    <div class="row-fluid">
+      <div class="span4"><img  height="200" title="RTBF" alt="RTBF" src="<%-tumb%>" class="img-rounded"></div>
+      <div class="span6"><a class="org-item" ><h3 id="<%- _id %>"><%- name%></h3></a></div>
+      <div class="span2"><i class="icon-chevron-right"></i></div>
+      
+      
+    </div>
  </script>
  
 
  <script type="text/template" id="conf-template"> 
- <a href="#/slide" class="conf-item"><h3 id="<%- _id %>"><%- name%></h3></a>
+  <div class="thumbnail">
+  <img alt="300x200" data-src="holder.js/300x200" style="width: 300px; height: 200px;" src="<%-tumb%>">
+   <div class="caption">
+     <a href="#/slide" class="conf-item">
+     <h3 id="<%- _id %>"><%- name%></h3></a>
+     <h4><%- date%></h4>
+    </div>
+   </div>
+   
  </script>
 
 

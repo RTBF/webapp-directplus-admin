@@ -23,7 +23,7 @@ define(['jquery', 'backbone', 'application/views/conferenceView'], function($, B
     OrganisationView.prototype.template = _.template($('#Organisation-template').html());
 
     OrganisationView.prototype.initialize = function() {
-      return this.listenTo(this.model, 'change', this.render);
+      return this.listenTo(this.model, 'change:conferencesC', this.render);
     };
 
     OrganisationView.prototype.render = function() {
@@ -41,9 +41,12 @@ define(['jquery', 'backbone', 'application/views/conferenceView'], function($, B
     };
 
     OrganisationView.prototype.choose = function(ev) {
-      var txt;
+      var id;
       console.log(ev.target);
-      return txt = $(ev.target).attr('id');
+      id = $(ev.target).attr('id');
+      return Backbone.history.navigate('/conference/orgid', {
+        trigger: true
+      });
     };
 
     return OrganisationView;

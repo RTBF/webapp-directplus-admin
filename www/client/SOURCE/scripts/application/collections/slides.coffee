@@ -13,3 +13,7 @@ define [
 
     localStorage: new Backbonels "slidesStore"
     conf: null
+    
+    comparator: (item)=>
+      item.get("Order")
+      

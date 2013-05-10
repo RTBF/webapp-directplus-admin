@@ -7,21 +7,19 @@ define [
     class ConferenceView extends Backbone.View
 
       #el: '#appcontainer'
-      events:
-        'click #suivant' : 'suivant'
-        'click #precedent' : 'precedent'
       
       tagName : 'li'
-      className : 'conf'
+      className : 'conf span4'
 
       template : _.template($('#conf-template').html())
 
       initialize : ()->
-       @listenTo @model, 'change', @render
+       @listenTo @model, 'change:slidesC', @render
        @listenTo @model, 'new', @new
       
 
       render: ()-> 
+        console.log "confView"
         @$el.html @template(@model.toJSON())
         $('#SlideList').children().remove()
         if $('#SlideList').is ':empty'
@@ -34,6 +32,7 @@ define [
         @
 
       new:()->
+        console.log "render new"
         slide = @model.get('slidesC').at @model.get('slidesC').length - 1
         slideView = new SlideView 
           model : slide
@@ -43,14 +42,5 @@ define [
         else
           console.log "future doesn't exist"
           slideView.new()
-
-      suivant:()->
-        console.log "j'ai cliqué sur le suivant"
-
-      precedent:()->
-        console.log "j'ai cliqué sur le precedent"
-
- 
-
 
 

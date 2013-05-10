@@ -12,17 +12,20 @@ define [
       template : _.template($('#app-template').html())
 
       initialize : ()->
-        @listenTo @model, 'change', @render
+        @listenTo @model, 'change:organisations', @render
+        @on 'ServerConnection', (data)=>
+          console.log "mainV connected"
+          @connectNotif(data)
 
         $('#appcontainer').delegate '.org-item', 'click', (e)=>
           txt = $(e.target).attr('id')
+          @model.organisationChoosed txt
           @trigger 'organisationChoosed', txt
-          console.log "organisation choosed", txt
 
 
         $('#appcontainer').delegate '.conf-item' ,'click ', (e)=>
           txt = $(e.target).attr('id')
-          @conference = $(e.target).attr('id')
+          @model.get('organisation').conferenceChoosed txt
           @trigger 'conferenceChoosed', txt
 
         $('#suivant').click (e)=>
@@ -35,13 +38,19 @@ define [
 
 
       connectNotif : (data)->
-        $('.js-status').removeClass('disconnected').addClass('connected')
+        console.log "notif connected"
+        $('.label').slideUp ()->
+          console.log 'first'
+          $('.label').removeClass('label-important').addClass('label-success')
+          $('.label').text 'connected'
+          console.log "seconde"
+          $('.label').slideDown()
 
       render: ()-> 
         $('.organisationsList').children().remove()
         console.log "main view is redenring"
-        if $('#header').is ':empty'
-          @$el.html @template()
+        ###if $('#header').is ':empty'
+          @$el.html @template()###
 
         @model.get('organisations').each (organisation)->
           organisationView = new OrganisationView ({model:organisation})
@@ -49,3 +58,4 @@ define [
 
         $("#loading").fadeOut()
         $("#wrap").fadeIn()
+        

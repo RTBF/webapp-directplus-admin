@@ -12,6 +12,12 @@ define(['jquery', 'backbone'], function($, Backbone) {
       return slideView.__super__.constructor.apply(this, arguments);
     }
 
+    slideView.prototype.events = {
+      'click #delete': 'delete',
+      'click #update': 'update',
+      'click #preview': 'preview'
+    };
+
     slideView.prototype.tagName = 'li';
 
     slideView.prototype.className = 'slide';
@@ -19,23 +25,65 @@ define(['jquery', 'backbone'], function($, Backbone) {
     slideView.prototype.template = _.template($('#slide-template').html());
 
     slideView.prototype.initialize = function() {
-      console.log("Admin initialization");
-      return this.listenTo(this.model, 'change', this.render());
+      this.listenTo(this.model, 'change', this.render);
+      this.listenTo(this.model, 'change:sent', this.sendrender);
+      this.listenTo(this.model, 'remove', this.remove);
+      return console.log("Slide view initialization");
     };
 
     slideView.prototype.render = function() {
-      console.log("rendering");
       this.$el.html(this.template(this.model.toJSON()));
       return this;
     };
 
-    slideView.prototype.send = function() {
-      return console.log("send");
+    slideView.prototype.sendrender = function() {
+      var modelId,
+        _this = this;
+      console.log("je suis render de slide view et voila");
+      modelId = '#' + this.model.get('id');
+      if (this.model.get('sent') === true) {
+        console.log("it is true");
+        return $(modelId).parent().parent().parent().parent().slideUp(function() {
+          return $(modelId).parent().parent().parent().parent().appendTo('.Sent').slideDown();
+        });
+      } else {
+        console.log("it is false");
+        return $(modelId).parent().parent().parent().parent().slideUp(function() {
+          return $(modelId).parent().parent().parent().parent().appendTo('.toSend').slideDown();
+        });
+      }
     };
 
     slideView.prototype.remove = function() {
-      return console.log("remove");
+      var modelId,
+        _this = this;
+      modelId = '#' + this.model.get('id');
+      return $(modelId).parent().parent().parent().parent().slideUp(function() {});
     };
+
+    slideView.prototype["delete"] = function() {
+      return $('#delete').trigger('deleteSlide', this.model.get('id'));
+    };
+
+    slideView.prototype.update = function() {
+      var cat;
+      console.log('update test');
+      cat = '#' + this.model.get('Type');
+      console.log(this.model);
+      $(".modal-body").children().remove();
+      $(".modal-body").attr('id', this.model.get('id'));
+      $(".modal-body").attr('data', this.model.get('Type'));
+      $("" + cat + " form").clone().appendTo(".modal-body");
+      $(".modal-save").attr("id", "modal-update");
+      $(".modal-body input[name='title']").val(this.model.get('title'));
+      $(".modal-body textarea[name='description']").val(this.model.get('description'));
+      $(".modal-body input[name='thumb']").val(this.model.get('thumb'));
+      $(".modal-body textarea[name='content']").val(this.model.get('content'));
+      $(".modal-body legend").addClass("modal-legend");
+      return $(".modal-legend").attr("id", "slide");
+    };
+
+    slideView.prototype.preview = function() {};
 
     return slideView;
 

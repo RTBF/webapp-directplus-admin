@@ -18,7 +18,7 @@ define [
       template : _.template($('#Organisation-template').html())
 
       initialize : ()->
-        @listenTo @model, 'change', @render
+        @listenTo @model, 'change:conferencesC', @render
        
 
       render: ()-> 
@@ -33,7 +33,8 @@ define [
       choose:(ev)->
         #
         console.log ev.target
-        txt = $(ev.target).attr('id')
+        id = $(ev.target).attr('id')
+        Backbone.history.navigate('/conference/orgid' , trigger:true)
 
 
 

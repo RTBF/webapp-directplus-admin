@@ -15,6 +15,12 @@ OrganisationSchema = Schema({
     type: String,
     required: true
   },
+  tumb: {
+    type: String
+  },
+  description: {
+    type: String
+  },
   conferences: [
     {
       type: Schema.Types.ObjectId,
