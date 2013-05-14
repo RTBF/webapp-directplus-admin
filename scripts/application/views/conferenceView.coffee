@@ -15,6 +15,7 @@ define [
       template : _.template($('#conf-template').html())
       events:
         'click .conf-item' : 'choose'
+        'click #deleteconf' : 'deleteconf'
 
 
       initialize : ()->
@@ -24,8 +25,8 @@ define [
         @listenTo @model, 'change', @render
         @listenTo @model, 'change:slidesC', @renderList
         @listenTo @model, 'new', (data)=>
-          console.log "new new new #{@id}"
           @newSlide(data)
+        @listenTo @model, 'remove', @remove
       
 
       render: ()-> 
@@ -65,4 +66,10 @@ define [
         href= '/anime/'+ id
         Backbone.history.navigate(href, trigger:true)
 
+      deleteconf:()->
+        if (confirm("Are you sure?"))
+          $('#deleteconf').trigger 'deleteconf', @model.get 'id'
 
+      remove:()->
+        id = '#'+@model.get 'id'
+        $(id).parent().slideUp()

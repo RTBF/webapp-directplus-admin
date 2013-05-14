@@ -9,6 +9,9 @@ define(['jquery', 'backbone', 'application/models/conference', 'application/coll
     __extends(Organisation, _super);
 
     Organisation.prototype.defaults = {
+      tumb: " ",
+      description: " ",
+      name: " ",
       conferencesC: new Conferences()
     };
 
@@ -46,6 +49,10 @@ define(['jquery', 'backbone', 'application/models/conference', 'application/coll
       conference.set('id', data._id);
       this.get('conferencesC').add(conference);
       return this.trigger('new', this.get('conferencesC').get(data._id));
+    };
+
+    Organisation.prototype.deleteConf = function(data) {
+      return this.get('conferencesC').remove(this.get('conferencesC').get(data));
     };
 
     return Organisation;

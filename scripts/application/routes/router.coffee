@@ -15,12 +15,17 @@ define [
         
         '*actions': 'adminScreen'
 
-      constructor:() ->
+      constructor:(socket) ->
+        console.log socket
+        @socket = socket
+        console.log @socket
         super @routes
         
       initialize:()->
         console.log "router initialize"
-        @trigger 'admiRoute'
+        console.log "socket: ", @socket
+        
+        
         @app = new App()
 
         @mainView = new MainView
@@ -46,13 +51,25 @@ define [
           @trigger 'newConference', data
 
         @mainView.on 'newOrganisation', (data)=>
-          console.log "new Orgaz"
           @trigger 'newOrganisation', data
+
+        @mainView.on 'deleteorg', (data)=>
+          @trigger 'deleteorg', data
+
+        @mainView.on 'deleteconf', (data)=>
+          @trigger 'deleteconf', data
+        
+        @mainView.on 'updateorg', (data)=>
+          @trigger 'updateorg', data
+
+        @trigger 'admiRoute'
+
 
         Backbone.history.start()
           
 
       connectScreen:()->
+        
         console.log "nothing for now "
 
       adminScreen:()->
@@ -61,6 +78,7 @@ define [
 
 
       conferenceScreen:(orgId)->
+        console.log "listing confs"
         $('.adminScreen').fadeIn ()=>
           $('.animeScreen').fadeOut()
         console.log "allo"

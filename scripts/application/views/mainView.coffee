@@ -12,26 +12,33 @@ define [
       #template : _.template($('#app-template').html())
 
       initialize : ()->
-        #@listenTo @model, 'change', @render
         @listenTo @model, 'change:organisations', @render
         @listenTo @model, 'new', (data)=>
           @renderNew data
-        conference = @model.get('conference')
         
-        ###conferenceView = new ConferenceView
-          model: conference###
+        conference = @model.get('conference')
+
         $('.emissions').delegate '.organisationsList', 'organisationChoosed', (e,data)=>
           @model.organisationChoosed data
 
         $('.conferencesblock').delegate '.confList', 'conferenceChoosed', (e,data)=>
           @model.get('organisation').conferenceChoosed data
         
-        
         $('.confList').delegate '#newConf', 'click',(evt)=>
           @newConf()
 
+        $('.confList').delegate '#deleteconf', 'deleteconf',(evt, id)=>
+          @deleteConf(id)
+
         $('.organisationsList').delegate '#newOrg', 'click',(evt)=>
           @newOrg()
+
+        $('.organisationsList').delegate '#deleteorg', 'deleteorg',(evt,id)=>
+          @deleteOrg(id)
+
+        $('.confsblock').delegate '.update-org', 'click',(evt)=>
+          form = $('.orgsettings form').serializeArray()
+          @updateOrg(form)
 
         $('.slider').delegate '#delete', 'deleteSlide', (e, data)=>
           @delete data, 'deleteSlide'
@@ -52,6 +59,9 @@ define [
           @recuperer()
         $('#savebt').click (e)=>
           @save()
+        $('.dpr').click (e)=>
+          console.log "datepick"
+          $('.dp').datepicker('show')
           
 
       render: ()->
@@ -110,6 +120,7 @@ define [
           @trigger 'saveslide', slide
 
       getContentForm:(form,type)->
+        console.log form
         obj= {}
         slide = {}
         for o of form
@@ -120,6 +131,7 @@ define [
         else
           slide = obj
         slide
+        console.log slide
 
       newConf:()->
         $(".modal-body").children().remove()
@@ -128,23 +140,28 @@ define [
         $(".modal-body legend").addClass("modal-legend")
         $(".modal-legend").attr("id", "conference")
 
+
       newOrg:()->
         $(".modal-body").children().remove()
-        $(".orgsettings form").clone().appendTo ".modal-body"
+        #$(".orgsettings form").clone().appendTo ".modal-body"
+        html = $('#orgsettings-template').html()
+        $(".modal-body").append(html)
         $(".modal-body legend").addClass("modal-legend")
         $(".modal-legend").attr("id", "organisation")
 
       saveConf:(e, form)->
         conference= @getContentForm form , 'conference' 
         conference._orga = @model.get('organisation').get '_id'
+
         console.log conference
-        @trigger 'newConference', conference
+        #@trigger 'newConference', conference
+        #$('#myModal').modal('hide')
 
       saveOrg:(e, form)->
         organisation = @getContentForm form , 'organisation' 
-        organisation._admin= '515c1b1950e5c6a674000001'
         console.log organisation
         @trigger 'newOrganisation', organisation
+        $('#myModal').modal('hide')
 
       new:(e, form, type)->
         switch type
@@ -154,6 +171,27 @@ define [
             @saveOrg e, form
           when 'slide'
             @update e , form
+
+      deleteOrg:(id)->
+        @trigger 'deleteorg', id
+
+      deleteConf:(id)->
+        @trigger 'deleteconf', id
+
+      updateOrg:(form)->
+        organisation = @getContentForm form , 'organisation'
+        organisation._id= $('.orgsettings').attr('data-id')
+        console.log organisation
+        @trigger 'updateorg' , organisation
+
+      disablePreviousDate:()->
+        nowTemp = new Date()
+        now = new Date nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0
+
+
+
+
+
 
 
 

@@ -17,8 +17,7 @@ define(['jquery', 'application/routes/router', 'application/views/appView', 'app
       var _this = this;
       console.log("admin init");
       this.socket = io.connect('http://localhost:3000');
-      this.router = new Router();
-      this.socket.emit('admin', '515c1b1950e5c6a674000001');
+      this.router = new Router(this.socket);
       this.socket.on('organisations', function(data) {
         console.log("g reçu les organisations suivantes: ", data);
         return _this.router.app.trigger('organisations', data);
@@ -60,6 +59,22 @@ define(['jquery', 'application/routes/router', 'application/views/appView', 'app
       this.socket.on('orgCreated', function(data) {
         return _this.router.app.trigger('orgCreated', data);
       });
+      this.socket.on('confdeleted', function(data) {
+        console.log("conf deleted");
+        return _this.router.app.trigger('confdeleted', data);
+      });
+      this.socket.on('orgdeleted', function(data) {
+        console.log("org deleted");
+        return _this.router.app.trigger('orgdeleted', data);
+      });
+      this.socket.on('orgupdated', function(data) {
+        console.log("org updated: ", data);
+        return _this.router.app.trigger('orgupdated', data);
+      });
+      this.socket.on('confupdated', function(data) {
+        console.log("confupdated");
+        return _this.router.app.trigger('confupdated', data);
+      });
       this.router.on('newOrganisation', function(data) {
         return _this.socket.emit('newOrganisation', data);
       });
@@ -86,10 +101,23 @@ define(['jquery', 'application/routes/router', 'application/views/appView', 'app
         console.log('ask confs');
         return _this.socket.emit('organisationChoosed', data);
       });
-      return this.router.on('conferenceChoosed', function(data) {
+      this.router.on('conferenceChoosed', function(data) {
         console.log('ask confs');
         return _this.socket.emit('slider', data);
       });
+      this.router.on('deleteconf', function(data) {
+        return _this.socket.emit('deleteconf', data);
+      });
+      this.router.on('deleteorg', function(data) {
+        return _this.socket.emit('deleteorg', data);
+      });
+      this.router.on('updateorg', function(data) {
+        return _this.socket.emit('updateorg', data);
+      });
+      this.router.on('updateconf', function(data) {
+        return _this.socket.emit('updateconf', data);
+      });
+      return this.socket.emit('admin', 'seba@rtbf.be');
     };
 
     return Application;

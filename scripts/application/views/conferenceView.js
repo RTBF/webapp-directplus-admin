@@ -21,7 +21,8 @@ define(['jquery', 'backbone', 'application/views/slideView'], function($, Backbo
     ConferenceView.prototype.template = _.template($('#conf-template').html());
 
     ConferenceView.prototype.events = {
-      'click .conf-item': 'choose'
+      'click .conf-item': 'choose',
+      'click #deleteconf': 'deleteconf'
     };
 
     ConferenceView.prototype.initialize = function() {
@@ -31,10 +32,10 @@ define(['jquery', 'backbone', 'application/views/slideView'], function($, Backbo
       ConferenceView.counter++;
       this.listenTo(this.model, 'change', this.render);
       this.listenTo(this.model, 'change:slidesC', this.renderList);
-      return this.listenTo(this.model, 'new', function(data) {
-        console.log("new new new " + _this.id);
+      this.listenTo(this.model, 'new', function(data) {
         return _this.newSlide(data);
       });
+      return this.listenTo(this.model, 'remove', this.remove);
     };
 
     ConferenceView.prototype.render = function() {
@@ -83,6 +84,18 @@ define(['jquery', 'backbone', 'application/views/slideView'], function($, Backbo
       return Backbone.history.navigate(href, {
         trigger: true
       });
+    };
+
+    ConferenceView.prototype.deleteconf = function() {
+      if (confirm("Are you sure?")) {
+        return $('#deleteconf').trigger('deleteconf', this.model.get('id'));
+      }
+    };
+
+    ConferenceView.prototype.remove = function() {
+      var id;
+      id = '#' + this.model.get('id');
+      return $(id).parent().slideUp();
     };
 
     return ConferenceView;

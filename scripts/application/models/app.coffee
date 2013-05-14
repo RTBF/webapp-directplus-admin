@@ -40,6 +40,15 @@ define [
         @on 'orgCreated', (data)=>
           @createOrg data
 
+        @on 'confdeleted',(data)=>
+          @get('organisation').deleteConf data
+        
+        @on 'orgdeleted', (data)=>
+          @deleteOrg data
+
+        @on 'orgupdated', (data)=>
+          @updateOrg data
+
 
 
       restore:(data)->
@@ -69,6 +78,16 @@ define [
         organisation.set("id", data._id )
         @get('organisations').add organisation
         @trigger 'new', @get('organisations').get(data._id)
+
+      deleteOrg:(data)->
+        @get('organisations').remove @get('organisations').get(data)
+
+      updateOrg:(data)->
+        console.log "app :", data
+        org = @get('organisations').get(data._id)
+        @get('organisations').get(data._id).name = data.name if data.name
+        @get('organisations').get(data._id).tumb = data.tumb if data.tumb
+        @get('organisations').get(data._id).descrition = data.descrition if data.descrition
 
 
 

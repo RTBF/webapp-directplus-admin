@@ -42,7 +42,8 @@ define [
         $(modelId).parent().parent().parent().parent().slideUp ()=>
 
       delete : ()->
-        $('#delete').trigger 'deleteSlide' , @model.get('id')
+        if (confirm("Are you sure?"))
+          $('#delete').trigger 'deleteSlide' , @model.get('id')
 
       update : ()->
         console.log 'update test'
