@@ -23,9 +23,10 @@ define [
       console.log "admin init"
 
       @socket = io.connect 'http://localhost:3000'
-      @router= new Router(@socket)
       
-      #@socket.emit 'slider' , '515c3c4383a8b7b67a000001'
+      @router= new Router(@socket)
+      @socket.emit 'admin', 'seba@rtbf.be'
+
 
       @socket.on 'organisations', (data)=>
         console.log "g reçu les organisations suivantes: ", data

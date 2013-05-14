@@ -159,6 +159,7 @@ define [
 
       saveOrg:(e, form)->
         organisation = @getContentForm form , 'organisation' 
+        organisation.email= 'seba@rtbf.be'
         console.log organisation
         @trigger 'newOrganisation', organisation
         $('#myModal').modal('hide')
