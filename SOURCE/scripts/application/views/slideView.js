@@ -62,7 +62,9 @@ define(['jquery', 'backbone'], function($, Backbone) {
     };
 
     slideView.prototype["delete"] = function() {
-      return $('#delete').trigger('deleteSlide', this.model.get('id'));
+      if (confirm("Are you sure?")) {
+        return $('#delete').trigger('deleteSlide', this.model.get('id'));
+      }
     };
 
     slideView.prototype.update = function() {

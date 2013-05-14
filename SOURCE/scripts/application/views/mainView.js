@@ -22,10 +22,6 @@ define(['jquery', 'backbone', 'application/views/organisationView'], function($,
         return _this.renderNew(data);
       });
       conference = this.model.get('conference');
-      /*conferenceView = new ConferenceView
-        model: conference
-      */
-
       $('.emissions').delegate('.organisationsList', 'organisationChoosed', function(e, data) {
         return _this.model.organisationChoosed(data);
       });
@@ -35,8 +31,19 @@ define(['jquery', 'backbone', 'application/views/organisationView'], function($,
       $('.confList').delegate('#newConf', 'click', function(evt) {
         return _this.newConf();
       });
+      $('.confList').delegate('#deleteconf', 'deleteconf', function(evt, id) {
+        return _this.deleteConf(id);
+      });
       $('.organisationsList').delegate('#newOrg', 'click', function(evt) {
         return _this.newOrg();
+      });
+      $('.organisationsList').delegate('#deleteorg', 'deleteorg', function(evt, id) {
+        return _this.deleteOrg(id);
+      });
+      $('.confsblock').delegate('.update-org', 'click', function(evt) {
+        var form;
+        form = $('.orgsettings form').serializeArray();
+        return _this.updateOrg(form);
       });
       $('.slider').delegate('#delete', 'deleteSlide', function(e, data) {
         return _this["delete"](data, 'deleteSlide');
@@ -58,8 +65,12 @@ define(['jquery', 'backbone', 'application/views/organisationView'], function($,
         e.preventDefault();
         return _this.recuperer();
       });
-      return $('#savebt').click(function(e) {
+      $('#savebt').click(function(e) {
         return _this.save();
+      });
+      return $('.dpr').click(function(e) {
+        console.log("datepick");
+        return $('.dp').datepicker('show');
       });
     };
 
@@ -138,6 +149,7 @@ define(['jquery', 'backbone', 'application/views/organisationView'], function($,
 
     mainView.prototype.getContentForm = function(form, type) {
       var nameg, o, obj, slide;
+      console.log(form);
       obj = {};
       slide = {};
       for (o in form) {
@@ -149,7 +161,9 @@ define(['jquery', 'backbone', 'application/views/organisationView'], function($,
       } else {
         slide = obj;
       }
-      return slide;
+      slide;
+
+      return console.log(slide);
     };
 
     mainView.prototype.newConf = function() {
@@ -161,8 +175,10 @@ define(['jquery', 'backbone', 'application/views/organisationView'], function($,
     };
 
     mainView.prototype.newOrg = function() {
+      var html;
       $(".modal-body").children().remove();
-      $(".orgsettings form").clone().appendTo(".modal-body");
+      html = $('#orgsettings-template').html();
+      $(".modal-body").append(html);
       $(".modal-body legend").addClass("modal-legend");
       return $(".modal-legend").attr("id", "organisation");
     };
@@ -171,16 +187,15 @@ define(['jquery', 'backbone', 'application/views/organisationView'], function($,
       var conference;
       conference = this.getContentForm(form, 'conference');
       conference._orga = this.model.get('organisation').get('_id');
-      console.log(conference);
-      return this.trigger('newConference', conference);
+      return console.log(conference);
     };
 
     mainView.prototype.saveOrg = function(e, form) {
       var organisation;
       organisation = this.getContentForm(form, 'organisation');
-      organisation._admin = '515c1b1950e5c6a674000001';
       console.log(organisation);
-      return this.trigger('newOrganisation', organisation);
+      this.trigger('newOrganisation', organisation);
+      return $('#myModal').modal('hide');
     };
 
     mainView.prototype["new"] = function(e, form, type) {
@@ -192,6 +207,28 @@ define(['jquery', 'backbone', 'application/views/organisationView'], function($,
         case 'slide':
           return this.update(e, form);
       }
+    };
+
+    mainView.prototype.deleteOrg = function(id) {
+      return this.trigger('deleteorg', id);
+    };
+
+    mainView.prototype.deleteConf = function(id) {
+      return this.trigger('deleteconf', id);
+    };
+
+    mainView.prototype.updateOrg = function(form) {
+      var organisation;
+      organisation = this.getContentForm(form, 'organisation');
+      organisation._id = $('.orgsettings').attr('data-id');
+      console.log(organisation);
+      return this.trigger('updateorg', organisation);
+    };
+
+    mainView.prototype.disablePreviousDate = function() {
+      var now, nowTemp;
+      nowTemp = new Date();
+      return now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
     };
 
     return mainView;

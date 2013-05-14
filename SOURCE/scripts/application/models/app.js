@@ -47,8 +47,17 @@ define(['jquery', 'backbone', 'application/collections/organisations', 'applicat
       this.on('confCreated', function(data) {
         return _this.get('organisation').createConf(data);
       });
-      return this.on('orgCreated', function(data) {
+      this.on('orgCreated', function(data) {
         return _this.createOrg(data);
+      });
+      this.on('confdeleted', function(data) {
+        return _this.get('organisation').deleteConf(data);
+      });
+      this.on('orgdeleted', function(data) {
+        return _this.deleteOrg(data);
+      });
+      return this.on('orgupdated', function(data) {
+        return _this.updateOrg(data);
       });
     };
 
@@ -90,6 +99,25 @@ define(['jquery', 'backbone', 'application/collections/organisations', 'applicat
       organisation.set("id", data._id);
       this.get('organisations').add(organisation);
       return this.trigger('new', this.get('organisations').get(data._id));
+    };
+
+    App.prototype.deleteOrg = function(data) {
+      return this.get('organisations').remove(this.get('organisations').get(data));
+    };
+
+    App.prototype.updateOrg = function(data) {
+      var org;
+      console.log("app :", data);
+      org = this.get('organisations').get(data._id);
+      if (data.name) {
+        this.get('organisations').get(data._id).name = data.name;
+      }
+      if (data.tumb) {
+        this.get('organisations').get(data._id).tumb = data.tumb;
+      }
+      if (data.descrition) {
+        return this.get('organisations').get(data._id).descrition = data.descrition;
+      }
     };
 
     return App;

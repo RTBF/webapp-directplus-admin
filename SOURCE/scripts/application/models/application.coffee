@@ -23,8 +23,8 @@ define [
       console.log "admin init"
 
       @socket = io.connect 'http://localhost:3000'
-      @router= new Router()
-      @socket.emit 'admin', '515c1b1950e5c6a674000001'
+      @router= new Router(@socket)
+      
       #@socket.emit 'slider' , '515c3c4383a8b7b67a000001'
 
       @socket.on 'organisations', (data)=>
@@ -68,6 +68,22 @@ define [
       @socket.on 'orgCreated', (data)=>
         @router.app.trigger 'orgCreated', data
 
+      @socket.on 'confdeleted', (data)=>
+        console.log "conf deleted"
+        @router.app.trigger 'confdeleted', data
+
+      @socket.on 'orgdeleted', (data)=>
+        console.log "org deleted"
+        @router.app.trigger 'orgdeleted', data
+
+      @socket.on 'orgupdated', (data)=>
+        console.log "org updated: ", data
+        @router.app.trigger 'orgupdated', data
+
+      @socket.on 'confupdated', (data)=>
+        console.log "confupdated"
+        @router.app.trigger 'confupdated', data
+
       @router.on 'newOrganisation', (data)=>
         @socket.emit 'newOrganisation', data
       
@@ -97,6 +113,20 @@ define [
       @router.on 'conferenceChoosed', (data)=>
         console.log 'ask confs'
         @socket.emit 'slider', data
+
+      @router.on 'deleteconf', (data)=>
+        @socket.emit 'deleteconf', data
+
+      @router.on 'deleteorg', (data)=>
+        @socket.emit 'deleteorg', data
+
+      @router.on 'updateorg', (data)=>
+        @socket.emit 'updateorg', data
+
+      @router.on 'updateconf', (data)=>
+        @socket.emit 'updateconf', data
+
+      @socket.emit 'admin', 'seba@rtbf.be'
 
 
 

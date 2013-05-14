@@ -23,15 +23,20 @@ define(['jquery', 'backbone', 'application/views/conferenceView'], function($, B
 
     OrganisationView.prototype.template = _.template($('#Organisation-template').html());
 
+    OrganisationView.prototype.templateset = _.template($('#orgsettings-template').html());
+
     OrganisationView.prototype.initialize = function() {
       var _this = this;
+      this.listenTo(this.model, 'change', this.render);
       this.listenTo(this.model, 'change:conferencesC', this.renderConfList);
-      return this.listenTo(this.model, 'new', function(data) {
+      this.listenTo(this.model, 'new', function(data) {
         return _this.renderNew(data);
       });
+      return this.listenTo(this.model, 'remove', this.remove);
     };
 
     OrganisationView.prototype.render = function() {
+      console.log('render');
       this.$el.html(this.template(this.model.toJSON()));
       return this;
     };
@@ -66,13 +71,24 @@ define(['jquery', 'backbone', 'application/views/conferenceView'], function($, B
       $(".confplus").parent().show();
       id = this.model.get('id');
       href = '/conference/' + id;
+      $(".orgsettings").remove();
+      $('.confsblock').prepend(this.templateset(this.model.toJSON()));
       return Backbone.history.navigate(href, {
         trigger: true
       });
     };
 
     OrganisationView.prototype.deleteorg = function() {
-      return $('#deleteorg').trigger('deleteorg', this.model.get('id'));
+      console.log("clicked on trash icon");
+      if (confirm("Are you sure?")) {
+        return $('#deleteorg').trigger('deleteorg', this.model.get('id'));
+      }
+    };
+
+    OrganisationView.prototype.remove = function() {
+      var id;
+      id = '#' + this.model.get('id');
+      return $(id).parent().slideUp();
     };
 
     return OrganisationView;

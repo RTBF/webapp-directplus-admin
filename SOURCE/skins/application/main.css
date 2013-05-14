@@ -36,6 +36,9 @@ body {
     margin-top: 2px;
     opacity: 0.25;
 }
+#deleteorg.icon-trash{
+  opacity: 0.30;
+}
 .iconplus {
   
   height:200px;

@@ -16,14 +16,17 @@ define(['jquery', 'backbone', 'application/views/mainView', 'application/models/
       '*actions': 'adminScreen'
     };
 
-    function Router() {
+    function Router(socket) {
+      console.log(socket);
+      this.socket = socket;
+      console.log(this.socket);
       Router.__super__.constructor.call(this, this.routes);
     }
 
     Router.prototype.initialize = function() {
       var _this = this;
       console.log("router initialize");
-      this.trigger('admiRoute');
+      console.log("socket: ", this.socket);
       this.app = new App();
       this.mainView = new MainView({
         model: this.app
@@ -48,9 +51,18 @@ define(['jquery', 'backbone', 'application/views/mainView', 'application/models/
         return _this.trigger('newConference', data);
       });
       this.mainView.on('newOrganisation', function(data) {
-        console.log("new Orgaz");
         return _this.trigger('newOrganisation', data);
       });
+      this.mainView.on('deleteorg', function(data) {
+        return _this.trigger('deleteorg', data);
+      });
+      this.mainView.on('deleteconf', function(data) {
+        return _this.trigger('deleteconf', data);
+      });
+      this.mainView.on('updateorg', function(data) {
+        return _this.trigger('updateorg', data);
+      });
+      this.trigger('admiRoute');
       return Backbone.history.start();
     };
 
@@ -65,6 +77,7 @@ define(['jquery', 'backbone', 'application/views/mainView', 'application/models/
 
     Router.prototype.conferenceScreen = function(orgId) {
       var _this = this;
+      console.log("listing confs");
       $('.adminScreen').fadeIn(function() {
         return $('.animeScreen').fadeOut();
       });

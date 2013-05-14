@@ -8,6 +8,9 @@ define [
     class Organisation extends Backbone.Model
 
       defaults:
+        tumb: " "
+        description: " "
+        name: " "
         conferencesC: new Conferences()
 
      
@@ -37,6 +40,9 @@ define [
         conference.set 'id', data._id
         @get('conferencesC').add conference
         @trigger 'new', @get('conferencesC').get(data._id)
+
+      deleteConf:(data)->
+        @get('conferencesC').remove @get('conferencesC').get(data)
         
      
 

@@ -79,7 +79,10 @@
                 <label>Name</label>
                 <input type="text" name="name" placeholder="Name…">
                 <label>Date</label>
-                <input type="text" name="date" placeholder="Date…">
+                    <div class="input-append date" id="datepicker" data-date=""  data-date-format="dd-mm-yyyy">
+                    <input name="date" class="span2 dpr" size="16" type="text" value="">
+                    <span class="add-on"><i class="icon-th dp"></i></span>
+                    </div>
                 <label>Thumbnail</label>
                 <input type="text" name="tumb" placeholder="http//:…">
                 <label>Desription</label>
@@ -132,7 +135,7 @@
 </div>
 <div class="container-fluid adminScreen" >
 <div class="row-fluid">
-        <div class="span3 ">
+        <div class="span3 scroll">
           <div class=" sidebar-nav bs-docs-sidebar emissions">
             <ul class="nav nav-list bs-docs-sidenav">
               <li class="nav-header"><h4>Emissions</h4></li>
@@ -144,21 +147,9 @@
             </ul>
           </div><!--/.well -->
         </div><!--/span-->
-      <div class="span9 scroll">
+      <div class="span9 confsblock scroll">
 
-          <div class="hero-unit orgsettings">
-            <form class="form-inline">
-              <legend>Emmision settings</legend>
-                <label>Name</label>
-                <input type="text" name="title" placeholder="Type the title">
-                <label>Logo Link</label>
-                <input type="text" name="thumb" placeholder="http://...">
-            </form>
-            <form>
-              <label>Desription</label>
-              <textarea rows="3" name="description" class="span10"placeholder="writte a small description..."></textarea>
-            </form>
-          </div>
+          
           <div class="conferencesblock row-fluid">
              <ul class="confList thumbnails">
               <li class="span4" ><div class="confplus">
@@ -209,19 +200,36 @@
 </script>
 
 <script type="text/template" id="conf-template"> 
-  <div class="thumbnail">
+  <div id="<%- _id %>" class="thumbnail">
   <img alt="300x200" data-src="holder.js/300x200" style="width: 300px; height: 200px;" src="<%-tumb%>">
    <div class="caption">
+   <i id="deleteconf" class=" icon-trash"></i>
      <a class="conf-item">
-     <h3 id="<%- _id %>"><i id="deleteconf" class=" icon-trash"></i><%- name%></h3></a>
+     <h3 ><%- name%></h3></a>
      <h4><%- date%></h4>
     </div>
    </div>
    
  </script>
+ <script type="text/template" id="orgsettings-template">
+ <div data-id="<%- _id %>"  class="hero-unit orgsettings">
+            <form class="">
+              <legend>Emmision settings</legend>
+                <label>Name</label>
+                <input type="text" name="title" placeholder="Type the title" value="<%- name %>">
+                <label>Logo Link</label>
+                <input type="text" name="tumb" placeholder="http://..." value="<%- tumb %>">
+              <label>Description</label>
+              <textarea rows="3" name="description" class="span10"placeholder="writte a small description..." ><%- description %></textarea>
+            </form>
+            <button class="btn btn-primary update-org" >Save changes</button>
+      </div>
+ </script>
 
  <script type="text/template" id="Organisation-template"> 
-      <i class="icon-chevron-right"></i><i id="deleteorg" class=" icon-trash icon-white"></i><a  class="org-item" id="<%- _id %>" ><strong><%- name%></strong></a>
+      <i class="icon-chevron-right"></i>
+      <i id="deleteorg" class=" icon-trash "></i>
+      <a  class="org-item" id="<%- _id %>" ><strong><%- name%></strong></a>
 
  </script>
 
