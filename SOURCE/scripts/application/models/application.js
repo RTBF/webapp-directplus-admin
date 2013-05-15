@@ -109,6 +109,7 @@ define(['jquery', 'application/routes/router', 'application/views/appView', 'app
         return _this.socket.emit('deleteconf', data);
       });
       this.router.on('deleteorg', function(data) {
+        console.log(data);
         return _this.socket.emit('deleteorg', data);
       });
       this.router.on('updateorg', function(data) {

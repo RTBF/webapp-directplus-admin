@@ -161,9 +161,7 @@ define(['jquery', 'backbone', 'application/views/organisationView'], function($,
       } else {
         slide = obj;
       }
-      slide;
-
-      return console.log(slide);
+      return slide;
     };
 
     mainView.prototype.newConf = function() {
@@ -171,7 +169,8 @@ define(['jquery', 'backbone', 'application/views/organisationView'], function($,
       console.log($("#settings form").html());
       $("#settings form").clone().appendTo(".modal-body");
       $(".modal-body legend").addClass("modal-legend");
-      return $(".modal-legend").attr("id", "conference");
+      $(".modal-legend").attr("id", "conference");
+      return this.setDate();
     };
 
     mainView.prototype.newOrg = function() {
@@ -187,7 +186,11 @@ define(['jquery', 'backbone', 'application/views/organisationView'], function($,
       var conference;
       conference = this.getContentForm(form, 'conference');
       conference._orga = this.model.get('organisation').get('_id');
-      return console.log(conference);
+      conference.date = $('.datepicker').attr('data-date');
+      console.log(conference);
+      console.log($('.datepicker').data('datepicker').getDate());
+      this.trigger('newConference', conference);
+      return $('#myModal').modal('hide');
     };
 
     mainView.prototype.saveOrg = function(e, form) {
@@ -225,10 +228,19 @@ define(['jquery', 'backbone', 'application/views/organisationView'], function($,
       return this.trigger('updateorg', organisation);
     };
 
-    mainView.prototype.disablePreviousDate = function() {
-      var now, nowTemp;
-      nowTemp = new Date();
-      return now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
+    mainView.prototype.setDate = function() {
+      var now,
+        _this = this;
+      now = new Date();
+      $('.datepicker').attr('data-date', now);
+      $('.timepicker').timepicker('showWidget');
+      return $('.datepicker').datepicker({
+        startDate: now
+      }).on('changeDate', function(ev) {
+        var newDate;
+        newDate = new Date(ev.date);
+        return $('.datepicker').attr('data-date', newDate);
+      }).data('datepicker');
     };
 
     return mainView;
