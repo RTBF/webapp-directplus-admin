@@ -10,7 +10,10 @@ define(['jquery', 'backbone', 'application/collections/slides', 'application/mod
 
     Conference.prototype.defaults = {
       slidesC: new Slides(),
-      count: 0
+      count: 0,
+      date: new Date(),
+      descrition: "",
+      name: ""
     };
 
     function Conference(aConf) {

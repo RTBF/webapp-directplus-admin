@@ -10,6 +10,9 @@ define [
       defaults:
         slidesC: new Slides()
         count: 0
+        date: new Date()
+        descrition: ""
+        name:""
 
       constructor: (aConf)->
         super aConf
