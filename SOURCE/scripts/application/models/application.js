@@ -110,6 +110,7 @@ define(['application/config', 'jquery', 'application/routes/router', 'applicatio
         return _this.socket.emit('deleteconf', data);
       });
       this.router.on('deleteorg', function(data) {
+        console.log(data);
         return _this.socket.emit('deleteorg', data);
       });
       this.router.on('updateorg', function(data) {

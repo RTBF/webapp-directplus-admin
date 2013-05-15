@@ -131,7 +131,7 @@ define [
         else
           slide = obj
         slide
-        console.log slide
+       
 
       newConf:()->
         $(".modal-body").children().remove()
@@ -139,6 +139,8 @@ define [
         $("#settings form").clone().appendTo ".modal-body"
         $(".modal-body legend").addClass("modal-legend")
         $(".modal-legend").attr("id", "conference")
+        @setDate()
+        
 
 
       newOrg:()->
@@ -149,13 +151,17 @@ define [
         $(".modal-body legend").addClass("modal-legend")
         $(".modal-legend").attr("id", "organisation")
 
+
       saveConf:(e, form)->
         conference= @getContentForm form , 'conference' 
         conference._orga = @model.get('organisation').get '_id'
-
+        conference.date = $('.datepicker').attr('data-date')
         console.log conference
-        #@trigger 'newConference', conference
-        #$('#myModal').modal('hide')
+        console.log $('.datepicker').data('datepicker').getDate()
+
+        @trigger 'newConference', conference
+        $('#myModal').modal('hide')
+
 
       saveOrg:(e, form)->
         organisation = @getContentForm form , 'organisation' 
@@ -185,12 +191,17 @@ define [
         console.log organisation
         @trigger 'updateorg' , organisation
 
-      disablePreviousDate:()->
-        nowTemp = new Date()
-        now = new Date nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0
-
-
-
+      setDate:()->
+        now = new Date()
+        $('.datepicker').attr('data-date', now)
+        $('.timepicker').timepicker('showWidget')
+        $('.datepicker').datepicker
+           startDate: now
+        .on 'changeDate', (ev) =>
+          newDate = new Date(ev.date)
+          $('.datepicker').attr('data-date', newDate)
+        .data('datepicker')
+        
 
 
 

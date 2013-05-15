@@ -120,6 +120,7 @@ define [
         @socket.emit 'deleteconf', data
 
       @router.on 'deleteorg', (data)=>
+        console.log data
         @socket.emit 'deleteorg', data
 
       @router.on 'updateorg', (data)=>
