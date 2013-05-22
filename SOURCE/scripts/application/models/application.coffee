@@ -110,7 +110,7 @@ define [
 
       @router.on 'organisationChoosed', (data)=>
         console.log 'ask confs'
-        @socket.emit 'organisationChoosed', data
+        @socket.emit 'organisationChoosedForAdmin', data
 
       @router.on 'conferenceChoosed', (data)=>
         console.log 'ask confs'

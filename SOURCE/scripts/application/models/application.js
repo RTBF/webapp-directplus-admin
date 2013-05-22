@@ -100,7 +100,7 @@ define(['application/config', 'jquery', 'application/routes/router', 'applicatio
       });
       this.router.on('organisationChoosed', function(data) {
         console.log('ask confs');
-        return _this.socket.emit('organisationChoosed', data);
+        return _this.socket.emit('organisationChoosedForAdmin', data);
       });
       this.router.on('conferenceChoosed', function(data) {
         console.log('ask confs');

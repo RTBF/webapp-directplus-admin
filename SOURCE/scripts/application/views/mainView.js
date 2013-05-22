@@ -198,6 +198,7 @@ define(['jquery', 'backbone', 'application/views/organisationView'], function($,
     mainView.prototype.saveConf = function(e, form) {
       var conference;
 
+      console.log($('.datepicker').attr('data-date'));
       conference = this.getContentForm(form, 'conference');
       conference._orga = this.model.get('organisation').get('_id');
       conference.date = $('.datepicker').attr('data-date');
@@ -265,7 +266,3 @@ define(['jquery', 'backbone', 'application/views/organisationView'], function($,
 
   })(Backbone.View);
 });
-
-/*
-//@ sourceMappingURL=mainView.map
-*/
