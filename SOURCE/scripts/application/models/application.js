@@ -18,7 +18,6 @@ define(['application/config', 'jquery', 'application/routes/router', 'applicatio
       console.log("admin init");
       this.socket = io.connect(Config.serverUrl);
       this.router = new Router(this.socket);
-      this.socket.emit('admin', 'seba@rtbf.be');
       this.socket.on('organisations', function(data) {
         console.log("g reçu les organisations suivantes: ", data);
         return _this.router.app.trigger('organisations', data);
@@ -126,7 +125,3 @@ define(['application/config', 'jquery', 'application/routes/router', 'applicatio
 
   })();
 });
-
-/*
-//@ sourceMappingURL=application.map
-*/

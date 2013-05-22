@@ -211,7 +211,6 @@ define(['jquery', 'backbone', 'application/views/organisationView'], function($,
       var organisation;
 
       organisation = this.getContentForm(form, 'organisation');
-      organisation.email = 'seba@rtbf.be';
       console.log(organisation);
       this.trigger('newOrganisation', organisation);
       return $('#myModal').modal('hide');

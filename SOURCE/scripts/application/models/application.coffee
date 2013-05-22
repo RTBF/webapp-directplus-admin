@@ -23,11 +23,8 @@ define [
     init:() ->
       console.log "admin init"
 
-      @socket = io.connect Config.serverUrl
-      
+      @socket = io.connect Config.serverUrl      
       @router= new Router(@socket)
-      @socket.emit 'admin', 'seba@rtbf.be'
-
 
       @socket.on 'organisations', (data)=>
         console.log "g reçu les organisations suivantes: ", data
