@@ -189,8 +189,7 @@ define(['jquery', 'backbone', 'application/views/organisationView'], function($,
       conference.date = $('.datepicker').attr('data-date');
       console.log(conference);
       console.log($('.datepicker').data('datepicker').getDate());
-      this.trigger('newConference', conference);
-      return $('#myModal').modal('hide');
+      return this.trigger('newConference', conference);
     };
 
     mainView.prototype.saveOrg = function(e, form) {

@@ -160,7 +160,7 @@ define [
         console.log $('.datepicker').data('datepicker').getDate()
 
         @trigger 'newConference', conference
-        $('#myModal').modal('hide')
+        #$('#myModal').modal('hide')
 
 
       saveOrg:(e, form)->
