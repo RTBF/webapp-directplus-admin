@@ -153,12 +153,12 @@ define [
 
 
       saveConf:(e, form)->
+        console.log $('.datepicker').attr('data-date') 
         conference= @getContentForm form , 'conference' 
         conference._orga = @model.get('organisation').get '_id'
-        conference.date = $('.datepicker').attr('data-date')
+        conference.date = $('.datepicker').attr('data-date') 
         console.log conference
         console.log $('.datepicker').data('datepicker').getDate()
-
         @trigger 'newConference', conference
         #$('#myModal').modal('hide')
 
