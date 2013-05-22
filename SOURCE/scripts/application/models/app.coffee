@@ -86,7 +86,7 @@ define [
         console.log "app :", data
         org = @get('organisations').get(data._id)
         @get('organisations').get(data._id).name = data.name if data.name
-        @get('organisations').get(data._id).tumb = data.tumb if data.tumb
+        @get('organisations').get(data._id).thumb = data.thumb if data.thumb
         @get('organisations').get(data._id).descrition = data.descrition if data.descrition
 
 

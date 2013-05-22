@@ -189,7 +189,13 @@ define(['jquery', 'backbone', 'application/views/organisationView'], function($,
       var html;
 
       $(".modal-body").children().remove();
-      html = $('#orgsettings-template').html();
+      html = _.template($('#orgsettings-template').html(), {
+        _id: '',
+        name: '',
+        thumb: '',
+        description: '',
+        save: false
+      });
       $(".modal-body").append(html);
       $(".modal-body legend").addClass("modal-legend");
       return $(".modal-legend").attr("id", "organisation");

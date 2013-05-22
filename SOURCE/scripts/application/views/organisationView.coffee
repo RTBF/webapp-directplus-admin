@@ -50,7 +50,13 @@ define [
         id= @model.get('id')
         href =  '/conference/' + id
         $(".orgsettings").remove()
-        $('.confsblock').prepend(@templateset(@model.toJSON()))
+        console.log 'model:',@model
+        if @model
+          data = @model.toJSON()
+          data.save = true
+          $('.confsblock').prepend(@templateset(data))
+        else
+          $('.confsblock').prepend(@templateset({name:'',thumb:'',description:'',save:true}))
         Backbone.history.navigate(href, trigger:true)
 
 

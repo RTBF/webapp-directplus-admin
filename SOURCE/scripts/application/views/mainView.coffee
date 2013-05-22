@@ -50,7 +50,6 @@ define [
           type = $('.modal-legend').attr('id')
           @new e, form, type
 
-
         $('#sendbt').click (e)=>
           e.preventDefault()
           @envoyer()
@@ -145,8 +144,7 @@ define [
 
       newOrg:()->
         $(".modal-body").children().remove()
-        #$(".orgsettings form").clone().appendTo ".modal-body"
-        html = $('#orgsettings-template').html()
+        html = _.template($('#orgsettings-template').html(),{_id:'',name:'',thumb:'',description:'',save:false})
         $(".modal-body").append(html)
         $(".modal-body legend").addClass("modal-legend")
         $(".modal-legend").attr("id", "organisation")
