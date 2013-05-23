@@ -5,7 +5,8 @@ define [
   ],($,Backbone,slideView)->
 
     class Slide extends Backbone.Model
-     
+      defaults:
+        title:' '
       constructor: (aSlide)->
         super aSlide
          # ...

@@ -101,22 +101,54 @@ define [
         slide._id =  $('.modal-body').attr('id')
         slide.type = $('.modal-body').attr('data')
         slide._conf = @model.get('organisation').get('conference').get '_id'
+        console.log slide
         @trigger 'updateSlide', slide
         $('#myModal').modal('hide')
 
 
       save: ()->
         form = $('.tab-pane.active > form').serializeArray()
-        if $('.tab-pane.active').attr('id') is 'settings'
-          conference = @getContentForm(form,'settings')
-          conference._id = @model.get('organisation').get('conference').get '_id'
-          @trigger 'updateConference' , conference
+        console.log form
+        filled= @checkFill form
+        if filled
+          if $('.tab-pane.active').attr('id') is 'settings'
+            conference = @getContentForm(form,'settings')
+            conference._id = @model.get('organisation').get('conference').get '_id'
+            console.log conference
+            @trigger 'updateConference' , conference
+          else
+            if $('.tab-pane.active').attr('id') is 'video'
+              val = $('.tab-pane.active #video-link')
+              console.log val.val()
+              splitString = val.val().split '='
+              console.log splitString[splitString.length-1]
+              form[1].value = splitString[splitString.length-1]
+            slide = @getContentForm(form,'slide')
+            slide.type = $('.tab-pane.active').attr('id')
+            slide._conf = @model.get('organisation').get('conference').get '_id'
+            console.log slide
+            @trigger 'saveslide', slide
         else
-          slide = @getContentForm(form,'slide')
-          slide.type = $('.tab-pane.active').attr('id')
-          slide._conf = @model.get('organisation').get('conference').get '_id'
-          console.log slide
-          #@trigger 'saveslide', slide
+          alert 'Form must be completely filled'
+
+               # ...
+                  
+          
+
+      checkFill:(form)->
+        console.log "check filled"
+        console.log form 
+        ok = true
+        for input in form
+          console.log input.value.length
+          if input.value.length is 0
+            ok = false
+          # ...
+        
+        ok
+
+          # ...
+        
 
       getContentForm:(form,type)->
         console.log form
