@@ -1,11 +1,12 @@
 define [
+  'application/config'
   'jquery'
   'application/routes/router'
   'application/views/appView'
   'application/models/slide'
   'application/collections/slides'
   'vendors/socketio/socketio'
-  ],($,Router,AppView)->
+  ],(Config,$,Router,AppView)->
     
   ###
     Gere les communication serveur
@@ -22,10 +23,8 @@ define [
     init:() ->
       console.log "admin init"
 
-      @socket = io.connect 'http://localhost:3000'
+      @socket = io.connect Config.serverUrl      
       @router= new Router(@socket)
-      
-      #@socket.emit 'slider' , '515c3c4383a8b7b67a000001'
 
       @socket.on 'organisations', (data)=>
         console.log "g reçu les organisations suivantes: ", data

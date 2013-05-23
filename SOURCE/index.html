@@ -85,7 +85,7 @@
 <span class="add-on"><i class="icon-time"></i></span>
 </div>
                 <label>Thumbnail</label>
-                <input type="text" name="tumb" placeholder="http//:…">
+                <input type="text" name="thumb" placeholder="http//:…">
                 <label>Desription</label>
                 <textarea rows="3" name="description" class="span10"placeholder="writte a small description..."></textarea>
               </fieldset>
@@ -111,7 +111,7 @@
                 <label>Title</label>
                 <input type="text" name="name" placeholder="Video Title…">
                 <label>Link</label>
-                <input type="text" name="tumb" placeholder="http//:…">
+                <input type="text" name="thumb" placeholder="http//:…">
                 <label>Desription</label>
                 <textarea rows="3" name="description" class="span10"placeholder="writte a small description..."></textarea>
           </div>
@@ -215,15 +215,17 @@
  <script type="text/template" id="orgsettings-template">
  <div data-id="<%- _id %>"  class="hero-unit orgsettings">
             <form class="">
-              <legend>Emmision settings</legend>
+              <legend>Emission settings</legend>
                 <label>Name</label>
                 <input type="text" name="title" placeholder="Type the title" value="<%- name %>">
                 <label>Logo Link</label>
-                <input type="text" name="tumb" placeholder="http://..." value="<%- tumb %>">
+                <input type="text" name="thumb" placeholder="http://..." value="<%- thumb %>">
               <label>Description</label>
-              <textarea rows="3" name="description" class="span10"placeholder="writte a small description..." ><%- description %></textarea>
+              <textarea rows="3" name="description" style="width:80%" placeholder="write a small description..." ><%- description %></textarea>
             </form>
+            <% if(save){ %>
             <button class="btn btn-primary update-org" >Save changes</button>
+            <% } %>
       </div>
  </script>
 
