@@ -117,7 +117,7 @@ define [
           slide.type = $('.tab-pane.active').attr('id')
           slide._conf = @model.get('organisation').get('conference').get '_id'
           console.log slide
-          @trigger 'saveslide', slide
+          #@trigger 'saveslide', slide
 
       getContentForm:(form,type)->
         console.log form

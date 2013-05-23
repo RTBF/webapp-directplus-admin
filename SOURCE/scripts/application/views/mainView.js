@@ -142,8 +142,7 @@ define(['jquery', 'backbone', 'application/views/organisationView'], function($,
         slide = this.getContentForm(form, 'slide');
         slide.type = $('.tab-pane.active').attr('id');
         slide._conf = this.model.get('organisation').get('conference').get('_id');
-        console.log(slide);
-        return this.trigger('saveslide', slide);
+        return console.log(slide);
       }
     };
 
