@@ -13,6 +13,7 @@ define [
         date: new Date()
         descrition: ""
         name:""
+        thumb:""
 
       constructor: (aConf)->
         super aConf

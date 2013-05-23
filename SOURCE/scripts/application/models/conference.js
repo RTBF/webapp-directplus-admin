@@ -13,7 +13,8 @@ define(['jquery', 'backbone', 'application/collections/slides', 'application/mod
       count: 0,
       date: new Date(),
       descrition: "",
-      name: ""
+      name: "",
+      thumb: ""
     };
 
     function Conference(aConf) {
